@@ -11,5 +11,5 @@ interface CountryApi {
     @GET("name/{name}")
     suspend fun getCountryWithName(
         @Path("name") name:String
-    )
+    ) : BaseList
 }

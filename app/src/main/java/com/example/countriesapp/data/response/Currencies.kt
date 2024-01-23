@@ -1,5 +1,5 @@
 package com.example.countriesapp.data.response
 
 data class Currencies(
-    val EUR: EUR
+    val EUR: com.example.countriesapp.data.response.EUR
 )

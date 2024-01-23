@@ -16,7 +16,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit() : CountryApi{
+    fun provideRetrofit() : CountryApi {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

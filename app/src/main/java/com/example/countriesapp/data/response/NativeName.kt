@@ -1,5 +1,5 @@
 package com.example.countriesapp.data.response
 
 data class NativeName(
-    val cat: Cat
+    val cat: com.example.countriesapp.data.response.Cat
 )

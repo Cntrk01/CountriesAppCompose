@@ -1,5 +1,6 @@
 package com.example.countriesapp.presentation.country_list.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.countriesapp.data.response.Response
@@ -19,7 +20,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
     ViewModel() {
 
     private var PAGE_SIZE = 1
-    private var countryList = listOf<CountryItem>()
+    private var countryList = mutableStateListOf<CountryItem>()
     private var _state = MutableStateFlow(CountryListState())
     val countryListState: StateFlow<CountryListState> = _state
 
@@ -33,7 +34,8 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
                 is Response.Loading -> {
                     _state.update {
                         it.copy(
-                            loading = true
+                            loading = true,
+                            error="",
                         )
                     }
                 }
@@ -48,20 +50,19 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
                 }
 
                 else -> {
+                    val newData = response.data?.map { countryItem ->
+                        CountryItem(
+                            flag = countryItem.flag,
+                            name = countryItem.name
+                        )
+                    } ?: emptyList() //null geleceği için böyle yaptım ? var datadan önce
 
-                    response.data?.let {
-                        countryList += it.map { countryItem ->
-                            CountryItem(
-                                flag = countryItem.flag,
-                                name = countryItem.name
-                            )
-                        }
-                    }
+                    countryList +=newData
 
                     _state.update {
                         it.copy(
                             loading = false,
-                            error = it.error,
+                            error = "",
                             countryData = countryList
                         )
                     }

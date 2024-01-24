@@ -19,11 +19,13 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
     override suspend fun getAllCountry(page:Int): Flow<Response<List<CountryItem>>> {
         return flow {
             try {
-                val startingIndex = page * 10
+                emit(Response.Loading())
+                val startingIndex = page * 20
                 val data = countryApi.getAllCountry().map {
                     it.toCountryItem()
-                }.drop(startingIndex).take(10)
-                Response.Success(data = data)
+                }
+
+                emit(Response.Success(data = data))
             } catch (e: Exception) {
                 emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
             }

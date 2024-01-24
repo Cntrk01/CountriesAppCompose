@@ -11,13 +11,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.Collections.max
+import java.util.Collections.min
 import javax.inject.Inject
+import kotlin.math.max
+import kotlin.math.min
 
 class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryApi) :
     CountryRepository {
 
-    override suspend fun getAllCountry(page:Int): Flow<Response<List<CountryItem>>> {
-        return flow {
+    override suspend fun getAllCountry(page:Int): Flow<Response<List<CountryItem>>> =flow {
             try {
                 emit(Response.Loading())
                 val startingIndex = page * 20
@@ -25,7 +28,9 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
                     it.toCountryItem()
                 }
 
-                emit(Response.Success(data = data))
+                val filteredData = data.subList(startingIndex-20, startingIndex)
+
+                emit(Response.Success(data = filteredData))
             } catch (e: Exception) {
                 emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
             }
@@ -34,7 +39,6 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
             }catch (e: IOException){
                 emit(Response.Error("Couldn't reach server.Check your internet connection.."))
             }
-        }
     }
 
     override suspend fun getCountryWithName(name: String): Flow<Response<List<CountryDetailItem>>> {

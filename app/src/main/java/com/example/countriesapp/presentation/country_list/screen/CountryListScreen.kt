@@ -155,11 +155,10 @@ fun CountryDataList(
                                     dominantColor = it
                                 }
                                 SubcomposeAsyncImageContent()
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
-                            model = state.countryData[countryList].flag?.png,
-                            contentDescription = "Image",
-                            contentScale = ContentScale.FillHeight
+                                .fillMaxHeight()
                         )
 
                         Text(

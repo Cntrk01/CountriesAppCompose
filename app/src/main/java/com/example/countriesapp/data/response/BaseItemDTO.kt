@@ -16,7 +16,7 @@ data class BaseItemDTO(
     val cioc: String?,
     val coatOfArms: CoatOfArms?,
     val continents: List<String>?,
-    val currencies: Currencies?,
+    val currencies: Map<String, Currency>?,
     val demonyms: Demonyms?,
     val fifa: String?,
     val flag: String?,
@@ -56,6 +56,12 @@ fun BaseItemDTO.toCountryDetailItem(): CountryDetailItem {
         status=status,
         subregion=subregion,
         timezones=timezones,
-        translations=translations
+        translations=translations,
+        coatOfArms = coatOfArms,
+        currencies = currencies,
+        latlng = latlng
     )
 }
+
+
+

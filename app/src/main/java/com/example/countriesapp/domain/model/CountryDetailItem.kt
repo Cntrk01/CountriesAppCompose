@@ -2,6 +2,8 @@ package com.example.countriesapp.domain.model
 
 import android.os.Parcelable
 import com.example.countriesapp.data.response.CapitalInfo
+import com.example.countriesapp.data.response.CoatOfArms
+import com.example.countriesapp.data.response.Currency
 import com.example.countriesapp.data.response.Flags
 import com.example.countriesapp.data.response.Maps
 import com.example.countriesapp.data.response.Name
@@ -23,4 +25,7 @@ data class CountryDetailItem(
     val subregion: String?,
     val timezones: List<String>?,
     val translations:@RawValue Translations?,
+    val coatOfArms: @RawValue CoatOfArms?,
+    val currencies: @RawValue Map<String, Currency>?,
+    val latlng: List<Double>?
 ) : Parcelable

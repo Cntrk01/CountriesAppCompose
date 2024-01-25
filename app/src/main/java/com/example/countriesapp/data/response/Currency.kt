@@ -1,6 +1,6 @@
 package com.example.countriesapp.data.response
 
-data class EUR(
+data class Currency(
     val name: String,
     val symbol: String
 )

@@ -53,7 +53,8 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
                     val newData = response.data?.map { countryItem ->
                         CountryItem(
                             flag = countryItem.flag,
-                            name = countryItem.name
+                            name = countryItem.name,
+                            countryDetailItem = countryItem.countryDetailItem
                         )
                     } ?: emptyList() //null geleceği için böyle yaptım ? var datadan önce
 

@@ -1,5 +1,6 @@
 package com.example.countriesapp.data.response
 
+import com.example.countriesapp.R
 import com.example.countriesapp.presentation.country_detail.screen.BaseTranslation
 
 data class Translations(
@@ -31,6 +32,7 @@ data class Translations(
 )
 fun Translations.toList():List<BaseTranslation> {
     return listOf(
+        BaseTranslation(firstName = "tur", common = tur?.common, official = tur?.official),
         BaseTranslation(firstName = "ara", common = ara?.common, official = ara?.official),
         BaseTranslation(firstName = "bre", common = bre?.common, official = bre?.official),
         BaseTranslation(firstName = "ces", common = ces?.common, official = ces?.official),
@@ -53,9 +55,8 @@ fun Translations.toList():List<BaseTranslation> {
         BaseTranslation(firstName = "spa", common = spa?.common, official = spa?.official),
         BaseTranslation(firstName = "srp", common = srp?.common, official = srp?.official),
         BaseTranslation(firstName = "swe", common = swe?.common, official = swe?.official),
-        BaseTranslation(firstName = "tur", common = tur?.common, official = tur?.official),
         BaseTranslation(firstName = "urd", common = urd?.common, official = urd?.official),
         BaseTranslation(firstName = "zho", common = zho?.common, official = zho?.official)
     )
-
 }
+

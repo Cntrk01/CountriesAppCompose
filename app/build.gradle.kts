@@ -105,4 +105,6 @@ dependencies {
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.2")
+
+    implementation ("org.osmdroid:osmdroid-android:6.1.16")
 }

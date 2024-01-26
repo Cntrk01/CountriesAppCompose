@@ -1,61 +1,71 @@
 package com.example.countriesapp.presentation.country_detail.screen
 
 import android.annotation.SuppressLint
-import android.view.ViewGroup
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.example.countriesapp.R
 import com.example.countriesapp.data.response.toList
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
+import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.navigation.Screen
+import com.example.countriesapp.util.CreateFirstNameToIconMap
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+import org.osmdroid.views.overlay.ScaleBarOverlay
 import java.util.Locale
 
 @Composable
@@ -67,129 +77,247 @@ fun CountryDetailPage(
     var countryItem = remember {
         navController.previousBackStackEntry?.savedStateHandle?.get<CountryDetailItem>(Screen.CountryDetailPage.route)
     }
+    var loading by remember { mutableStateOf(true) }
 
+    var expandedTranslation by remember { mutableStateOf(false) }
+    var expandedMap by remember { mutableStateOf(false) }
+
+    LaunchedEffect(loading) {
+        if (loading) {
+            delay(1000)
+            loading = false
+        }
+    }
 
     Column {
-        AppBar(countryName = countryItem?.name?.common.toString(), backClick = {
-            backClick.invoke()
-            countryItem = null
-        }, backButtonCheck = true)
+        AppBar(
+            countryName = countryItem?.name?.common.toString(),
+            backClick = {
+                backClick.invoke()
+                countryItem = null
+            }, backButtonCheck = true
+        )
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-        ) {
-            item {
-                countryItem?.let { CountryImage(countryItem = it) }
+        if (loading) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                LoadingCardView(modifier = Modifier.align(Alignment.Center))
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+            ) {
+                item {
+                    countryItem?.let {
+                        CountryImage(countryItem = it)
 
-                TextRow(
-                    firstText = "Country Name",
-                    secondText = countryItem?.name?.common.toString(),
-                    padding = 20.dp
-                )
-
-                countryItem?.currencies?.let { currencies ->
-                    currencies.forEach { (currencyCode, currencyData) ->
-                        TextRow(
-                            firstText = "Currency Code: $currencyCode",
-                            secondText = "Name: ${currencyData.name}, Symbol: ${currencyData.symbol}"
+                        ItemRowDesign(
+                            icon = R.drawable.icon_capital,
+                            firstText = it.name?.common.toString(),
+                            secondText = "Country"
                         )
+
+                        it.currencies?.let { currencies ->
+                            currencies.forEach { (currencyCode, currencyData) ->
+                                ItemRowDesign(
+                                    icon = R.drawable.icons_currency,
+                                    firstText = "${currencyData.name} (${currencyData.symbol})",
+                                    secondText = "Currency"
+                                )
+                            }
+                        }
+
+                        ItemRowDesign(
+                            icon = R.drawable.icon_official,
+                            firstText = countryItem?.name?.official.toString(),
+                            secondText = "Official Name"
+                        )
+
+                        ItemRowDesign(
+                            icon = R.drawable.icons_population,
+                            firstText = countryItem?.population.toString(),
+                            secondText = "Population"
+                        )
+
+                        ItemRowDesign(
+                            icon = R.drawable.icons_region,
+                            firstText = countryItem?.region.toString(),
+                            secondText = "Region"
+                        )
+
+                        ItemRowDesign(
+                            icon = R.drawable.icons_status,
+                            firstText = countryItem?.status?.capitalize(Locale.ROOT).toString(),
+                            secondText = "Status"
+                        )
+
+                        ItemRowDesign(
+                            icon = R.drawable.icons_region,
+                            firstText = countryItem?.subregion ?: "Unknown",
+                            secondText = "Sub Region"
+                        )
+
+                        countryItem?.timezones?.let { timeZones ->
+                            ItemRowDesign(
+                                icon = R.drawable.icons_timezone,
+                                firstText = timeZones.joinToString(", "),
+                                secondText = "Time Zones"
+                            )
+                        }
+
+                        ItemRowDesign(
+                            icon = R.drawable.icons_translation,
+                            firstText = "Other Language Names",
+                            secondText = "Translations"
+                        )
+
+                        AnimatedVisibility(visible = expandedTranslation) {
+                            Column {
+                                countryItem?.translations?.let { translations ->
+                                    Translations(translationList = translations.toList())
+                                }
+                            }
+                        }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    expandedTranslation = !expandedTranslation
+                                }) {
+                            Icon(
+                                imageVector = if (expandedTranslation) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = "Clear",
+                                tint = Color.Black,
+                                modifier = Modifier.align(CenterHorizontally)
+                            )
+                        }
+
+
+                        ItemRowDesign(
+                            icon = R.drawable.icons_location,
+                            firstText = "Map",
+                            secondText = "Location"
+                        )
+
+                        AnimatedVisibility(visible = expandedMap) {
+                            Column {
+                                countryItem?.let { detail ->
+                                    OpenGoogleMaps(countryItem = detail)
+                                }
+                            }
+                        }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    expandedMap = !expandedMap
+                                }) {
+                            Icon(
+                                imageVector = if (expandedMap) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = "Clear",
+                                tint = Color.Black,
+                                modifier = Modifier.align(CenterHorizontally)
+                            )
+                        }
                     }
-                }
-
-                TextRow(
-                    firstText = "Official Name",
-                    secondText = countryItem?.name?.official.toString()
-                )
-
-                TextRow(firstText = "Population", secondText = countryItem?.population.toString())
-
-                TextRow(firstText = "Region", secondText = countryItem?.region.toString())
-
-                TextRow(
-                    firstText = "Status",
-                    secondText = countryItem?.status?.capitalize(Locale.ROOT).toString()
-                )
-
-                TextRow(firstText = "SubRegion", secondText = countryItem?.subregion ?: "Unknown")
-
-                countryItem?.timezones?.let { timeZones ->
-                    TextRow(
-                        firstText = "Time Zones",
-                        secondText = timeZones.joinToString(", ")
-                    )
-                }
-
-                TextRow(firstText = "Translations ", secondText = "")
-
-                countryItem?.translations?.let {
-                    Translations(
-                        translationList = it.toList()
-                    )
-                }
-
-                countryItem?.let {
-                    OpenGoogleMaps(countryItem = it)
                 }
             }
         }
     }
 }
 
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
-private fun OpenGoogleMaps(countryItem: CountryDetailItem){
-    Column (
+private fun ItemRowDesign(
+    icon: Int,
+    firstText: String,
+    secondText: String
+) {
+    Row(
         modifier = Modifier
-            .height(350.dp)
-            .fillMaxWidth(),
-    ){
-        AndroidView(
-            modifier = Modifier.fillMaxSize(),
-            factory = { context ->
-                WebView(context).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    settings.javaScriptEnabled=true
-                    settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-                    webViewClient= WebViewClient()
-                    countryItem.maps?.googleMaps?.let { loadUrl(it) }
-                }
-            },
-            update = {webView->
-                countryItem?.maps?.googleMaps?.let { webView.loadUrl(it) }
-            }
+            .fillMaxWidth()
+            .padding(top = 20.dp)
+    ) {
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = "Icon",
+            modifier = Modifier
+                .size(45.dp)
         )
+        Spacer(modifier = Modifier.width(15.dp))
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .align(CenterVertically)
+
+        ) {
+            Text(
+                text = firstText,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Text(
+                text = secondText,
+                fontSize = 14.sp
+            )
+        }
     }
 }
 
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
-private fun TextRow(
-    firstText: String,
-    secondText: String,
-    modifier: Modifier = Modifier,
-    padding: Dp = 15.dp
-) {
-    Row(
-        modifier = Modifier.padding(top = padding)
+private fun OpenGoogleMaps(countryItem: CountryDetailItem) {
+
+    Column(
+        modifier = Modifier
+            .height(350.dp)
+            .fillMaxWidth(),
     ) {
-        Text(
-            color = Color.Black,
-            text = "$firstText : ",
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            modifier = Modifier.padding(start = 10.dp),
-            text = secondText,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        )
+        // MapView'in context'i
+        val context = LocalContext.current
+
+
+        // MapView'i gösterme
+        //AndroidView(
+        //            factory = { mapView },
+        //            modifier = Modifier.fillMaxSize()
+        //        ) { map ->
+        //            // Map ayarlarını yapma
+        //            map.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK)
+        //            map.setMultiTouchControls(true)
+        //
+        //            // Ölçek çubuğunu ekleme
+        //            val scaleBarOverlay = ScaleBarOverlay(map)
+        //            map.overlays.add(scaleBarOverlay)
+        //
+        //            // Belirli bir koordinata odaklanma örneği
+        //            val targetLatitude = 40.7128 // Hedef ülkenin enlemi
+        //            val targetLongitude = -74.0060 // Hedef ülkenin boylamı
+        //            map.controller.setCenter(org.osmdroid.util.GeoPoint(targetLatitude, targetLongitude))
+        //            map.controller.setZoom(10.0) // İstediğiniz zoom seviyesini ayarlayabilirsiniz
+        //        }
+
+        //AndroidView(
+            //modifier = Modifier.fillMaxSize(),
+            //            factory = { context ->
+            //                WebView(context).apply {
+            //                    layoutParams = ViewGroup.LayoutParams(
+            //                        ViewGroup.LayoutParams.MATCH_PARENT,
+            //                        ViewGroup.LayoutParams.MATCH_PARENT
+            //                    )
+            //                    settings.javaScriptEnabled = true
+            //                    settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+            //                    webViewClient = WebViewClient()
+            //                    countryItem.maps?.googleMaps?.let { loadUrl(it) }
+            //                }
+            //            },
+            //            update = { webView ->
+            //                countryItem?.maps?.googleMaps?.let { webView.loadUrl(it) }
+            //            }
+
+        //)
+
     }
 }
 
@@ -201,14 +329,20 @@ private fun Translations(
         //step 2 ile kaçar arttıracağımızı yazıyoruz
         for (i in translationList.indices) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(start = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                translationList.let {
-                    TextRow(
-                        firstText = it[i].firstName?.capitalize(Locale.ROOT) ?: "Unknown",
-                        secondText = it[i].official ?: "Unknown"
-                    )
+                translationList[i].official?.let { official ->
+                    translationList[i].firstName?.let { firstName ->
+                        val iconResId = CreateFirstNameToIconMap(firstName)
+                        
+                        ItemRowDesign(
+                                icon = iconResId,
+                                firstText = firstName.capitalize(Locale.ROOT),
+                                secondText = official
+                            )
+
+                    }
                 }
             }
         }
@@ -254,8 +388,11 @@ private fun CountryImage(countryItem: CountryDetailItem) {
                         ),
                     contentDescription = "Image",
                     contentScale =
-                    if (index > 0) { ContentScale.FillHeight }
-                    else { ContentScale.Crop }
+                    if (index > 0) {
+                        ContentScale.FillHeight
+                    } else {
+                        ContentScale.Crop
+                    }
                 )
             }
         }
@@ -295,8 +432,11 @@ private fun CountryImage(countryItem: CountryDetailItem) {
                     contentDescription = "Forward"
                 )
             }
+
         }
     }
+
+
 }
 
 

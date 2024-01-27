@@ -30,14 +30,12 @@ class RegionCountryListViewModel @Inject constructor(private val countryRegionUs
     val countryListState: StateFlow<RegionCountryState> = _state
 
     init {
-        getCountryList()
-
         savedStateHandle.get<String>(Constants.REGION_NAME)?.let {
             getCountryList(countryName = it)
         }
     }
 
-    fun getCountryList(countryName:String?=null) = viewModelScope.launch {
+    private fun getCountryList(countryName:String?=null) = viewModelScope.launch {
         countryName?.let {countryNAME->
             countryRegionUseCase(regionName = countryNAME).collectLatest { response ->
                 when (response) {
@@ -80,6 +78,16 @@ class RegionCountryListViewModel @Inject constructor(private val countryRegionUs
                     }
                 }
             }
+        }
+    }
+
+    fun resetState(){
+        _state.update {
+            it.copy(
+                loading = false,
+                error = "",
+                countryData = emptyList()
+            )
         }
     }
 }

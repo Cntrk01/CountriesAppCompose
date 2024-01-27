@@ -12,4 +12,9 @@ interface CountryApi {
     suspend fun getCountryWithName(
         @Path("name") name:String
     ) : BaseList
+
+    @GET("region/{region}")
+    suspend fun getCountryWithRegion(
+        @Path("region") region:String
+    ) : BaseList
 }

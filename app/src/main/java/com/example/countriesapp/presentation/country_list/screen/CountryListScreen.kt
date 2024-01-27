@@ -38,6 +38,7 @@ import coil.compose.AsyncImage
 import com.example.countriesapp.R
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
+import com.example.countriesapp.layouts.CountryDataList
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.presentation.country_list.state.CountryListState
 import com.example.countriesapp.presentation.country_list.viewmodel.CountryListViewModel
@@ -55,7 +56,6 @@ fun CountryListScreen(
     }
 
     Column {
-
         AppBar(backButtonCheck = true,
             imageId = R.drawable.icons_turkey,
             backClick = {
@@ -75,15 +75,18 @@ fun CountryListScreen(
             }
 
             if (state.countryData.isNotEmpty()) {
+
                 CountryDataList(
-                    countryListViewModel = countryListViewModel,
-                    state = state,
-                    clickCountry = { countryItem ->
-                        if (!checkLoadingSituation.value) {
-                            clickCountry?.invoke(countryItem)
-                        }
-                    }
-                )
+                    loadListSize = 238,
+                    countryList = state.countryData,
+                    countryStateListSize = state.countryData.size,
+                    stateLoading = state.loading,
+                    loadMore = {
+                        countryListViewModel.getCountryList()
+                    },
+                    clickCountry = { countryDetail ->
+                        clickCountry?.invoke(countryDetail)
+                    })
             }
             //NOT !!! ELSE ifadesini kullandığım için her seferinde aşağı kaydırıp yeni data gelince en başa atıyordu.
             //Fakat if bloklarına cevirince bu düzeldi en sonra gelince en sondan dataları göstermeye devam ediyor <3
@@ -101,69 +104,3 @@ fun CountryListScreen(
     }
 }
 
-@Composable
-fun CountryDataList(
-    countryListViewModel: CountryListViewModel,
-    state: CountryListState,
-    clickCountry: ((CountryDetailItem) -> Unit)? = null
-) {
-    val defaultDominantColor = MaterialTheme.colorScheme.surface
-
-    var dominantColor by remember {
-        mutableStateOf(defaultDominantColor)
-    }
-
-    if (state.countryData.isNotEmpty()) {
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-
-            items(state.countryData.size) { countryList ->
-                if (countryList >= state.countryData.size - 1 && !state.loading) {
-                    if (state.countryData.size < 238) {
-                        countryListViewModel.getCountryList()
-                    }
-                }
-
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .padding(5.dp)
-                        .clickable {
-                            clickCountry?.invoke(state.countryData[countryList].countryDetailItem)
-                        },
-                    shape = RoundedCornerShape(10.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-
-                ) {
-                    Box {
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            model = state.countryData[countryList].flag?.png,
-                            contentDescription = "Image",
-                            contentScale = ContentScale.FillHeight
-                        )
-
-                        Text(
-                            modifier = Modifier
-                                .padding(top = 10.dp)
-                                .background(Color.Transparent)
-                                .align(Alignment.BottomCenter)
-                                .padding(10.dp),
-                            maxLines = 1,
-                            text = state.countryData[countryList].name.toString(),
-                            fontSize = 22.sp,
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.ExtraBold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            }
-        }
-    }
-}

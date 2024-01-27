@@ -7,15 +7,14 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.countriesapp.R
 import com.example.countriesapp.common.Constants.ALL_COUNTRY
+import com.example.countriesapp.common.Constants.REGION
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.HomeCard
 
 @Composable
-fun HomePage(
-    navHostController: NavHostController,
+fun HomeScreen(
     clickHomeItem : (String)->Unit
 ){
     Column {
@@ -31,7 +30,9 @@ fun HomePage(
                 }, backgroundColor = Color.LightGray)
             }
             item {
-                HomeCard(cardText = "Region", clickHomeCardItem = {}, backgroundColor = Color.Blue)
+                HomeCard(cardText = "Region", clickHomeCardItem = {
+                   clickHomeItem.invoke(REGION)
+                }, backgroundColor = Color.Blue)
             }
             item {
                 HomeCard(cardText = "Sub Region", clickHomeCardItem = {}, backgroundColor = Color.Cyan)

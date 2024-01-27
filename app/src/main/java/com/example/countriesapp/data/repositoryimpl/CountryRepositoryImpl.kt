@@ -27,9 +27,7 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
             val data = countryApi.getAllCountry().map {
                 it.toCountryItem()
             }
-
             val filteredData = data.subList(startingIndex - 20, startingIndex)
-
             emit(Response.Success(data = filteredData))
         } catch (e: Exception) {
             emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
@@ -62,11 +60,9 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
     ): Flow<Response<List<CountryItem>>> = flow {
         try {
             emit(Response.Loading())
-
             val data = countryApi.getCountryWithRegion(region = regionName).map {
                 it.toCountryItem()
             }
-
             emit(Response.Success(data = data))
         } catch (e: Exception) {
             emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))

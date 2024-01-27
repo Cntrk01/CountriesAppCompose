@@ -7,11 +7,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.countriesapp.common.Constants.ALL_COUNTRY
+import com.example.countriesapp.common.Constants.CURRENCY
 import com.example.countriesapp.common.Constants.REGION
 import com.example.countriesapp.common.Constants.REGION_NAME
 import com.example.countriesapp.common.Constants.SUB_REGION
 import com.example.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.example.countriesapp.presentation.country_list.screen.CountryListScreen
+import com.example.countriesapp.presentation.currency.CurrencyPage
 import com.example.countriesapp.presentation.home.HomeScreen
 import com.example.countriesapp.presentation.region_subregion.region.screen.RegionScreen
 import com.example.countriesapp.presentation.region_subregion.regionlist.screen.RegionCountryList
@@ -35,6 +37,9 @@ fun SetupNavGraph(
                 }
                 if (it == SUB_REGION){
                     navController.navigate(route = Screen.SubRegionPage.route)
+                }
+                if (it == CURRENCY){
+                    navController.navigate(route = Screen.CurrencyPage.route)
                 }
             })
         }
@@ -71,6 +76,12 @@ fun SetupNavGraph(
                 navController.popBackStack()
             }, clickSubRegionItem = { subRegion ->
                 navController.navigate(route = Screen.RegionCountryListPage.route + "/$subRegion")
+            })
+        }
+
+        composable(route = Screen.CurrencyPage.route) {
+            CurrencyPage(backClick = {
+                navController.popBackStack()
             })
         }
 

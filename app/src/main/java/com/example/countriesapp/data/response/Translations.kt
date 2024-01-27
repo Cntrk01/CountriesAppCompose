@@ -1,6 +1,5 @@
 package com.example.countriesapp.data.response
 
-import com.example.countriesapp.R
 import com.example.countriesapp.presentation.country_detail.screen.BaseTranslation
 
 data class Translations(

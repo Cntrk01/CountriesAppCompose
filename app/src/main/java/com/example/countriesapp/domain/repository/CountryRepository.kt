@@ -11,4 +11,5 @@ interface CountryRepository {
     suspend fun getCountryWithName (name:String) : Flow<Response<List<CountryDetailItem>>>
 
     suspend fun getCountryWithRegion(regionName:String) : Flow<Response<List<CountryItem>>>
+
 }

@@ -65,7 +65,6 @@ import com.example.countriesapp.navigation.Screen
 import com.example.countriesapp.util.CreateFirstNameToIconMap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.osmdroid.views.overlay.ScaleBarOverlay
 import java.util.Locale
 
 @Composable
@@ -91,7 +90,6 @@ fun CountryDetailPage(
 
     Column {
         AppBar(
-            //countryName = countryItem?.name?.common.toString(),
             backClick = {
                 backClick.invoke()
                 countryItem = null

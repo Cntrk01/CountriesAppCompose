@@ -1,13 +1,8 @@
 package com.example.countriesapp.presentation.country_list.viewmodel
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.palette.graphics.Palette
 import com.example.countriesapp.data.response.Response
 import com.example.countriesapp.domain.model.CountryItem
 import com.example.countriesapp.domain.use_case.CountryListUseCase

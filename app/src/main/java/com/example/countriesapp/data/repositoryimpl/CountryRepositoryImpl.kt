@@ -20,29 +20,28 @@ import kotlin.math.min
 class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryApi) :
     CountryRepository {
 
-    override suspend fun getAllCountry(page:Int): Flow<Response<List<CountryItem>>> =flow {
-            try {
-                emit(Response.Loading())
-                val startingIndex = page * 20
-                val data = countryApi.getAllCountry().map {
-                    it.toCountryItem()
-                }
-
-                val filteredData = data.subList(startingIndex-20, startingIndex)
-
-                emit(Response.Success(data = filteredData))
-            } catch (e: Exception) {
-                emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+    override suspend fun getAllCountry(page: Int): Flow<Response<List<CountryItem>>> = flow {
+        try {
+            emit(Response.Loading())
+            val startingIndex = page * 20
+            val data = countryApi.getAllCountry().map {
+                it.toCountryItem()
             }
-            catch (e: HttpException){
-                emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
-            }catch (e: IOException){
-                emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-            }
+
+            val filteredData = data.subList(startingIndex - 20, startingIndex)
+
+            emit(Response.Success(data = filteredData))
+        } catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }
     }
 
-    override suspend fun getCountryWithName(name: String): Flow<Response<List<CountryDetailItem>>> {
-        return flow {
+    override suspend fun getCountryWithName(name: String): Flow<Response<List<CountryDetailItem>>> =
+        flow {
             try {
                 emit(Response.Loading())
                 val data = countryApi.getCountryWithName(name = name).map {
@@ -51,12 +50,30 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
                 emit(Response.Success(data = data))
             } catch (e: Exception) {
                 emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
-            }
-            catch (e: HttpException){
+            } catch (e: HttpException) {
                 emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
-            }catch (e: IOException){
+            } catch (e: IOException) {
                 emit(Response.Error("Couldn't reach server.Check your internet connection.."))
             }
+        }
+
+    override suspend fun getCountryWithRegion(
+        regionName: String
+    ): Flow<Response<List<CountryItem>>> = flow {
+        try {
+            emit(Response.Loading())
+
+            val data = countryApi.getCountryWithRegion(region = regionName).map {
+                it.toCountryItem()
+            }
+
+            emit(Response.Success(data = data))
+        } catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
         }
     }
 }

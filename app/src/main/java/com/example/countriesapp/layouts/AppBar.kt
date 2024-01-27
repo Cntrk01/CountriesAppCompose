@@ -38,7 +38,7 @@ fun AppBar(
 
     Row(
         modifier = Modifier
-            .height(80.dp)
+            .height(90.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primary),
         verticalAlignment = CenterVertically,

@@ -6,9 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.countriesapp.R
@@ -46,7 +47,7 @@ fun AppBar(
     ) {
         Column(
             modifier = Modifier
-                .weight(0.1f)
+                .weight(0.3f)
                 .height(50.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
@@ -54,7 +55,7 @@ fun AppBar(
             if (checkBackButton.value) {
                 Image(
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 15.dp)
                         .clickable { backClick?.invoke() },
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                     contentDescription = "",
@@ -65,7 +66,7 @@ fun AppBar(
 
         Column(
             modifier = Modifier
-                .weight(0.8f),
+                .weight(0.7f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -79,7 +80,7 @@ fun AppBar(
 
         Column(
             modifier = Modifier
-                .weight(0.1f)
+                .weight(0.3f)
                 .height(50.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -87,7 +88,7 @@ fun AppBar(
             if (checkEndButton.value) {
                 Image(
                     modifier = Modifier
-                        .padding(end = 5.dp)
+                        .padding(end = 15.dp)
                         .clickable {
                             //backClick?.invoke()
                         },

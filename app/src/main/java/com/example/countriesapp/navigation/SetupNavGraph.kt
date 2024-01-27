@@ -9,11 +9,13 @@ import androidx.navigation.navArgument
 import com.example.countriesapp.common.Constants.ALL_COUNTRY
 import com.example.countriesapp.common.Constants.REGION
 import com.example.countriesapp.common.Constants.REGION_NAME
+import com.example.countriesapp.common.Constants.SUB_REGION
 import com.example.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.example.countriesapp.presentation.country_list.screen.CountryListScreen
 import com.example.countriesapp.presentation.home.HomeScreen
 import com.example.countriesapp.presentation.region_subregion.region.screen.RegionScreen
 import com.example.countriesapp.presentation.region_subregion.regionlist.screen.RegionCountryList
+import com.example.countriesapp.presentation.region_subregion.subregion.SubRegionScreen
 
 @Composable
 fun SetupNavGraph(
@@ -30,6 +32,9 @@ fun SetupNavGraph(
                 }
                 if (it == REGION) {
                     navController.navigate(route = Screen.RegionPage.route)
+                }
+                if (it == SUB_REGION){
+                    navController.navigate(route = Screen.SubRegionPage.route)
                 }
             })
         }
@@ -60,6 +65,15 @@ fun SetupNavGraph(
                 navController.navigate(route = Screen.RegionCountryListPage.route + "/$region")
             })
         }
+
+        composable(route = Screen.SubRegionPage.route) {
+            SubRegionScreen(backClick = {
+                navController.popBackStack()
+            }, clickSubRegionItem = { subRegion ->
+                navController.navigate(route = Screen.RegionCountryListPage.route + "/$subRegion")
+            })
+        }
+
 
         composable(
             route = Screen.RegionCountryListPage.route + "/{$REGION_NAME}",

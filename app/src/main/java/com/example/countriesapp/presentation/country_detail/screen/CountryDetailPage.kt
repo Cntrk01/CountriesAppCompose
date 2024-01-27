@@ -123,7 +123,7 @@ fun CountryDetailPage(
                             currencies.forEach { (currencyCode, currencyData) ->
                                 ItemRowDesign(
                                     icon = R.drawable.icons_currency,
-                                    firstText = "${currencyData.name} (${currencyData.symbol})",
+                                    firstText = "${currencyData.name} (${currencyData.symbol ?: ""})",
                                     secondText = "Currency"
                                 )
                             }
@@ -336,7 +336,7 @@ private fun Translations(
                 translationList[i].official?.let { official ->
                     translationList[i].firstName?.let { firstName ->
                         val iconResId = CreateFirstNameToIconMap(firstName)
-                        
+
                         ItemRowDesign(
                                 icon = iconResId,
                                 firstText = firstName.capitalize(Locale.ROOT),

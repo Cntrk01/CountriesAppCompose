@@ -7,8 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,23 +25,17 @@ fun RegionCountryList(
 ){
     val state by regionCountryListViewModel.countryListState.collectAsState()
 
-    val checkLoadingSituation = remember {
-        mutableStateOf(false)
-    }
-
     Column {
         AppBar(backButtonCheck = true,
             imageId = R.drawable.icons_turkey,
             backClick = {
                 backClick.invoke()
+                regionCountryListViewModel.resetState()
             })
 
         Box(modifier = Modifier.fillMaxSize()) {
             if (state.loading) {
-                checkLoadingSituation.value = true
                 LoadingCardView(modifier = Modifier.align(Alignment.Center))
-            } else {
-                checkLoadingSituation.value = false
             }
 
             if (state.error.isNotBlank()) {

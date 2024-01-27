@@ -77,4 +77,14 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
             }
         }
     }
+
+    fun resetState(){
+        _state.update {
+            it.copy(
+                loading = false,
+                error = "",
+                countryData = emptyList()
+            )
+        }
+    }
 }

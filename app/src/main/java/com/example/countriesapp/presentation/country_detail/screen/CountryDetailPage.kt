@@ -91,11 +91,12 @@ fun CountryDetailPage(
 
     Column {
         AppBar(
-            countryName = countryItem?.name?.common.toString(),
+            //countryName = countryItem?.name?.common.toString(),
             backClick = {
                 backClick.invoke()
                 countryItem = null
-            }, backButtonCheck = true
+            }, backButtonCheck = true,
+            imageId = R.drawable.icons_turkey
         )
 
         if (loading) {

@@ -1,63 +1,103 @@
 package com.example.countriesapp.layouts
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.example.countriesapp.R
 
 @Composable
 fun AppBar(
-    countryName: String,
-    backClick: (() -> Unit) ?=null,
-    backButtonCheck : Boolean = false
+    backClick: (() -> Unit)? = null,
+    backButtonCheck: Boolean = false,
+    endButtonCheck: Boolean = false,
+    imageId: Int
 ) {
     val checkBackButton = remember {
         mutableStateOf(backButtonCheck)
     }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .height(70.dp)
-            .padding(start = 5.dp)
-            .zIndex(1f)
-    ) {
+    val checkEndButton = remember {
+        mutableStateOf(endButtonCheck)
+    }
 
-        if (checkBackButton.value){
+    Row(
+        modifier = Modifier
+            .height(80.dp)
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primary),
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(0.1f)
+                .height(50.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (checkBackButton.value) {
+                Image(
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                        .clickable { backClick?.invoke() },
+                    painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                    contentDescription = "",
+                    alignment = Center
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(0.8f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
             Image(
-                painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                painter = painterResource(id = imageId),
                 contentDescription = "",
-                modifier = Modifier
-                    .padding(start = 5.dp)
-                    .clickable {
-                        backClick?.invoke()
-                    }
+                modifier = Modifier.padding(start = 5.dp)
             )
         }
-        Text(
-            modifier = Modifier.padding(start = 20.dp),
-            text = countryName,
-            fontSize = 24.sp,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.SansSerif,
-            maxLines = 1
-        )
+
+        Column(
+            modifier = Modifier
+                .weight(0.1f)
+                .height(50.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (checkEndButton.value) {
+                Image(
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .clickable {
+                            //backClick?.invoke()
+                        },
+                    painter = painterResource(id = R.drawable.icons_jordan),
+                    contentDescription = "",
+                    alignment = Center
+                )
+            }
+        }
     }
+
+
 }

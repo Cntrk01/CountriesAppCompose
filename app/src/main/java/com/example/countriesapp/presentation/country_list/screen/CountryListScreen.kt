@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.countriesapp.R
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
@@ -44,22 +45,29 @@ import com.example.countriesapp.presentation.country_list.viewmodel.CountryListV
 @Composable
 fun CountryListScreen(
     countryListViewModel: CountryListViewModel = hiltViewModel(),
-    clickCountry: ((CountryDetailItem) -> Unit)? = null
+    clickCountry: ((CountryDetailItem) -> Unit)? = null,
+    backClick: (() -> Unit)? = null
 ) {
     val state by countryListViewModel.countryListState.collectAsState()
+
     val checkLoadingSituation = remember {
         mutableStateOf(false)
     }
+
     Column {
 
-        AppBar(countryName = "Countries")
+        AppBar(backButtonCheck = true,
+            imageId = R.drawable.icons_turkey,
+            backClick = {
+                backClick?.invoke()
+            })
 
         Box(modifier = Modifier.fillMaxSize()) {
             if (state.loading) {
-                checkLoadingSituation.value=true
+                checkLoadingSituation.value = true
                 LoadingCardView(modifier = Modifier.align(Center))
-            }else{
-                checkLoadingSituation.value=false
+            } else {
+                checkLoadingSituation.value = false
             }
 
             if (state.error.isNotBlank()) {
@@ -71,7 +79,7 @@ fun CountryListScreen(
                     countryListViewModel = countryListViewModel,
                     state = state,
                     clickCountry = { countryItem ->
-                        if (!checkLoadingSituation.value){
+                        if (!checkLoadingSituation.value) {
                             clickCountry?.invoke(countryItem)
                         }
                     }
@@ -113,7 +121,7 @@ fun CountryDataList(
 
             items(state.countryData.size) { countryList ->
                 if (countryList >= state.countryData.size - 1 && !state.loading) {
-                    if (state.countryData.size<238){
+                    if (state.countryData.size < 238) {
                         countryListViewModel.getCountryList()
                     }
                 }

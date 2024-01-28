@@ -1,7 +1,9 @@
 package com.example.countriesapp.layouts
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.countriesapp.R
 
 @Composable
 fun HomeCard(
+    imageId:Int ?=null,
     cardText: String,
     clickHomeCardItem: ((String) -> Unit)? = null,
     backgroundColor: Color
@@ -44,11 +49,21 @@ fun HomeCard(
         ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
+            imageId?.let { painterResource(id = it) }?.let {
+                Image(
+                    modifier=Modifier.fillMaxWidth().height(100.dp),
+                    painter = it,
+                    contentDescription = ""
+                )
+            }
+
             Text(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 10.dp),
                 maxLines = 2,
                 text = cardText,
                 fontSize = 22.sp,

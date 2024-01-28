@@ -128,7 +128,8 @@ fun CurrencyPage(
                                             .fillMaxWidth()
                                             .fillMaxHeight(),
                                         text = state.countryData[countryList].name.toString(),
-                                        textAlign = TextAlign.Center
+                                        textAlign = TextAlign.Center,
+                                        maxLines = 2
                                     )
                                 }
                                 Column(

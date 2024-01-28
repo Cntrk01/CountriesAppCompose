@@ -73,38 +73,36 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation ("androidx.compose.material:material-icons-core:1.5.4")
-    implementation ("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha13")
+    implementation("androidx.compose.material:material-icons-core:1.5.4")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha13")
 
-    implementation ("com.google.dagger:hilt-android:2.45")
-    kapt ("com.google.dagger:hilt-android-compiler:2.48")
-    kapt ("androidx.hilt:hilt-compiler:1.1.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
-    implementation ("androidx.hilt:hilt-work:1.1.0")
-    implementation ("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.hilt:hilt-work:1.1.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation ("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Coroutines
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-    implementation ("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.activity:activity-ktx:1.8.2")
 
-    // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-
-    implementation ("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:4.7.1")
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.2")
 
-    implementation ("org.osmdroid:osmdroid-android:6.1.16")
+    implementation("org.osmdroid:osmdroid-android:6.1.16")
+    //4.1.0 ve 4.0.0 calısmadı.
+    implementation("com.airbnb.android:lottie-compose:4.2.2")
 }

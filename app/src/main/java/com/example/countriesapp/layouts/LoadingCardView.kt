@@ -12,6 +12,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -20,11 +21,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.countriesapp.R
 
 @Composable
 fun LoadingCardView(
     modifier: Modifier = Modifier
 ) {
+    val rememberLottie =
+        rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_animation))
+
+    val progressAnimation by animateLottieCompositionAsState(
+        composition = rememberLottie.value,
+        isPlaying = true,
+        iterations = LottieConstants.IterateForever,
+        speed = 1f
+    )
+
     Box(
         modifier = modifier
             .height(150.dp)
@@ -40,21 +57,19 @@ fun LoadingCardView(
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         )
         {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 25.dp)
+            LottieAnimation(
+                composition = rememberLottie.value,
+                progress = progressAnimation
             )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 30.dp), text = "Loading...",
-                fontSize = 18.sp,
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
-            )
+            //Text(
+            //                modifier = Modifier
+            //                    .fillMaxWidth()
+            //                    .padding(top = 30.dp), text = "Loading...",
+            //                fontSize = 18.sp,
+            //                fontFamily = FontFamily.SansSerif,
+            //                fontWeight = FontWeight.SemiBold,
+            //                textAlign = TextAlign.Center
+            //            )
         }
     }
 

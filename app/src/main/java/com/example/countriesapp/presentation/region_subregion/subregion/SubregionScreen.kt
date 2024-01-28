@@ -44,14 +44,18 @@ fun SubRegionScreen(
             contentPadding = PaddingValues(10.dp)
         ) {
             item {
-                HomeCard(cardText = "Southern Europe",
+                HomeCard(
+                    imageId = R.drawable.icons_southern_europe,
+                    cardText = "Southern Europe",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(SOUTHERN_EUROPE)
                     }, backgroundColor = Color.LightGray
                 )
             }
             item {
-                HomeCard(cardText = "South-Eastern Asia",
+                HomeCard(
+                    imageId = R.drawable.icons_southern_asia,
+                    cardText = "South-Eastern Asia",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(SOUTH_EASTERN_ASIA)
                     }, backgroundColor = Color.Blue
@@ -59,6 +63,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_north_america,
                     cardText = "North America",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(North_America)
@@ -68,6 +73,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_planet_earth,
                     cardText = "Melanesia",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Melanesia)
@@ -77,6 +83,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_central_europe,
                     cardText = "Central Europe",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Central_Europe)
@@ -86,42 +93,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
-                    cardText = "Eastern Africa",
-                    clickHomeCardItem = {
-                        clickSubRegionItem?.invoke(Eastern_Africa)
-                    },
-                    backgroundColor = Color.DarkGray
-                )
-            }
-            item {
-                HomeCard(
-                    cardText = "Western Africa",
-                    clickHomeCardItem = {
-                        clickSubRegionItem?.invoke(Western_Africa)
-                    },
-                    backgroundColor = Color.DarkGray
-                )
-            }
-            item {
-                HomeCard(
-                    cardText = "Northern Africa",
-                    clickHomeCardItem = {
-                        clickSubRegionItem?.invoke(Northern_Africa)
-                    },
-                    backgroundColor = Color.DarkGray
-                )
-            }
-            item {
-                HomeCard(
-                    cardText = "Southern Africa",
-                    clickHomeCardItem = {
-                        clickSubRegionItem?.invoke(Southern_Africa)
-                    },
-                    backgroundColor = Color.DarkGray
-                )
-            }
-            item {
-                HomeCard(
+                    imageId = R.drawable.icons_europe,
                     cardText = "Northern Europe",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Northern_Europe)
@@ -131,6 +103,47 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_eastern_africa,
+                    cardText = "Eastern Africa",
+                    clickHomeCardItem = {
+                        clickSubRegionItem?.invoke(Eastern_Africa)
+                    },
+                    backgroundColor = Color.DarkGray
+                )
+            }
+            item {
+                HomeCard(
+                    imageId = R.drawable.icons_western_africa,
+                    cardText = "Western Africa",
+                    clickHomeCardItem = {
+                        clickSubRegionItem?.invoke(Western_Africa)
+                    },
+                    backgroundColor = Color.DarkGray
+                )
+            }
+            item {
+                HomeCard(
+                    imageId = R.drawable.icon_africa,
+                    cardText = "Northern Africa",
+                    clickHomeCardItem = {
+                        clickSubRegionItem?.invoke(Northern_Africa)
+                    },
+                    backgroundColor = Color.DarkGray
+                )
+            }
+            item {
+                HomeCard(
+                    imageId = R.drawable.icons_southern_africa,
+                    cardText = "Southern Africa",
+                    clickHomeCardItem = {
+                        clickSubRegionItem?.invoke(Southern_Africa)
+                    },
+                    backgroundColor = Color.DarkGray
+                )
+            }
+            item {
+                HomeCard(
+                    imageId = R.drawable.icons_caribbean,
                     cardText = "Caribbean",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Caribbean)
@@ -140,6 +153,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_south_america,
                     cardText = "South America",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(South_America)
@@ -149,6 +163,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_europe,
                     cardText = "Southeast Europe",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Southeast_Europe)
@@ -158,6 +173,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_middle_africa,
                     cardText = "Middle Africa",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Middle_Africa)
@@ -167,6 +183,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icon_asia,
                     cardText = "Southern Asia",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Southern_Asia)
@@ -176,6 +193,7 @@ fun SubRegionScreen(
             }
             item {
                 HomeCard(
+                    imageId = R.drawable.icons_eastern_asia,
                     cardText = "Eastern Asia",
                     clickHomeCardItem = {
                         clickSubRegionItem?.invoke(Eastern_Asia)

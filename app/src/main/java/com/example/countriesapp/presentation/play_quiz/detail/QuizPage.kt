@@ -1,7 +1,6 @@
 package com.example.countriesapp.presentation.play_quiz.detail
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,13 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Slider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +42,6 @@ import com.example.countriesapp.domain.model.QuizItem
 import com.example.countriesapp.layouts.AppBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun QuizPage(
@@ -59,46 +56,77 @@ fun QuizPage(
         QuizItem(R.drawable.icon_america, "America"),
         QuizItem(R.drawable.icons_brazil, "Brazil"),
         QuizItem(R.drawable.icon_oceania, "Ocean"),
-        QuizItem(R.drawable.icons_antarctic, "Antart")
+        QuizItem(R.drawable.icons_antarctic, "Antartica")
     )
     var sliderState by remember { mutableFloatStateOf(0f) }
+    val coroutineScope = rememberCoroutineScope()
+    var isFinished by remember { mutableStateOf(true) }
 
     var correctAnswerIndex by remember { mutableIntStateOf(0) }
     var correctAnswerLastIndex by remember { mutableIntStateOf(-1) }
 
-    var currentQuizQuestion by remember { mutableStateOf(newList[correctAnswerIndex]) }
-    var checkAnswerString by remember { mutableStateOf(currentQuizQuestion.name) }
-
+    var currentQuizQuestion by remember { mutableStateOf<QuizItem?>(null) }
+    var checkAnswerString by remember { mutableStateOf<String?>(null) }
+    var currentQuizQuestionFlag by remember { mutableStateOf<Int>(0) }
     var userCheckWrongAnswer by remember { mutableIntStateOf(2) }
 
-    var answerOptions : List<String?> by remember { mutableStateOf(emptyList()) }
+    var answerOptions: List<String?> by remember { mutableStateOf(emptyList()) }
     val otherOptions = newList.shuffled().take(3).map { it.name }.toMutableList()
 
-    if (correctAnswerLastIndex != correctAnswerIndex){
-        for (i in otherOptions.indices) {
-            var newItem: String
+    //LaunchedEffect tek seferlik işlemler için RememberCoroutineScope ise uzun ömürlü işlemler içindir
+    //LaunchedEffect, Composable yaşam döngüsüne sıkı sıkıya bağlı bir Composable işlevidir; RememberCoroutineScope ise Composable işlevlerinin dışında kullanılabilir
+    //Burada LaunchedEffect kullanamayız.Çünkü her yeni gelecek soru için kontrol sağlanıp işlem yapması lazım.
+    //LaunchedEffect tek sefer çalışıp bırakıyor
+    if (isFinished){
+        coroutineScope.launch {
+            if (correctAnswerIndex != 0){
+                delay(1000)
+            }
+            if (correctAnswerLastIndex != correctAnswerIndex) {
+                for (i in otherOptions.indices) {
+                    var newItem: String
 
-            do {
-                newItem = newList.shuffled().take(1).map { it.name }.first().toString()
-            } while (newItem == checkAnswerString || otherOptions.contains(newItem))
+                    do {
+                        newItem = newList.shuffled().take(1).map { it.name }.first().toString()
+                    }while (correctAnswerIndex < newList.size && newItem == newList[correctAnswerIndex].name || otherOptions.contains(newItem))
 
-            otherOptions[i] = newItem
+                    otherOptions[i] = newItem
+                }
+                correctAnswerLastIndex = correctAnswerIndex
+                answerOptions = (listOf(newList[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
+
+                currentQuizQuestion = newList[correctAnswerIndex]
+                checkAnswerString = currentQuizQuestion?.name
+                currentQuizQuestionFlag= currentQuizQuestion?.flag!!
+            }
         }
-        correctAnswerLastIndex=correctAnswerIndex
-        answerOptions =(listOf(checkAnswerString) + otherOptions.shuffled()).shuffled()
     }
 
     Column {
         AppBar(
+            backButtonCheck = true,
             imageId = R.drawable.icons_turkey,
             backClick = {
+                //backbuton için de basınca bir uyarı popup açmalıyız.
                 backClick.invoke()
             })
-        SeekBar(sliderSituation = sliderState)
+        SeekBar(sliderSize = newList.size.toFloat(), sliderSituation = sliderState)
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, top = 10.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "$correctAnswerIndex /", fontSize = 16.sp)
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(text = "${newList.size}",fontSize = 18.sp)
+        }
 
-        CheckUserWrongQuestionBar(userCheckWrongAnswer=userCheckWrongAnswer)
+        Spacer(modifier = Modifier.height(30.dp))
+
+        CheckUserWrongQuestionBar(userCheckWrongAnswer = userCheckWrongAnswer)
 
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(contentPadding = PaddingValues(10.dp)) {
@@ -108,7 +136,9 @@ fun QuizPage(
                             .fillMaxWidth()
                             .padding(20.dp)
                             .height(250.dp),
-                        model = currentQuizQuestion.flag, contentDescription = ""
+                        model = currentQuizQuestionFlag, contentDescription = "",
+                        contentScale = ContentScale.Crop,
+                        alignment= Alignment.Center
                     )
                 }
 
@@ -117,7 +147,7 @@ fun QuizPage(
                         if (answerText != null) {
                             AnswerButton(text = answerText, onClick = {
                                 if (userCheckWrongAnswer != -1) {
-                                    if (correctAnswerIndex != newList.size){
+                                    if (correctAnswerIndex != newList.size) {
                                         if (checkAnswerString == answerText) {
                                             correctAnswerIndex++
                                             sliderState += 1f
@@ -125,12 +155,10 @@ fun QuizPage(
                                             println(correctAnswerIndex)
                                             if (correctAnswerIndex < newList.size) {
                                                 currentQuizQuestion = newList[correctAnswerIndex]
-                                                checkAnswerString = currentQuizQuestion.name
-                                                println("ASDASDDSDA")
-                                                //otherOptions = newList.shuffled().take(3).map { it.name }.toMutableList()
-                                                //answerOptions = listOf(checkAnswerString) + otherOptions
+                                                checkAnswerString = currentQuizQuestion?.name
                                             } else if (correctAnswerIndex == newList.size) {
-                                                //Quiz doğru cevab verince burada bitiyor.
+                                                //son indexe geldiğinde tekrar döngüye girmemesini engelliyorum .
+                                                isFinished=false
                                                 println("Quiz bitti, yeni bir şey yapabilirsiniz.")
                                             }
                                         } else {
@@ -141,7 +169,7 @@ fun QuizPage(
                                 } else {
                                     println("Oyun bitti, başka bir şey yapabilirsiniz.")
                                 }
-                            })
+                            }, correctAnswer = checkAnswerString.toString())
                         }
                     }
                 }
@@ -151,7 +179,7 @@ fun QuizPage(
 }
 
 @Composable
-private fun CheckUserWrongQuestionBar(userCheckWrongAnswer:Int){
+private fun CheckUserWrongQuestionBar(userCheckWrongAnswer: Int) {
     val heartIcon = painterResource(id = R.drawable.icon_hearth)
     val brokenHeartIcon = painterResource(id = R.drawable.icons_broken_heart)
 
@@ -159,7 +187,7 @@ private fun CheckUserWrongQuestionBar(userCheckWrongAnswer:Int){
         2 -> listOf(heartIcon, heartIcon, heartIcon)
         1 -> listOf(heartIcon, heartIcon)
         0 -> listOf(heartIcon)
-        -1-> listOf(brokenHeartIcon)
+        -1 -> listOf(brokenHeartIcon)
         else -> emptyList()
     }
 
@@ -186,26 +214,19 @@ private fun SeekBar(
     sliderSize: Float = 0f,
     sliderSituation: Float = 0f
 ) {
-    var sliderState by remember { mutableFloatStateOf(sliderSituation) }
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Slider(
-            value = sliderState,
-            onValueChange = { newValue ->
-                sliderState = newValue
-            },
-            valueRange = 0f..sliderSize,
+        LinearProgressIndicator(
+            progress = sliderSituation / sliderSize,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(2.dp)
-                .background(Color.Gray)
-                .padding(vertical = 8.dp)
+                .height(10.dp),
+            color = Color.Green,
         )
     }
 }
@@ -213,17 +234,37 @@ private fun SeekBar(
 @Composable
 private fun AnswerButton(
     text: String,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    correctAnswer: String,
 ) {
+    var backgroundColor by remember { mutableStateOf(Color.Gray) }
+    val coroutineScope= rememberCoroutineScope()
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .height(50.dp)
-            .clickable { onClick(text) },
+            .clickable {
+                onClick(text)
+                if (text == correctAnswer) {
+                    backgroundColor = Color.Green
+
+                    coroutineScope.launch {
+                        delay(500)
+                        backgroundColor = Color.Gray
+                    }
+                } else {
+                    backgroundColor = Color.Red
+
+                    coroutineScope.launch {
+                        delay(500)
+                        backgroundColor = Color.Gray
+                    }
+                }
+            },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Gray,
+            containerColor = backgroundColor,
         )
     ) {
         Box(

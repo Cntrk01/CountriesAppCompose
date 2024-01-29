@@ -2,6 +2,7 @@ package com.example.countriesapp.data.response
 
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.domain.model.CountryItem
+import com.example.countriesapp.domain.model.QuizItem
 
 data class BaseItemDTO(
     val altSpellings: List<String>?,
@@ -62,6 +63,10 @@ fun BaseItemDTO.toCountryDetailItem(): CountryDetailItem {
         latlng = latlng
     )
 }
+
+//fun BaseItemDTO.toQuizItem() : QuizItem{
+//    return QuizItem(flag = flag ?: coatOfArms?.png , name = name?.common)
+//}
 
 
 

@@ -59,8 +59,19 @@ fun QuizPage(
 
     var checkAnswerString by remember { mutableStateOf(currentQuizQuestion.name) }
 
-    var otherOptions = newList.shuffled().take(3).map { it.name }
+    var userCheckWrongAnswer by remember { mutableIntStateOf(3) }
 
+    var otherOptions = newList.shuffled().take(3).map { it.name }.toMutableList()
+
+    for (i in otherOptions.indices) {
+        var newItem: String
+
+        do {
+            newItem = newList.shuffled().take(1).map { it.name }.first().toString()
+        }  while (newItem == checkAnswerString || otherOptions.contains(newItem))
+
+        otherOptions[i] = newItem
+    }
     var answerOptions = listOf(checkAnswerString) + otherOptions.shuffled()
 
     Column {
@@ -95,17 +106,22 @@ fun QuizPage(
                                         currentQuizQuestion = newList[correctAnswerIndex]
                                         checkAnswerString = currentQuizQuestion.name
 
-                                        otherOptions = newList.shuffled().take(3).map { it.name }
+                                        //otherOptions = newList.shuffled().take(3).map { it.name }.toMutableList()
+                                        //answerOptions = listOf(checkAnswerString) + otherOptions.shuffled()
 
-                                        answerOptions = listOf(checkAnswerString) + otherOptions.shuffled()
-
-                                    } else {
+                                    } else if (correctAnswerIndex==newList.size){
                                         //Quiz doğru cevab verince burada bitiyor.
                                         println("Quiz bitti, yeni bir şey yapabilirsiniz.")
                                     }
                                 } else {
-                                    //Yanlış cevab
-                                    println("NO")
+                                    userCheckWrongAnswer--
+
+                                    if (userCheckWrongAnswer == 0) {
+                                        println("Oyun bitti, başka bir şey yapabilirsiniz.")
+                                    } else {
+                                        // Yanlış cevap
+                                        println("NO")
+                                    }
                                 }
                             })
                         }

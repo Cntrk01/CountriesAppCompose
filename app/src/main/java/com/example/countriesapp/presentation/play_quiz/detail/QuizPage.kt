@@ -77,9 +77,9 @@ fun QuizPage(
     //LaunchedEffect, Composable yaşam döngüsüne sıkı sıkıya bağlı bir Composable işlevidir; RememberCoroutineScope ise Composable işlevlerinin dışında kullanılabilir
     //Burada LaunchedEffect kullanamayız.Çünkü her yeni gelecek soru için kontrol sağlanıp işlem yapması lazım.
     //LaunchedEffect tek sefer çalışıp bırakıyor
-    if (isFinished){
+    if (isFinished) {
         coroutineScope.launch {
-            if (correctAnswerIndex != 0){
+            if (correctAnswerIndex != 0) {
                 delay(1000)
             }
             if (correctAnswerLastIndex != correctAnswerIndex) {
@@ -88,16 +88,20 @@ fun QuizPage(
 
                     do {
                         newItem = newList.shuffled().take(1).map { it.name }.first().toString()
-                    }while (correctAnswerIndex < newList.size && newItem == newList[correctAnswerIndex].name || otherOptions.contains(newItem))
+                    } while (correctAnswerIndex < newList.size && newItem == newList[correctAnswerIndex].name || otherOptions.contains(
+                            newItem
+                        )
+                    )
 
                     otherOptions[i] = newItem
                 }
                 correctAnswerLastIndex = correctAnswerIndex
-                answerOptions = (listOf(newList[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
+                answerOptions =
+                    (listOf(newList[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
 
                 currentQuizQuestion = newList[correctAnswerIndex]
                 checkAnswerString = currentQuizQuestion?.name
-                currentQuizQuestionFlag= currentQuizQuestion?.flag!!
+                currentQuizQuestionFlag = currentQuizQuestion?.flag!!
             }
         }
     }
@@ -115,13 +119,16 @@ fun QuizPage(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 10.dp, top = 10.dp),
+                .padding(
+                    start = 10.dp,
+                    top = 10.dp
+                ),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "$correctAnswerIndex /", fontSize = 16.sp)
             Spacer(modifier = Modifier.width(5.dp))
-            Text(text = "${newList.size}",fontSize = 18.sp)
+            Text(text = "${newList.size}", fontSize = 18.sp)
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -138,7 +145,7 @@ fun QuizPage(
                             .height(250.dp),
                         model = currentQuizQuestionFlag, contentDescription = "",
                         contentScale = ContentScale.Crop,
-                        alignment= Alignment.Center
+                        alignment = Alignment.Center
                     )
                 }
 
@@ -158,7 +165,7 @@ fun QuizPage(
                                                 checkAnswerString = currentQuizQuestion?.name
                                             } else if (correctAnswerIndex == newList.size) {
                                                 //son indexe geldiğinde tekrar döngüye girmemesini engelliyorum .
-                                                isFinished=false
+                                                isFinished = false
                                                 println("Quiz bitti, yeni bir şey yapabilirsiniz.")
                                             }
                                         } else {
@@ -238,7 +245,7 @@ private fun AnswerButton(
     correctAnswer: String,
 ) {
     var backgroundColor by remember { mutableStateOf(Color.Gray) }
-    val coroutineScope= rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     Card(
         modifier = Modifier
             .fillMaxWidth()

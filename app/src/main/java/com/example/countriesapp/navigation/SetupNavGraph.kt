@@ -7,18 +7,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.countriesapp.common.Constants
-import com.example.countriesapp.common.Constants.ALL_COUNTRY
-import com.example.countriesapp.common.Constants.CURRENCY
-import com.example.countriesapp.common.Constants.REGION
+import com.example.countriesapp.common.Constants.All_Country
+import com.example.countriesapp.common.Constants.Currency
+import com.example.countriesapp.common.Constants.DIFFICULT
+import com.example.countriesapp.common.Constants.Region
 import com.example.countriesapp.common.Constants.REGION_NAME
-import com.example.countriesapp.common.Constants.SUB_REGION
+import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.example.countriesapp.presentation.country_list.screen.CountryListScreen
 import com.example.countriesapp.presentation.currency.CurrencyPage
 import com.example.countriesapp.presentation.home.HomeScreen
 import com.example.countriesapp.presentation.play_quiz.screen.PlayQuiz
 import com.example.countriesapp.presentation.play_quiz.screen.detail.QuizPage
-import com.example.countriesapp.presentation.play_quiz.screen.easy.EasyPage
+import com.example.countriesapp.presentation.play_quiz.screen.shared_difficult.SharedDifficultyScreen
 import com.example.countriesapp.presentation.region_subregion.region.screen.RegionScreen
 import com.example.countriesapp.presentation.region_subregion.regionlist.screen.RegionCountryList
 import com.example.countriesapp.presentation.region_subregion.subregion.SubRegionScreen
@@ -33,22 +34,22 @@ fun SetupNavGraph(
     ) {
         composable(route = Screen.HomePage.route) {
             HomeScreen(clickHomeItem = {
-                if (it == ALL_COUNTRY) {
+                if (it == All_Country) {
                     navController.navigate(route = Screen.CountryPage.route)
                 }
-                if (it == REGION) {
+                if (it == Region) {
                     navController.navigate(route = Screen.RegionPage.route)
                 }
-                if (it == SUB_REGION) {
+                if (it == Sub_Region) {
                     navController.navigate(route = Screen.SubRegionPage.route)
                 }
-                if (it == CURRENCY) {
+                if (it == Currency) {
                     navController.navigate(route = Screen.CurrencyPage.route)
                 }
-                if (it == Constants.PLAY_QUIZ) {
+                if (it == Constants.Play_Quiz) {
                     navController.navigate(route = Screen.PlayQuizPage.route)
                 }
-                if (it == Constants.FAVORITE) {
+                if (it == Constants.Favorite) {
                     //navController.navigate(route = Screen.PlayQuizPage.route)
                 }
             })
@@ -122,16 +123,16 @@ fun SetupNavGraph(
                 },
                 clickHomeItem = {
                     if (it == Constants.EASY) {
-                        navController.navigate(route = Screen.EasyPage.route)
+                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
                     }
                     if (it == Constants.MEDIUM) {
-
+                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
                     }
                     if (it == Constants.HARD) {
-
+                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
                     }
                     if (it == Constants.EXPERT) {
-
+                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
                     }
                 })
         }
@@ -144,18 +145,27 @@ fun SetupNavGraph(
             )
         }
 
-        composable(route = Screen.EasyPage.route) {
-            EasyPage(
-                backClick = {
-                    navController.popBackStack()
-                },
-                chooseCategoryData = {quizItem ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set(
-                        Screen.QuizDetailPage.route,
-                        quizItem
-                    )
-                    navController.navigate(route = Screen.QuizDetailPage.route)
+        composable(route ="${Screen.SharedDifficultyPage.route}/{${DIFFICULT}}",
+            arguments = listOf(
+                navArgument(name = DIFFICULT) {
+                    type = NavType.StringType
                 })
+            )
+         {difficultLevel->
+             difficultLevel.arguments?.getString(DIFFICULT)?.let {
+                 SharedDifficultyScreen(
+                     difficultLevel = it,
+                     backClick = {
+                         navController.popBackStack()
+                     },
+                     chooseCategoryData = {quizItem ,diffLevel->
+                         navController.currentBackStackEntry?.savedStateHandle?.set(Screen.QuizDetailPage.route, quizItem)
+
+                         navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, diffLevel)
+
+                         navController.navigate(route = Screen.QuizDetailPage.route)
+                     })
+             }
         }
     }
 }

@@ -5,13 +5,13 @@ object Constants {
     const val BASE_URL="https://restcountries.com/v3.1/"
 
     //HOME SCREEN
-    const val ALL_COUNTRY="all_country"
-    const val REGION="REGION"
+    const val All_Country="All Country"
+    const val Region="Region"
     const val REGION_NAME="REGION_NAME"
-    const val SUB_REGION="SUB_REGION"
-    const val CURRENCY="CURRENCY"
-    const val PLAY_QUIZ="PLAY_QUIZ"
-    const val FAVORITE="FAVORITE"
+    const val Sub_Region="Sub Region"
+    const val Currency="Currency"
+    const val Play_Quiz="Play Quiz"
+    const val Favorite="Favorite"
 
     //REGION
     const val ANTARCTIC="Antarctic"
@@ -40,8 +40,11 @@ object Constants {
     const val Eastern_Asia="Eastern Asia"
 
     //LEVEL
-    const val EASY="EASY"
-    const val MEDIUM="MEDIUM"
-    const val HARD="HARD"
-    const val EXPERT="EXPERT"
+    const val EASY="Easy"
+    const val MEDIUM="Medium"
+    const val HARD="Hard"
+    const val EXPERT="Expert"
+
+    //ARGUMENTS
+    const val DIFFICULT="difficulty"
 }

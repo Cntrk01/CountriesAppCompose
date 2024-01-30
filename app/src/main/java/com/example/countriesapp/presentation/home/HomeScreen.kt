@@ -4,24 +4,57 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.countriesapp.R
-import com.example.countriesapp.common.Constants.ALL_COUNTRY
-import com.example.countriesapp.common.Constants.CURRENCY
-import com.example.countriesapp.common.Constants.FAVORITE
-import com.example.countriesapp.common.Constants.PLAY_QUIZ
-import com.example.countriesapp.common.Constants.REGION
-import com.example.countriesapp.common.Constants.SUB_REGION
+import com.example.countriesapp.common.Constants.All_Country
+import com.example.countriesapp.common.Constants.Currency
+import com.example.countriesapp.common.Constants.Favorite
+import com.example.countriesapp.common.Constants.Play_Quiz
+import com.example.countriesapp.common.Constants.Region
+import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.HomeCard
 
+data class  HomeScreenItem(
+    val imageId: Int,
+    val cardText: String,
+    val clickHomeItem: (String) -> Unit,
+    val backgroundColor : Color
+)
+
 @Composable
 fun HomeScreen(
-    clickHomeItem : (String)->Unit
-){
+    clickHomeItem: (String) -> Unit
+) {
+    val homeItems = listOf(
+        HomeScreenItem(imageId = R.drawable.icons_planet_earth, cardText = All_Country,
+            clickHomeItem = { clickHomeItem.invoke(All_Country) }, backgroundColor = Color.LightGray),
+
+        HomeScreenItem(imageId = R.drawable.icon_region, cardText = Region,
+            clickHomeItem = { clickHomeItem.invoke(Region) }, backgroundColor = Color.DarkGray
+        ),
+
+        HomeScreenItem(imageId = R.drawable.icon_country_region, cardText = Sub_Region,
+            clickHomeItem = { clickHomeItem.invoke(Sub_Region) }, backgroundColor = Color.Cyan
+        ),
+
+        HomeScreenItem(imageId = R.drawable.icon_currency_exchange, cardText = Currency,
+            clickHomeItem = { clickHomeItem.invoke(Currency) }, backgroundColor = MaterialTheme.colorScheme.tertiary
+        ),
+
+        HomeScreenItem(imageId = R.drawable.icon_quiz, cardText = Play_Quiz,
+            clickHomeItem = { clickHomeItem.invoke(Play_Quiz) }, backgroundColor = Color.Magenta
+        ),
+
+        HomeScreenItem(imageId = R.drawable.icon_favorite_home, cardText = Favorite,
+            clickHomeItem = { clickHomeItem.invoke(Favorite) }, backgroundColor = Color.LightGray
+        )
+    )
+
     Column {
         AppBar(imageId = R.drawable.icons_turkey)
 
@@ -29,41 +62,13 @@ fun HomeScreen(
             columns = StaggeredGridCells.Fixed(2),
             contentPadding = PaddingValues(10.dp)
         ) {
-            item {
-                HomeCard(imageId = R.drawable.icons_planet_earth,
-                    cardText = "All Country", clickHomeCardItem = {
-                   clickHomeItem.invoke(ALL_COUNTRY)
-                }, backgroundColor = Color.LightGray)
-            }
-            item {
-                HomeCard(imageId = R.drawable.icon_region,
-                    cardText = "Region", clickHomeCardItem = {
-                   clickHomeItem.invoke(REGION)
-                }, backgroundColor = Color.DarkGray)
-            }
-            item {
-                HomeCard(imageId = R.drawable.icon_country_region,
-                    cardText = "Sub Region", clickHomeCardItem = {
-                    clickHomeItem.invoke(SUB_REGION)
-                }, backgroundColor = Color.Cyan)
-            }
-            item {
-                HomeCard(R.drawable.icon_currency_exchange,
-                    cardText = "Currency", clickHomeCardItem = {
-                    clickHomeItem.invoke(CURRENCY)
-                }, backgroundColor = MaterialTheme.colorScheme.tertiary)
-            }
-            item {
-                HomeCard(R.drawable.icon_quiz,
-                    cardText = "Play Quiz", clickHomeCardItem = {
-                    clickHomeItem.invoke(PLAY_QUIZ)
-                }, backgroundColor = Color.Magenta)
-            }
-            item {
-                HomeCard(R.drawable.icon_favorite_home,
-                    cardText = "Favorite", clickHomeCardItem = {
-                    clickHomeItem.invoke(FAVORITE)
-                }, backgroundColor = Color.LightGray)
+            items(homeItems) { homeItem ->
+                HomeCard(
+                    imageId = homeItem.imageId,
+                    cardText = homeItem.cardText,
+                    clickHomeCardItem = homeItem.clickHomeItem,
+                    backgroundColor = homeItem.backgroundColor
+                )
             }
         }
     }

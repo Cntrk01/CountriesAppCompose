@@ -32,7 +32,7 @@ fun PlayQuiz(
             item {
                 HomeCard(
                     imageId = R.drawable.icons_planet_earth,
-                    cardText = "Easy",
+                    cardText = Constants.EASY,
                     clickHomeCardItem = {
                         clickHomeItem.invoke(Constants.EASY)
                     },backgroundColor = Color.LightGray
@@ -41,7 +41,7 @@ fun PlayQuiz(
             item {
                 HomeCard(
                     imageId = R.drawable.icon_america,
-                    cardText = "Medium",
+                    cardText = Constants.MEDIUM,
                     clickHomeCardItem = {
                         clickHomeItem.invoke(Constants.MEDIUM)
                     },backgroundColor = Color.LightGray
@@ -50,7 +50,7 @@ fun PlayQuiz(
             item {
                 HomeCard(
                     imageId = R.drawable.icon_favorite_home,
-                    cardText = "Hard",
+                    cardText = Constants.HARD,
                     clickHomeCardItem = {
                         clickHomeItem.invoke(Constants.HARD)
                     },backgroundColor = Color.LightGray
@@ -59,7 +59,7 @@ fun PlayQuiz(
             item {
                 HomeCard(
                     imageId = R.drawable.icons_hungary,
-                    cardText = "Expert",
+                    cardText = Constants.EXPERT,
                     clickHomeCardItem = {
                         clickHomeItem.invoke(Constants.EXPERT)
                     },backgroundColor = Color.LightGray

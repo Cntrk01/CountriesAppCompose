@@ -44,6 +44,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.countriesapp.R
+import com.example.countriesapp.common.Constants
+import com.example.countriesapp.common.Constants.DIFFICULT
 import com.example.countriesapp.domain.model.QuizItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
@@ -59,8 +61,9 @@ fun QuizPage(
     navController: NavHostController,
     quizViewModel: QuizViewModel = hiltViewModel(),
 ) {
-    val countryItem =
-        remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(Screen.QuizDetailPage.route) }
+    val countryItem = remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(Screen.QuizDetailPage.route) }
+    val difficultLevel = remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(DIFFICULT) }
+
     //println(countryItem)
     val coroutineScope = rememberCoroutineScope()
     val state = quizViewModel.quizState
@@ -71,22 +74,34 @@ fun QuizPage(
 
     //Side effect yazınca saçmaladı.
     LaunchedEffect(Unit) {
-        if (countryItem == "Flag") {
-            quizViewModel.getEasyQuizFlagQuestion()
+        if (difficultLevel==Constants.EASY){
+            println("EASY CALISTI")
+            if (countryItem == "Flag") {
+                quizViewModel.getEasyQuizFlagQuestion()
 
-            coroutineScope.launch {
-                state.collect { collect ->
-                    if (collect.loading) {
-                        checkLoading = true
-                    } else if (collect.error.isNotEmpty()) {
-                        checkLoading = false
-                        checkErrorMessage = collect.error
-                    } else {
-                        checkLoading = false
-                        quizListData = collect.quizData?.shuffled()
+                coroutineScope.launch {
+                    state.collect { collect ->
+                        if (collect.loading) {
+                            checkLoading = true
+                        } else if (collect.error.isNotEmpty()) {
+                            checkLoading = false
+                            checkErrorMessage = collect.error
+                        } else {
+                            checkLoading = false
+                            quizListData = collect.quizData?.shuffled()
+                        }
                     }
                 }
             }
+        }
+        if (difficultLevel==Constants.MEDIUM){
+
+        }
+        if (difficultLevel==Constants.HARD){
+
+        }
+        if (difficultLevel==Constants.EXPERT){
+
         }
     }
 

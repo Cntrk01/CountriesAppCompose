@@ -12,6 +12,6 @@ sealed class Screen(val route:String){
 
     //QUIZ
     object PlayQuizPage : Screen(route = "play_quiz")
-    object EasyPage : Screen(route = "easy_page")
+    object SharedDifficultyPage : Screen(route = "shared_difficulty_page")
     object QuizDetailPage : Screen(route = "quiz_detail_page")
 }

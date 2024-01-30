@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.countriesapp.common.Constants
 import com.example.countriesapp.common.Constants.ALL_COUNTRY
 import com.example.countriesapp.common.Constants.CURRENCY
 import com.example.countriesapp.common.Constants.REGION
@@ -15,6 +16,9 @@ import com.example.countriesapp.presentation.country_detail.screen.CountryDetail
 import com.example.countriesapp.presentation.country_list.screen.CountryListScreen
 import com.example.countriesapp.presentation.currency.CurrencyPage
 import com.example.countriesapp.presentation.home.HomeScreen
+import com.example.countriesapp.presentation.play_quiz.screen.PlayQuiz
+import com.example.countriesapp.presentation.play_quiz.screen.detail.QuizPage
+import com.example.countriesapp.presentation.play_quiz.screen.easy.EasyPage
 import com.example.countriesapp.presentation.region_subregion.region.screen.RegionScreen
 import com.example.countriesapp.presentation.region_subregion.regionlist.screen.RegionCountryList
 import com.example.countriesapp.presentation.region_subregion.subregion.SubRegionScreen
@@ -35,11 +39,17 @@ fun SetupNavGraph(
                 if (it == REGION) {
                     navController.navigate(route = Screen.RegionPage.route)
                 }
-                if (it == SUB_REGION){
+                if (it == SUB_REGION) {
                     navController.navigate(route = Screen.SubRegionPage.route)
                 }
-                if (it == CURRENCY){
+                if (it == CURRENCY) {
                     navController.navigate(route = Screen.CurrencyPage.route)
+                }
+                if (it == Constants.PLAY_QUIZ) {
+                    navController.navigate(route = Screen.PlayQuizPage.route)
+                }
+                if (it == Constants.FAVORITE) {
+                    //navController.navigate(route = Screen.PlayQuizPage.route)
                 }
             })
         }
@@ -85,7 +95,6 @@ fun SetupNavGraph(
             })
         }
 
-
         composable(
             route = Screen.RegionCountryListPage.route + "/{$REGION_NAME}",
             arguments = listOf(
@@ -95,11 +104,58 @@ fun SetupNavGraph(
         ) {
             RegionCountryList(backClick = {
                 navController.popBackStack()
-            }, clickCountry = {countryItem->
-                navController.currentBackStackEntry?.savedStateHandle?.set(Screen.CountryDetailPage.route, countryItem)
-
+            }, clickCountry = { countryItem ->
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    Screen.CountryDetailPage.route,
+                    countryItem
+                )
                 navController.navigate(route = Screen.CountryDetailPage.route)
             })
+        }
+
+        //QUIZ PAGESS
+
+        composable(route = Screen.PlayQuizPage.route) {
+            PlayQuiz(
+                backClick = {
+                    navController.popBackStack()
+                },
+                clickHomeItem = {
+                    if (it == Constants.EASY) {
+                        navController.navigate(route = Screen.EasyPage.route)
+                    }
+                    if (it == Constants.MEDIUM) {
+
+                    }
+                    if (it == Constants.HARD) {
+
+                    }
+                    if (it == Constants.EXPERT) {
+
+                    }
+                })
+        }
+        composable(route = Screen.QuizDetailPage.route) {
+            QuizPage(
+                backClick = {
+                    navController.popBackStack()
+                },
+                navController = navController
+            )
+        }
+
+        composable(route = Screen.EasyPage.route) {
+            EasyPage(
+                backClick = {
+                    navController.popBackStack()
+                },
+                chooseCategoryData = {quizItem ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        Screen.QuizDetailPage.route,
+                        quizItem
+                    )
+                    navController.navigate(route = Screen.QuizDetailPage.route)
+                })
         }
     }
 }

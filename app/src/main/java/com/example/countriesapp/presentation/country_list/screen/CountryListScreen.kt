@@ -27,9 +27,7 @@ fun CountryListScreen(
 ) {
     val state by countryListViewModel.countryListState.collectAsState()
 
-    val checkLoadingSituation = remember {
-        mutableStateOf(false)
-    }
+    val checkLoadingSituation = remember { mutableStateOf(false) }
 
     Column {
         AppBar(backButtonCheck = true,

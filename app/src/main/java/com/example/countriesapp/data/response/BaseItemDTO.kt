@@ -64,9 +64,9 @@ fun BaseItemDTO.toCountryDetailItem(): CountryDetailItem {
     )
 }
 
-//fun BaseItemDTO.toQuizItem() : QuizItem{
-//    return QuizItem(flag = flag ?: coatOfArms?.png , name = name?.common)
-//}
+fun BaseItemDTO.toQuizItem() : QuizItem{
+    return QuizItem(flag = flags?.png, name = name?.common)
+}
 
 
 

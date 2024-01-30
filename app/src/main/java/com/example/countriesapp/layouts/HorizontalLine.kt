@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.Dp
 
 @Composable
 fun HorizontalLine(
-
     heightDp:Dp
 ){
     Box(

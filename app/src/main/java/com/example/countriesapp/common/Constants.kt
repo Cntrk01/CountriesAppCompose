@@ -38,4 +38,10 @@ object Constants {
     const val Middle_Africa="Middle Africa"
     const val Southern_Asia="Southern Asia"
     const val Eastern_Asia="Eastern Asia"
+
+    //LEVEL
+    const val EASY="EASY"
+    const val MEDIUM="MEDIUM"
+    const val HARD="HARD"
+    const val EXPERT="EXPERT"
 }

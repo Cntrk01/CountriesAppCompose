@@ -11,7 +11,7 @@ import com.example.countriesapp.common.Constants.All_Country
 import com.example.countriesapp.common.Constants.Currency
 import com.example.countriesapp.common.Constants.DIFFICULT
 import com.example.countriesapp.common.Constants.Region
-import com.example.countriesapp.common.Constants.REGION_NAME
+import com.example.countriesapp.common.Constants.Region_Name
 import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.example.countriesapp.presentation.country_list.screen.CountryListScreen
@@ -97,9 +97,9 @@ fun SetupNavGraph(
         }
 
         composable(
-            route = Screen.RegionCountryListPage.route + "/{$REGION_NAME}",
+            route = Screen.RegionCountryListPage.route + "/{$Region_Name}",
             arguments = listOf(
-                navArgument(name = REGION_NAME) {
+                navArgument(name = Region_Name) {
                     type = NavType.StringType
                 })
         ) {

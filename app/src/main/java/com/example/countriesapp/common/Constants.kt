@@ -7,7 +7,7 @@ object Constants {
     //HOME SCREEN
     const val All_Country="All Country"
     const val Region="Region"
-    const val REGION_NAME="REGION_NAME"
+    const val Region_Name="Region Name"
     const val Sub_Region="Sub Region"
     const val Currency="Currency"
     const val Play_Quiz="Play Quiz"

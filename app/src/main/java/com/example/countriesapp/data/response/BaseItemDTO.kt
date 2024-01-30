@@ -68,5 +68,13 @@ fun BaseItemDTO.toQuizItem() : QuizItem{
     return QuizItem(flag = flags?.png, name = name?.common)
 }
 
+fun BaseItemDTO.toQuizItemCapital() : QuizItem{
+    return QuizItem(flag = flags?.png , name=capital?.first())
+}
+
+fun BaseItemDTO.toQuizItemEmblems() : QuizItem{
+    return QuizItem(flag = coatOfArms?.png , name=name?.common)
+}
+
 
 

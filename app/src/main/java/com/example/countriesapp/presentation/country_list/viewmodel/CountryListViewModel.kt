@@ -82,4 +82,9 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
             )
         }
     }
+
+    override fun onCleared() {
+        resetState()
+        super.onCleared()
+    }
 }

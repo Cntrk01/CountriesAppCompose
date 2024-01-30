@@ -26,9 +26,8 @@ fun SharedDifficultyScreen(
         mutableStateOf(
             listOf(
                 "Flag",
-                "Country",
                 "Capital",
-                "Local Flag",
+                "Emblems",
             )
         )
     }

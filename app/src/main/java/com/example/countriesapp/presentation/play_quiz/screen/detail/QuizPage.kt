@@ -50,8 +50,11 @@ import com.example.countriesapp.domain.model.QuizItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.navigation.Screen
+import com.example.countriesapp.presentation.play_quiz.state.QuizState
 import com.example.countriesapp.presentation.play_quiz.viewmodel.QuizViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -61,8 +64,10 @@ fun QuizPage(
     navController: NavHostController,
     quizViewModel: QuizViewModel = hiltViewModel(),
 ) {
-    val countryItem = remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(Screen.QuizDetailPage.route) }
-    val difficultLevel = remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(DIFFICULT) }
+    val countryItem =
+        remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(Screen.QuizDetailPage.route) }
+    val difficultLevel =
+        remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(DIFFICULT) }
 
     //println(countryItem)
     val coroutineScope = rememberCoroutineScope()
@@ -71,37 +76,122 @@ fun QuizPage(
     var checkErrorMessage by remember { mutableStateOf("") }
     var quizListData by remember { mutableStateOf<List<QuizItem>?>(null) }
 
-
     //Side effect yazınca saçmaladı.
     LaunchedEffect(Unit) {
-        if (difficultLevel==Constants.EASY){
-            println("EASY CALISTI")
-            if (countryItem == "Flag") {
-                quizViewModel.getEasyQuizFlagQuestion()
+        coroutineScope.launch {
+            if (difficultLevel == Constants.EASY) {
+                if (countryItem == "Flag") {
+                    quizViewModel.getEasyQuizFlagQuestion()
 
-                coroutineScope.launch {
-                    state.collect { collect ->
-                        if (collect.loading) {
-                            checkLoading = true
-                        } else if (collect.error.isNotEmpty()) {
-                            checkLoading = false
-                            checkErrorMessage = collect.error
-                        } else {
-                            checkLoading = false
-                            quizListData = collect.quizData?.shuffled()
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
                         }
-                    }
+                    )
+                }
+                if (countryItem == "Capital") {
+                    quizViewModel.getEasyQuizCapitalQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Emblems") {
+                    quizViewModel.getEasyQuizEmblemsQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
                 }
             }
-        }
-        if (difficultLevel==Constants.MEDIUM){
 
-        }
-        if (difficultLevel==Constants.HARD){
+            if (difficultLevel == Constants.MEDIUM) {
+                if (countryItem == "Flag") {
+                    quizViewModel.getMediumQuizFlagQuestion()
 
-        }
-        if (difficultLevel==Constants.EXPERT){
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Capital") {
+                    quizViewModel.getMediumQuizCapitalQuestion()
 
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Emblems") {
+                    quizViewModel.getMediumQuizEmblemsQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+            }
+            if (difficultLevel == Constants.HARD) {
+
+            }
+            if (difficultLevel == Constants.EXPERT) {
+
+            }
         }
     }
 
@@ -114,14 +204,14 @@ fun QuizPage(
                 backClick.invoke()
             })
 
-            if (checkLoading) {
-                Box(modifier = Modifier.fillMaxSize()){
-                    LoadingCardView(modifier=Modifier.align(Center))
-                }
+        if (checkLoading) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                LoadingCardView(modifier = Modifier.align(Center))
             }
-            if (checkErrorMessage.isNotEmpty()) {
-                Text(text = checkErrorMessage)
-            }
+        }
+        if (checkErrorMessage.isNotEmpty()) {
+            Text(text = checkErrorMessage)
+        }
 
         if (quizListData?.isNotEmpty() == true) {
             quizListData?.let { newList1 ->
@@ -164,8 +254,7 @@ fun QuizPage(
                                 otherOptions[i] = newItem
                             }
                             correctAnswerLastIndex = correctAnswerIndex
-                            answerOptions =
-                                (listOf(newList1[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
+                            answerOptions = (listOf(newList1[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
 
                             currentQuizQuestion = newList1[correctAnswerIndex]
                             checkAnswerString = currentQuizQuestion?.name
@@ -184,7 +273,7 @@ fun QuizPage(
                             top = 10.dp
                         ),
                     horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = CenterVertically
                 ) {
                     Text(text = "$correctAnswerIndex /", fontSize = 16.sp)
                     Spacer(modifier = Modifier.width(5.dp))
@@ -198,15 +287,22 @@ fun QuizPage(
                 Box(modifier = Modifier.fillMaxSize()) {
                     LazyColumn(contentPadding = PaddingValues(10.dp)) {
                         item {
-                            AsyncImage(
-                                modifier = Modifier
+                            Card(
+                                modifier=Modifier
+                                    .height(250.dp)
                                     .fillMaxWidth()
-                                    .padding(20.dp)
-                                    .height(250.dp),
-                                model = currentQuizQuestionFlag, contentDescription = "",
-                                contentScale = ContentScale.Crop,
-                                alignment = Center
-                            )
+                                    .padding(10.dp),
+                                shape = RoundedCornerShape(10.dp),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                            ){
+                                AsyncImage(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    model = currentQuizQuestionFlag, contentDescription = "",
+                                    contentScale = ContentScale.FillBounds,
+                                    alignment = Center
+                                )
+                            }
                         }
 
                         answerOptions.forEach { answerText ->
@@ -247,6 +343,29 @@ fun QuizPage(
             }
         }
     }
+}
+
+private fun StateCollect(
+    coroutineScope: CoroutineScope,
+    state: StateFlow<QuizState>,
+    checkLoading: (Boolean) -> Unit,
+    checkErrorMessage: (String) -> Unit,
+    quizListData: (List<QuizItem>) -> Unit
+) {
+    coroutineScope.launch {
+        state.collect { collect ->
+            if (collect.loading) {
+                checkLoading.invoke(true)
+            } else if (collect.error.isNotEmpty()) {
+                checkLoading.invoke(false)
+                checkErrorMessage.invoke(collect.error)
+            } else {
+                checkLoading.invoke(false)
+                collect.quizData?.shuffled()?.let { quizListData.invoke(it) }
+            }
+        }
+    }
+
 }
 
 @Composable
@@ -342,7 +461,7 @@ private fun AnswerButton(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Center
         ) {
             Text(
                 text = text,

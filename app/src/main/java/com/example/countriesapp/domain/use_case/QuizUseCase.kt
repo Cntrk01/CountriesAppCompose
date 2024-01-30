@@ -7,5 +7,15 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class QuizUseCase @Inject constructor(private val quizRepositoryImpl: QuizRepositoryImpl) {
-    suspend operator fun invoke() : Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getEasyQuizQuestion()
+    suspend operator fun invoke() : Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getEasyQuizFlagQuestion()
+
+    suspend fun getEasyQuizCapitalQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getEasyQuizCapitalQuestion()
+
+    suspend fun getEasyQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getEasyQuizEmblemsQuestion()
+
+    suspend fun getMediumQuizFlagQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getMediumQuizFlagQuestion()
+
+    suspend fun getMediumQuizCapitalQuestion(): Flow<Response<List<QuizItem>>>  = quizRepositoryImpl.getMediumQuizCapitalQuestion()
+
+    suspend fun getMediumQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getMediumQuizEmblemsQuestion()
 }

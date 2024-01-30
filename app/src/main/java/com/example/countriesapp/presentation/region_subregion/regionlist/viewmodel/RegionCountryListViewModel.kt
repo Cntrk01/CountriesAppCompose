@@ -30,7 +30,7 @@ class RegionCountryListViewModel @Inject constructor(private val countryRegionUs
     val countryListState: StateFlow<RegionCountryState> = _state
 
     init {
-        savedStateHandle.get<String>(Constants.REGION_NAME)?.let {
+        savedStateHandle.get<String>(Constants.Region_Name)?.let {
             getCountryList(countryName = it)
         }
     }

@@ -26,26 +26,26 @@ fun HomeScreen(
 ) {
     val homeItems = listOf(
         ScreenItem(imageId = R.drawable.icons_planet_earth, cardText = All_Country,
-            clickHomeItem = { clickHomeItem.invoke(All_Country) }, backgroundColor = Color.LightGray),
+            clickHomeItem = { clickHomeItem.invoke(All_Country) }, backgroundColor = MaterialTheme.colorScheme.primary),
 
         ScreenItem(imageId = R.drawable.icon_region, cardText = Region,
-            clickHomeItem = { clickHomeItem.invoke(Region) }, backgroundColor = Color.DarkGray
+            clickHomeItem = { clickHomeItem.invoke(Region) }, backgroundColor = MaterialTheme.colorScheme.tertiary
         ),
 
         ScreenItem(imageId = R.drawable.icon_country_region, cardText = Sub_Region,
-            clickHomeItem = { clickHomeItem.invoke(Sub_Region) }, backgroundColor = Color.Cyan
+            clickHomeItem = { clickHomeItem.invoke(Sub_Region) }, backgroundColor = MaterialTheme.colorScheme.inversePrimary
         ),
 
         ScreenItem(imageId = R.drawable.icon_currency_exchange, cardText = Currency,
-            clickHomeItem = { clickHomeItem.invoke(Currency) }, backgroundColor = MaterialTheme.colorScheme.tertiary
+            clickHomeItem = { clickHomeItem.invoke(Currency) }, backgroundColor =  MaterialTheme.colorScheme.scrim
         ),
 
         ScreenItem(imageId = R.drawable.icon_quiz, cardText = Play_Quiz,
-            clickHomeItem = { clickHomeItem.invoke(Play_Quiz) }, backgroundColor = Color.Magenta
+            clickHomeItem = { clickHomeItem.invoke(Play_Quiz) }, backgroundColor =  MaterialTheme.colorScheme.onPrimaryContainer
         ),
 
         ScreenItem(imageId = R.drawable.icon_favorite_home, cardText = Favorite,
-            clickHomeItem = { clickHomeItem.invoke(Favorite) }, backgroundColor = Color.LightGray
+            clickHomeItem = { clickHomeItem.invoke(Favorite) }, backgroundColor =  MaterialTheme.colorScheme.tertiaryContainer
         )
     )
 

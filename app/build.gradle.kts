@@ -107,4 +107,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
 
     implementation ("org.osmdroid:osmdroid-android:6.1.16")
+
+    implementation("com.airbnb.android:lottie-compose:4.2.2")
 }

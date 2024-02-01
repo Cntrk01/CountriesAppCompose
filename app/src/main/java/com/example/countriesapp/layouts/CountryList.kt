@@ -83,7 +83,8 @@ fun CountryDataList(
                             fontSize = 22.sp,
                             fontFamily = FontFamily.SansSerif,
                             fontWeight = FontWeight.ExtraBold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = Color.DarkGray
                         )
                     }
                 }

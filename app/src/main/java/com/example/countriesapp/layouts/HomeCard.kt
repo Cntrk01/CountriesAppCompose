@@ -42,7 +42,7 @@ fun HomeCard(
             .padding(5.dp)
             .clickable {
                 coroutineScope.launch {
-                    delay(500)
+                    delay(800)
                     clickHomeCardItem?.invoke(cardText)
                 }
             },

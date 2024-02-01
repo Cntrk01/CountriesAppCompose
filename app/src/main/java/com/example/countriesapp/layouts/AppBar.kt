@@ -61,7 +61,7 @@ fun AppBar(
                         .padding(start = 15.dp)
                         .clickable {
                             coroutineScope.launch {
-                                delay(500)
+                                delay(200)
                                 backClick?.invoke()
                             }
                         },

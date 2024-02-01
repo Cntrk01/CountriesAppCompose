@@ -20,7 +20,6 @@ class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : 
     private val _state = MutableStateFlow(QuizState())
     val quizState: StateFlow<QuizState> = _state
 
-
     fun getEasyQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
         quizUseCase().collectLatest { response ->
             when (response) {
@@ -219,6 +218,104 @@ class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : 
         }
     }
 
+    fun getHardQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        quizUseCase.getHardQuizFlagQuestion().collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true
+                        )
+                    }
+                }
+
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            error =response.message.toString(),
+                            loading = false
+                        )
+                    }
+                }
+
+                else -> {
+                    _state.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            quizData = response.data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getHardQuizCapitalQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        quizUseCase.getHardQuizCapitalQuestion().collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true
+                        )
+                    }
+                }
+
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            error =response.message.toString(),
+                            loading = false
+                        )
+                    }
+                }
+
+                else -> {
+                    _state.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            quizData = response.data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getHardQuizEmblemsQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        quizUseCase.getHardQuizEmblemsQuestion().collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true
+                        )
+                    }
+                }
+
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            error =response.message.toString(),
+                            loading = false
+                        )
+                    }
+                }
+
+                else -> {
+                    _state.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            quizData = response.data
+                        )
+                    }
+                }
+            }
+        }
+    }
 
     fun resetState(){
         _state.update {

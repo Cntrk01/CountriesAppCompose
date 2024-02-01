@@ -1,4 +1,4 @@
-package com.example.countriesapp.presentation.ui_model
+package com.example.countriesapp.domain.model
 
 import androidx.compose.ui.graphics.Color
 

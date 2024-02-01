@@ -27,7 +27,7 @@ import com.example.countriesapp.common.Constants.Southern_Asia
 import com.example.countriesapp.common.Constants.Western_Africa
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.HomeCard
-import com.example.countriesapp.presentation.ui_model.ScreenItem
+import com.example.countriesapp.domain.model.ScreenItem
 
 @Composable
 fun SubRegionScreen(

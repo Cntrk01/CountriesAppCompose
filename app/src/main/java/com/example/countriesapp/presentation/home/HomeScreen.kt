@@ -18,7 +18,7 @@ import com.example.countriesapp.common.Constants.Region
 import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.HomeCard
-import com.example.countriesapp.presentation.ui_model.ScreenItem
+import com.example.countriesapp.domain.model.ScreenItem
 
 @Composable
 fun HomeScreen(

@@ -1,6 +1,6 @@
 package com.example.countriesapp.data.response
 
-import com.example.countriesapp.presentation.country_detail.screen.BaseTranslation
+import com.example.countriesapp.domain.model.BaseTranslation
 
 data class Translations(
     val ara: Ara?,

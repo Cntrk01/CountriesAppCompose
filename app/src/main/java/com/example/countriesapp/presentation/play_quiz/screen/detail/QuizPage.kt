@@ -186,9 +186,61 @@ fun QuizPage(
                     )
                 }
             }
-            if (difficultLevel == Constants.HARD) {
 
+            if (difficultLevel == Constants.HARD) {
+                if (countryItem == "Flag") {
+                    quizViewModel.getHardQuizFlagQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Capital") {
+                    quizViewModel.getHardQuizCapitalQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Emblems") {
+                    quizViewModel.getHardQuizEmblemsQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
             }
+
             if (difficultLevel == Constants.EXPERT) {
 
             }
@@ -200,8 +252,8 @@ fun QuizPage(
             backButtonCheck = true,
             imageId = R.drawable.icons_turkey,
             backClick = {
-                //backbuton için de basınca bir uyarı popup açmalıyız.
                 backClick.invoke()
+                quizViewModel.resetState()
             })
 
         if (checkLoading) {

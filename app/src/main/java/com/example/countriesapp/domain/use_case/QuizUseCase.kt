@@ -18,4 +18,10 @@ class QuizUseCase @Inject constructor(private val quizRepositoryImpl: QuizReposi
     suspend fun getMediumQuizCapitalQuestion(): Flow<Response<List<QuizItem>>>  = quizRepositoryImpl.getMediumQuizCapitalQuestion()
 
     suspend fun getMediumQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getMediumQuizEmblemsQuestion()
+
+    suspend fun getHardQuizFlagQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getHardQuizFlagQuestion()
+
+    suspend fun getHardQuizCapitalQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getHardQuizCapitalQuestion()
+
+    suspend fun getHardQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = quizRepositoryImpl.getHardQuizEmblemsQuestion()
 }

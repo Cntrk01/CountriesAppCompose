@@ -18,45 +18,39 @@ import com.example.countriesapp.common.Constants.Region
 import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.HomeCard
-
-data class  HomeScreenItem(
-    val imageId: Int,
-    val cardText: String,
-    val clickHomeItem: (String) -> Unit,
-    val backgroundColor : Color
-)
+import com.example.countriesapp.presentation.ui_model.ScreenItem
 
 @Composable
 fun HomeScreen(
     clickHomeItem: (String) -> Unit
 ) {
     val homeItems = listOf(
-        HomeScreenItem(imageId = R.drawable.icons_planet_earth, cardText = All_Country,
+        ScreenItem(imageId = R.drawable.icons_planet_earth, cardText = All_Country,
             clickHomeItem = { clickHomeItem.invoke(All_Country) }, backgroundColor = Color.LightGray),
 
-        HomeScreenItem(imageId = R.drawable.icon_region, cardText = Region,
+        ScreenItem(imageId = R.drawable.icon_region, cardText = Region,
             clickHomeItem = { clickHomeItem.invoke(Region) }, backgroundColor = Color.DarkGray
         ),
 
-        HomeScreenItem(imageId = R.drawable.icon_country_region, cardText = Sub_Region,
+        ScreenItem(imageId = R.drawable.icon_country_region, cardText = Sub_Region,
             clickHomeItem = { clickHomeItem.invoke(Sub_Region) }, backgroundColor = Color.Cyan
         ),
 
-        HomeScreenItem(imageId = R.drawable.icon_currency_exchange, cardText = Currency,
+        ScreenItem(imageId = R.drawable.icon_currency_exchange, cardText = Currency,
             clickHomeItem = { clickHomeItem.invoke(Currency) }, backgroundColor = MaterialTheme.colorScheme.tertiary
         ),
 
-        HomeScreenItem(imageId = R.drawable.icon_quiz, cardText = Play_Quiz,
+        ScreenItem(imageId = R.drawable.icon_quiz, cardText = Play_Quiz,
             clickHomeItem = { clickHomeItem.invoke(Play_Quiz) }, backgroundColor = Color.Magenta
         ),
 
-        HomeScreenItem(imageId = R.drawable.icon_favorite_home, cardText = Favorite,
+        ScreenItem(imageId = R.drawable.icon_favorite_home, cardText = Favorite,
             clickHomeItem = { clickHomeItem.invoke(Favorite) }, backgroundColor = Color.LightGray
         )
     )
 
     Column {
-        AppBar(imageId = R.drawable.icons_turkey)
+        AppBar(imageId = R.drawable.icons_turkey,backButtonCheck=false)
 
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),

@@ -106,7 +106,7 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val europeCountry = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
-                .take(10)
+                .take(20)
                 .mapNotNull { quizItem ->
                     if (quizItem.flag.isNullOrEmpty()) {
                         countryApi.getCountryWithRegion("Europe").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
@@ -121,7 +121,7 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
 
             val asiaCountry = countryApi.getCountryWithRegion("Asia")
                 .map { it.toQuizItemEmblems() }
-                .take(10)
+                .take(20)
                 .mapNotNull { quizItem ->
                     if (quizItem.flag.isNullOrEmpty()) {
                         countryApi.getCountryWithRegion("Asia").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
@@ -133,7 +133,6 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
                         listOf(quizItem)
                     }
                 }.flatten()
-
             emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
         }catch (e: Exception) {
             emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))

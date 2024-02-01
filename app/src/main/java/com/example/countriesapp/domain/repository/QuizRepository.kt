@@ -22,4 +22,10 @@ interface QuizRepository {
     suspend fun getHardQuizCapitalQuestion() : Flow<Response<List<QuizItem>>>
 
     suspend fun getHardQuizEmblemsQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getExpertQuizFlagQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getExpertQuizCapitalQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getExpertQuizEmblemsQuestion() : Flow<Response<List<QuizItem>>>
 }

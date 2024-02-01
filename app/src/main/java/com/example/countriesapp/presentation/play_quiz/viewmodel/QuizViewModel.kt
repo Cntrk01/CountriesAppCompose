@@ -317,6 +317,105 @@ class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : 
         }
     }
 
+    fun getExpertQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        quizUseCase.getExpertQuizFlagQuestion().collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true
+                        )
+                    }
+                }
+
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            error =response.message.toString(),
+                            loading = false
+                        )
+                    }
+                }
+
+                else -> {
+                    _state.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            quizData = response.data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getExpertQuizCapitalQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        quizUseCase.getExpertQuizCapitalQuestion().collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true
+                        )
+                    }
+                }
+
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            error =response.message.toString(),
+                            loading = false
+                        )
+                    }
+                }
+
+                else -> {
+                    _state.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            quizData = response.data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getExpertQuizEmblemsQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        quizUseCase.getExpertQuizEmblemsQuestion().collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true
+                        )
+                    }
+                }
+
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            error =response.message.toString(),
+                            loading = false
+                        )
+                    }
+                }
+
+                else -> {
+                    _state.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            quizData = response.data
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun resetState(){
         _state.update {
             it.copy(

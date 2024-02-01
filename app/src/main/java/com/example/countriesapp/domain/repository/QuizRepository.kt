@@ -16,4 +16,10 @@ interface QuizRepository {
     suspend fun getMediumQuizCapitalQuestion() : Flow<Response<List<QuizItem>>>
 
     suspend fun getMediumQuizEmblemsQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getHardQuizFlagQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getHardQuizCapitalQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getHardQuizEmblemsQuestion() : Flow<Response<List<QuizItem>>>
 }

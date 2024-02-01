@@ -69,7 +69,6 @@ fun QuizPage(
     val difficultLevel =
         remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(DIFFICULT) }
 
-    //println(countryItem)
     val coroutineScope = rememberCoroutineScope()
     val state = quizViewModel.quizState
     var checkLoading by remember { mutableStateOf(false) }
@@ -242,7 +241,57 @@ fun QuizPage(
             }
 
             if (difficultLevel == Constants.EXPERT) {
+                if (countryItem == "Flag") {
+                    quizViewModel.getExpertQuizFlagQuestion()
 
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Capital") {
+                    quizViewModel.getExpertQuizCapitalQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
+                if (countryItem == "Emblems") {
+                    quizViewModel.getExpertQuizEmblemsQuestion()
+
+                    StateCollect(
+                        coroutineScope = coroutineScope,
+                        state = state,
+                        checkErrorMessage = {
+                            checkErrorMessage=it
+                        },
+                        quizListData = {
+                            quizListData=it
+                        },
+                        checkLoading = {
+                            checkLoading=it
+                        }
+                    )
+                }
             }
         }
     }

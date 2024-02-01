@@ -61,8 +61,8 @@ fun AppBar(
                         .padding(start = 15.dp)
                         .clickable {
                             coroutineScope.launch {
+                                delay(500)
                                 backClick?.invoke()
-                                delay(1000)
                             }
                         },
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),

@@ -1,6 +1,7 @@
 package com.example.countriesapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -68,9 +69,9 @@ fun SetupNavGraph(
         }
 
         composable(route = Screen.CountryDetailPage.route) {
-            //navController.previousBackStackEntry?.savedStateHandle?.get<CountryDetailItem>(Screen.CountryDetailPage.route)
             CountryDetailPage(navController = navController, backClick = {
                 navController.popBackStack()
+                navController.currentBackStackEntry?.savedStateHandle?.remove<String>(Screen.CountryDetailPage.route)
             })
         }
 
@@ -105,6 +106,7 @@ fun SetupNavGraph(
         ) {
             RegionCountryList(backClick = {
                 navController.popBackStack()
+                navController.currentBackStackEntry?.savedStateHandle?.remove<String>(Region_Name)
             }, clickCountry = { countryItem ->
                 navController.currentBackStackEntry?.savedStateHandle?.set(
                     Screen.CountryDetailPage.route,
@@ -157,6 +159,7 @@ fun SetupNavGraph(
                      difficultLevel = it,
                      backClick = {
                          navController.popBackStack()
+                         navController.currentBackStackEntry?.savedStateHandle?.remove<String>(DIFFICULT)
                      },
                      chooseCategoryData = {quizItem ,diffLevel->
                          navController.currentBackStackEntry?.savedStateHandle?.set(Screen.QuizDetailPage.route, quizItem)
@@ -169,3 +172,6 @@ fun SetupNavGraph(
         }
     }
 }
+
+val NavHostController.canGoBack:Boolean
+    get() = this.currentBackStackEntry?.lifecycle?.currentState==Lifecycle.State.RESUMED

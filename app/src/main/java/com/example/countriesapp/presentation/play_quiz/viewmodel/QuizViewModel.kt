@@ -417,7 +417,7 @@ class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : 
     }
 
     fun getEuropeCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getAmericaCountryQuizQuestion().collectLatest { response ->
+        quizUseCase.getEuropeCountryQuizQuestion().collectLatest { response ->
             when (response) {
                 is Response.Loading -> {
                     _state.update {
@@ -449,7 +449,7 @@ class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : 
         }
     }
     fun getAmericaCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO){
-        quizUseCase.getEuropeCountryQuizQuestion().collectLatest { response ->
+        quizUseCase.getAmericaCountryQuizQuestion().collectLatest { response ->
             when (response) {
                 is Response.Loading -> {
                     _state.update {

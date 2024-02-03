@@ -339,4 +339,73 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
         }
     }
 
+    override suspend fun getEuropeCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
+        try {
+            emit(Response.Loading())
+            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
+            emit(Response.Success(data = europeCountry))
+        }catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }
+    }
+
+    override suspend fun getAmericaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
+        try {
+            emit(Response.Loading())
+            val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
+            emit(Response.Success(data = americaCountry))
+        }catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }
+    }
+
+    override suspend fun getAfricaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
+        try {
+            emit(Response.Loading())
+            val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
+            emit(Response.Success(data = africaCountry))
+        }catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }
+    }
+
+    override suspend fun getAsiaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
+        try {
+            emit(Response.Loading())
+            val africaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
+            emit(Response.Success(data = africaCountry))
+        }catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }
+    }
+
+    override suspend fun getOceaniaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
+        try {
+            emit(Response.Loading())
+            val oceaniaCountry=countryApi.getCountryWithRegion("Oceania").map { it.toQuizItem() }
+            emit(Response.Success(data = oceaniaCountry))
+        }catch (e: Exception) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: HttpException) {
+            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: IOException) {
+            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }
+    }
 }

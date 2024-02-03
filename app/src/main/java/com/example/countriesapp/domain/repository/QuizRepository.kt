@@ -28,4 +28,15 @@ interface QuizRepository {
     suspend fun getExpertQuizCapitalQuestion() : Flow<Response<List<QuizItem>>>
 
     suspend fun getExpertQuizEmblemsQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getEuropeCountryQuizQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getAmericaCountryQuizQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getAfricaCountryQuizQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getAsiaCountryQuizQuestion() : Flow<Response<List<QuizItem>>>
+
+    suspend fun getOceaniaCountryQuizQuestion() : Flow<Response<List<QuizItem>>>
+
 }

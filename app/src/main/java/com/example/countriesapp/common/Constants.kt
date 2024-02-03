@@ -16,6 +16,7 @@ object Constants {
     //REGION
     const val ANTARCTIC="Antarctic"
     const val EUROPE="Europe"
+    const val AMERICA="America"
     const val AMERICAS="Americas"
     const val AFRICA="Africa"
     const val OCEANIA="Oceania"

@@ -121,27 +121,44 @@ fun SetupNavGraph(
         composable(route = Screen.PlayQuizPage.route) {
             PlayQuiz(
                 backClick = {
-                    navController.popBackStack()
+                    navController.navigate(Screen.HomePage.route)
                 },
-                clickHomeItem = {
-                    if (it == Constants.EASY) {
-                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
+                clickHomeItem = {quizLevel->
+                    navController.navigate(route = Screen.SharedDifficultyPage.route+"/${quizLevel}")
+                    if (quizLevel==Constants.EUROPE){
+                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.EUROPE)
+                        navController.navigate(route = Screen.QuizDetailPage.route)
                     }
-                    if (it == Constants.MEDIUM) {
-                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
+                    else if (quizLevel==Constants.AMERICA){
+                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.AMERICA)
+                        navController.navigate(route = Screen.QuizDetailPage.route)
                     }
-                    if (it == Constants.HARD) {
-                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
+                    else if (quizLevel==Constants.AFRICA){
+                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.AFRICA)
+                        navController.navigate(route = Screen.QuizDetailPage.route)
                     }
-                    if (it == Constants.EXPERT) {
-                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${it}")
+                    else if (quizLevel==Constants.ASIA){
+                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.ASIA)
+                        navController.navigate(route = Screen.QuizDetailPage.route)
+                    }
+                    else if (quizLevel==Constants.OCEANIA){
+                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.OCEANIA)
+                        navController.navigate(route = Screen.QuizDetailPage.route)
+                    }
+                    else{
+                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${quizLevel}")
                     }
                 })
         }
         composable(route = Screen.QuizDetailPage.route) {
             QuizPage(
                 backClick = {
-                    navController.popBackStack()
+                    if (it?.isNotEmpty() == true){
+                        //bunu ekleme sebebim regionlardan geriye tıklayınca zorluk sayfasına yönelmemeli.
+                        navController.navigate(Screen.PlayQuizPage.route)
+                    }else{
+                        navController.popBackStack()
+                    }
                 },
                 navController = navController
             )
@@ -158,7 +175,7 @@ fun SetupNavGraph(
                  SharedDifficultyScreen(
                      difficultLevel = it,
                      backClick = {
-                         navController.popBackStack()
+                         navController.navigate(Screen.PlayQuizPage.route)
                          navController.currentBackStackEntry?.savedStateHandle?.remove<String>(DIFFICULT)
                      },
                      chooseCategoryData = {quizItem ,diffLevel->

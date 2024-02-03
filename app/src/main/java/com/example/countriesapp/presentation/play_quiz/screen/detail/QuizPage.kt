@@ -60,7 +60,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun QuizPage(
-    backClick: () -> Unit,
+    backClick: (String?) -> Unit,
     navController: NavHostController,
     quizViewModel: QuizViewModel = hiltViewModel(),
 ) {
@@ -77,222 +77,308 @@ fun QuizPage(
 
     //Side effect yazınca saçmaladı.
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            if (difficultLevel == Constants.EASY) {
-                if (countryItem == "Flag") {
-                    quizViewModel.getEasyQuizFlagQuestion()
 
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Capital") {
-                    quizViewModel.getEasyQuizCapitalQuestion()
+        if (difficultLevel == Constants.EASY) {
+            if (countryItem == "Flag") {
+                quizViewModel.getEasyQuizFlagQuestion()
 
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Emblems") {
-                    quizViewModel.getEasyQuizEmblemsQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
             }
+            if (countryItem == "Capital") {
+                quizViewModel.getEasyQuizCapitalQuestion()
 
-            if (difficultLevel == Constants.MEDIUM) {
-                if (countryItem == "Flag") {
-                    quizViewModel.getMediumQuizFlagQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Capital") {
-                    quizViewModel.getMediumQuizCapitalQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Emblems") {
-                    quizViewModel.getMediumQuizEmblemsQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
             }
+            if (countryItem == "Emblems") {
+                quizViewModel.getEasyQuizEmblemsQuestion()
 
-            if (difficultLevel == Constants.HARD) {
-                if (countryItem == "Flag") {
-                    quizViewModel.getHardQuizFlagQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Capital") {
-                    quizViewModel.getHardQuizCapitalQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Emblems") {
-                    quizViewModel.getHardQuizEmblemsQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
             }
+        }
 
-            if (difficultLevel == Constants.EXPERT) {
-                if (countryItem == "Flag") {
-                    quizViewModel.getExpertQuizFlagQuestion()
+        if (difficultLevel == Constants.MEDIUM) {
+            if (countryItem == "Flag") {
+                quizViewModel.getMediumQuizFlagQuestion()
 
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Capital") {
-                    quizViewModel.getExpertQuizCapitalQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
-                if (countryItem == "Emblems") {
-                    quizViewModel.getExpertQuizEmblemsQuestion()
-
-                    StateCollect(
-                        coroutineScope = coroutineScope,
-                        state = state,
-                        checkErrorMessage = {
-                            checkErrorMessage=it
-                        },
-                        quizListData = {
-                            quizListData=it
-                        },
-                        checkLoading = {
-                            checkLoading=it
-                        }
-                    )
-                }
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
             }
+            if (countryItem == "Capital") {
+                quizViewModel.getMediumQuizCapitalQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+            if (countryItem == "Emblems") {
+                quizViewModel.getMediumQuizEmblemsQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+        }
+
+        if (difficultLevel == Constants.HARD) {
+            if (countryItem == "Flag") {
+                quizViewModel.getHardQuizFlagQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+            if (countryItem == "Capital") {
+                quizViewModel.getHardQuizCapitalQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+            if (countryItem == "Emblems") {
+                quizViewModel.getHardQuizEmblemsQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+        }
+
+        if (difficultLevel == Constants.EXPERT) {
+            if (countryItem == "Flag") {
+                quizViewModel.getExpertQuizFlagQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+            if (countryItem == "Capital") {
+                quizViewModel.getExpertQuizCapitalQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+            if (countryItem == "Emblems") {
+                quizViewModel.getExpertQuizEmblemsQuestion()
+
+                StateCollect(
+                    coroutineScope = coroutineScope,
+                    state = state,
+                    checkErrorMessage = {
+                        checkErrorMessage = it
+                    },
+                    quizListData = {
+                        quizListData = it
+                    },
+                    checkLoading = {
+                        checkLoading = it
+                    }
+                )
+            }
+        }
+
+        if (difficultLevel == Constants.EUROPE) {
+            quizViewModel.getEuropeCountryQuizQuestion()
+
+            StateCollect(
+                coroutineScope = coroutineScope,
+                state = state,
+                checkErrorMessage = {
+                    checkErrorMessage = it
+                },
+                quizListData = {
+                    quizListData = it
+                },
+                checkLoading = {
+                    checkLoading = it
+                }
+            )
+        }
+        if (difficultLevel == Constants.AMERICA) {
+            quizViewModel.getAmericaCountryQuizQuestion()
+
+            StateCollect(
+                coroutineScope = coroutineScope,
+                state = state,
+                checkErrorMessage = {
+                    checkErrorMessage = it
+                },
+                quizListData = {
+                    quizListData = it
+                },
+                checkLoading = {
+                    checkLoading = it
+                }
+            )
+        }
+        if (difficultLevel == Constants.AFRICA){
+            quizViewModel.getAfricaCountryQuizQuestion()
+
+            StateCollect(
+                coroutineScope = coroutineScope,
+                state = state,
+                checkErrorMessage = {
+                    checkErrorMessage = it
+                },
+                quizListData = {
+                    quizListData = it
+                },
+                checkLoading = {
+                    checkLoading = it
+                }
+            )
+        }
+
+        if (difficultLevel == Constants.ASIA){
+            quizViewModel.getAsiaCountryQuizQuestion()
+
+            StateCollect(
+                coroutineScope = coroutineScope,
+                state = state,
+                checkErrorMessage = {
+                    checkErrorMessage = it
+                },
+                quizListData = {
+                    quizListData = it
+                },
+                checkLoading = {
+                    checkLoading = it
+                }
+            )
+        }
+        if (difficultLevel == Constants.OCEANIA){
+            quizViewModel.getOceaniaCountryQuizQuestion()
+
+            StateCollect(
+                coroutineScope = coroutineScope,
+                state = state,
+                checkErrorMessage = {
+                    checkErrorMessage = it
+                },
+                quizListData = {
+                    quizListData = it
+                },
+                checkLoading = {
+                    checkLoading = it
+                }
+            )
         }
     }
 
@@ -301,7 +387,7 @@ fun QuizPage(
             backButtonCheck = true,
             imageId = R.drawable.icons_turkey,
             backClick = {
-                backClick.invoke()
+                backClick.invoke(difficultLevel)
                 quizViewModel.resetState()
             })
 
@@ -355,7 +441,8 @@ fun QuizPage(
                                 otherOptions[i] = newItem
                             }
                             correctAnswerLastIndex = correctAnswerIndex
-                            answerOptions = (listOf(newList1[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
+                            answerOptions =
+                                (listOf(newList1[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
 
                             currentQuizQuestion = newList1[correctAnswerIndex]
                             checkAnswerString = currentQuizQuestion?.name
@@ -389,13 +476,13 @@ fun QuizPage(
                     LazyColumn(contentPadding = PaddingValues(10.dp)) {
                         item {
                             Card(
-                                modifier=Modifier
+                                modifier = Modifier
                                     .height(250.dp)
                                     .fillMaxWidth()
                                     .padding(10.dp),
                                 shape = RoundedCornerShape(10.dp),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                            ){
+                            ) {
                                 AsyncImage(
                                     modifier = Modifier
                                         .fillMaxSize(),
@@ -466,7 +553,6 @@ private fun StateCollect(
             }
         }
     }
-
 }
 
 @Composable

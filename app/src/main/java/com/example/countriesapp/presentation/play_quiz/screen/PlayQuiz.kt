@@ -27,9 +27,9 @@ fun PlayQuiz(
         ScreenItem(imageId = R.drawable.icons_hungary, cardText = Constants.EXPERT, clickHomeItem = { clickHomeItem.invoke(Constants.EXPERT) }, backgroundColor = MaterialTheme.colorScheme.onErrorContainer),
         ScreenItem(imageId = R.drawable.icons_europe, cardText = Constants.EUROPE, clickHomeItem = { clickHomeItem.invoke(Constants.EUROPE) }, backgroundColor = MaterialTheme.colorScheme.outlineVariant),
         ScreenItem(imageId = R.drawable.icon_america, cardText = Constants.AMERICA, clickHomeItem = { clickHomeItem.invoke(Constants.AMERICA) }, backgroundColor = MaterialTheme.colorScheme.secondaryContainer),
-        ScreenItem(imageId = R.drawable.icon_africa, cardText = Constants.AFRICA, clickHomeItem = { clickHomeItem.invoke(Constants.AFRICA) }, backgroundColor = MaterialTheme.colorScheme.secondaryContainer),
-        ScreenItem(imageId = R.drawable.icon_asia, cardText = Constants.ASIA, clickHomeItem = { clickHomeItem.invoke(Constants.ASIA) }, backgroundColor = MaterialTheme.colorScheme.secondaryContainer),
-        ScreenItem(imageId = R.drawable.icon_oceania, cardText = Constants.OCEANIA, clickHomeItem = { clickHomeItem.invoke(Constants.OCEANIA) }, backgroundColor = MaterialTheme.colorScheme.primaryContainer),
+        ScreenItem(imageId = R.drawable.icon_africa, cardText = Constants.AFRICA, clickHomeItem = { clickHomeItem.invoke(Constants.AFRICA) }, backgroundColor = MaterialTheme.colorScheme.tertiary),
+        ScreenItem(imageId = R.drawable.icon_asia, cardText = Constants.ASIA, clickHomeItem = { clickHomeItem.invoke(Constants.ASIA) }, backgroundColor = MaterialTheme.colorScheme.scrim),
+        ScreenItem(imageId = R.drawable.icon_oceania, cardText = Constants.OCEANIA, clickHomeItem = { clickHomeItem.invoke(Constants.OCEANIA) }, backgroundColor = MaterialTheme.colorScheme.outline),
         )
 
     Column {

@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -238,14 +239,16 @@ fun QuizPage(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = CenterVertically
                 ) {
-                    Text(text = "$correctAnswerIndex /", fontSize = 16.sp)
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(text = "${newList1.size}", fontSize = 18.sp)
+                    Text(text = "$correctAnswerIndex /", fontSize = 18.sp,fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text(text = "${newList1.size}", fontSize = 18.sp,fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold)
                 }
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 CheckUserWrongQuestionBar(userCheckWrongAnswer = userCheckWrongAnswer)
+
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     LazyColumn(contentPadding = PaddingValues(10.dp)) {
@@ -346,7 +349,7 @@ private fun CheckUserWrongQuestionBar(userCheckWrongAnswer: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(40.dp),
+            .height(30.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = CenterVertically
     ) {

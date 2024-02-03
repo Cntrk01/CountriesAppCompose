@@ -71,7 +71,6 @@ fun SetupNavGraph(
         composable(route = Screen.CountryDetailPage.route) {
             CountryDetailPage(navController = navController, backClick = {
                 navController.popBackStack()
-                navController.currentBackStackEntry?.savedStateHandle?.remove<String>(Screen.CountryDetailPage.route)
             })
         }
 

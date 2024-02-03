@@ -45,7 +45,8 @@ fun QuizItemCard(
         ) {
             Text(
                 text = quizText,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.White
             )
             Image(
                 painter = painterResource(id = R.drawable.icons_next),

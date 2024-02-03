@@ -60,9 +60,11 @@ fun AppBar(
                     modifier = Modifier
                         .padding(start = 15.dp)
                         .clickable {
-                            coroutineScope.launch {
-                                delay(200)
-                                backClick?.invoke()
+                            if (checkBackButton.value){
+                                coroutineScope.launch {
+                                    backClick?.invoke()
+                                    delay(500)
+                                }
                             }
                         },
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),

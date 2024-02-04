@@ -52,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
@@ -65,6 +66,9 @@ import com.example.countriesapp.navigation.Screen
 import com.example.countriesapp.util.CreateFirstNameToIconMap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
 import java.util.Locale
 
 @Composable
@@ -199,26 +203,26 @@ fun CountryDetailPage(
                             secondText = "Location"
                         )
 
-                        AnimatedVisibility(visible = expandedMap) {
-                            Column {
-                                countryItem?.let { detail ->
-                                    OpenGoogleMaps(countryItem = detail)
-                                }
-                            }
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    expandedMap = !expandedMap
-                                }) {
-                            Icon(
-                                imageVector = if (expandedMap) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                contentDescription = "Clear",
-                                tint = Color.Black,
-                                modifier = Modifier.align(CenterHorizontally)
-                            )
-                        }
+                        //AnimatedVisibility(modifier = Modifier.width(350.dp), visible = expandedMap) {
+                        //                            Column {
+                        //                                countryItem?.let { detail ->
+                        //                                    //OpenGoogleMaps(latidude = detail.latlng?.get(0) ?: 0.0, longitude = detail.latlng?.get(1) ?: 0.0)
+                        //                                }
+                        //                            }
+                        //                        }
+                        //                        Column(
+                        //                            modifier = Modifier
+                        //                                .fillMaxWidth()
+                        //                                .clickable {
+                        //                                    expandedMap = !expandedMap
+                        //                                }) {
+                        //                            Icon(
+                        //                                imageVector = if (expandedMap) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        //                                contentDescription = "Clear",
+                        //                                tint = Color.Black,
+                        //                                modifier = Modifier.align(CenterHorizontally)
+                        //                            )
+                        //                        }
                     }
                 }
             }
@@ -266,57 +270,35 @@ private fun ItemRowDesign(
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-private fun OpenGoogleMaps(countryItem: CountryDetailItem) {
-
+private fun OpenGoogleMaps(latidude:Double,longitude:Double) {
     Column(
         modifier = Modifier
             .height(350.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
     ) {
-        // MapView'in context'i
-        val context = LocalContext.current
-
-
-        // MapView'i gösterme
-        //AndroidView(
-        //            factory = { mapView },
-        //            modifier = Modifier.fillMaxSize()
-        //        ) { map ->
-        //            // Map ayarlarını yapma
-        //            map.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK)
-        //            map.setMultiTouchControls(true)
-        //
-        //            // Ölçek çubuğunu ekleme
-        //            val scaleBarOverlay = ScaleBarOverlay(map)
-        //            map.overlays.add(scaleBarOverlay)
-        //
-        //            // Belirli bir koordinata odaklanma örneği
-        //            val targetLatitude = 40.7128 // Hedef ülkenin enlemi
-        //            val targetLongitude = -74.0060 // Hedef ülkenin boylamı
-        //            map.controller.setCenter(org.osmdroid.util.GeoPoint(targetLatitude, targetLongitude))
-        //            map.controller.setZoom(10.0) // İstediğiniz zoom seviyesini ayarlayabilirsiniz
-        //        }
-
-        //AndroidView(
-            //modifier = Modifier.fillMaxSize(),
-            //            factory = { context ->
-            //                WebView(context).apply {
-            //                    layoutParams = ViewGroup.LayoutParams(
-            //                        ViewGroup.LayoutParams.MATCH_PARENT,
-            //                        ViewGroup.LayoutParams.MATCH_PARENT
-            //                    )
-            //                    settings.javaScriptEnabled = true
-            //                    settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-            //                    webViewClient = WebViewClient()
-            //                    countryItem.maps?.googleMaps?.let { loadUrl(it) }
-            //                }
-            //            },
-            //            update = { webView ->
-            //                countryItem?.maps?.googleMaps?.let { webView.loadUrl(it) }
-            //            }
-
-        //)
-
+        val currenctContext= LocalContext.current
+        AndroidView(modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 30.dp),
+            factory = { _ ->
+                MapView(currenctContext).apply {
+                    setTileSource(TileSourceFactory.CLOUDMADESMALLTILES)
+                    this.setTileSource(TileSourceFactory.MAPNIK)
+                    //this.setBuiltInZoomControls(true)
+                    //this.setMultiTouchControls(true)
+                    setOnClickListener {
+                    }
+                }
+            },
+            update = {view ->
+                view.controller.setZoom(5.0)
+                view.controller.setCenter(
+                    GeoPoint(
+                        latidude,
+                        longitude
+                    )
+                )
+            })
     }
 }
 
@@ -328,7 +310,9 @@ private fun Translations(
         //step 2 ile kaçar arttıracağımızı yazıyoruz
         for (i in translationList.indices) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 translationList[i].official?.let { official ->

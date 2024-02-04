@@ -94,7 +94,7 @@ fun CountryDetailPage(
                 backClick.invoke()
                 countryItem = null
             }, backButtonCheck = true,
-            imageId = R.drawable.icons_turkey
+            imageId = R.drawable.icon_app_bar
         )
 
         if (loading) {

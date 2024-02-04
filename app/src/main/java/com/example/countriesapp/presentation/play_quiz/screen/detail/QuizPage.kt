@@ -2,6 +2,7 @@ package com.example.countriesapp.presentation.play_quiz.screen.detail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -48,6 +51,7 @@ import com.example.countriesapp.R
 import com.example.countriesapp.common.Constants
 import com.example.countriesapp.common.Constants.DIFFICULT
 import com.example.countriesapp.domain.model.QuizItem
+import com.example.countriesapp.layouts.AlertDialogForBack
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.navigation.Screen
@@ -75,6 +79,9 @@ fun QuizPage(
     var checkLoading by remember { mutableStateOf(false) }
     var checkErrorMessage by remember { mutableStateOf("") }
     var quizListData by remember { mutableStateOf<List<QuizItem>?>(null) }
+
+    var checkBackClick by remember { mutableStateOf(false) }
+    var isFinishedCheck by remember { mutableStateOf(false) }
 
     //Side effect yazınca saçmaladı.
     LaunchedEffect(Unit) {
@@ -133,14 +140,14 @@ fun QuizPage(
         if (difficultLevel == Constants.AMERICA) {
             quizViewModel.getAmericaCountryQuizQuestion()
         }
-        if (difficultLevel == Constants.AFRICA){
+        if (difficultLevel == Constants.AFRICA) {
             quizViewModel.getAfricaCountryQuizQuestion()
         }
 
-        if (difficultLevel == Constants.ASIA){
+        if (difficultLevel == Constants.ASIA) {
             quizViewModel.getAsiaCountryQuizQuestion()
         }
-        if (difficultLevel == Constants.OCEANIA){
+        if (difficultLevel == Constants.OCEANIA) {
             quizViewModel.getOceaniaCountryQuizQuestion()
         }
         StateCollect(
@@ -161,17 +168,26 @@ fun QuizPage(
     Column {
         AppBar(
             backButtonCheck = true,
-            imageId = R.drawable.icons_turkey,
+            imageId = R.drawable.icon_app_bar,
             backClick = {
-                backClick.invoke(difficultLevel)
-                quizViewModel.resetState()
+                checkBackClick = true
             })
+
+        if (checkBackClick) {
+            AlertDialogForBack(
+                confirmButton = {
+                    checkBackClick = false
+                }, dismissButton = {
+                    backClick.invoke(difficultLevel)
+                })
+        }
 
         if (checkLoading) {
             Box(modifier = Modifier.fillMaxSize()) {
                 LoadingCardView(modifier = Modifier.align(Center))
             }
         }
+
         if (checkErrorMessage.isNotEmpty()) {
             Text(text = checkErrorMessage)
         }
@@ -239,9 +255,19 @@ fun QuizPage(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = CenterVertically
                 ) {
-                    Text(text = "$correctAnswerIndex /", fontSize = 18.sp,fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = "$correctAnswerIndex /",
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.SemiBold
+                    )
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(text = "${newList1.size}", fontSize = 18.sp,fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = "${newList1.size}",
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -281,7 +307,6 @@ fun QuizPage(
                                                     correctAnswerIndex++
                                                     sliderState += 1f
 
-                                                    println(correctAnswerIndex)
                                                     if (correctAnswerIndex < newList1.size) {
                                                         currentQuizQuestion =
                                                             newList1[correctAnswerIndex]
@@ -294,10 +319,10 @@ fun QuizPage(
                                                     }
                                                 } else {
                                                     userCheckWrongAnswer--
-                                                    println("No")
                                                 }
                                             }
                                         } else {
+                                            isFinishedCheck = true
                                             println("Oyun bitti, başka bir şey yapabilirsiniz.")
                                         }
                                     }, correctAnswer = checkAnswerString.toString())
@@ -306,8 +331,17 @@ fun QuizPage(
                         }
                     }
                 }
+                if (userCheckWrongAnswer == -1) {
+                    AlertDialogWithCountdown(
+                        confirmButton = {
+                            userCheckWrongAnswer += 3
+                        }, dismissButton = {
+                            backClick.invoke(difficultLevel)
+                        })
+                }
             }
         }
+
     }
 }
 
@@ -437,4 +471,70 @@ private fun AnswerButton(
             )
         }
     }
+}
+
+@Composable
+fun CountdownTimer(
+    seconds: Int,
+    onCountdownFinished: () -> Unit
+) {
+    var remainingSeconds by remember { mutableStateOf(seconds) }
+
+    LaunchedEffect(key1 = remainingSeconds) {
+        while (remainingSeconds > 0) {
+            delay(1000)
+            remainingSeconds--
+        }
+        onCountdownFinished.invoke()
+    }
+    Text(text = "$remainingSeconds", fontSize = 18.sp)
+}
+
+@Composable
+fun AlertDialogWithCountdown(
+    confirmButton: () -> Unit,
+    dismissButton: () -> Unit
+) {
+    val countdownValue by remember { mutableIntStateOf(5) }
+
+    AlertDialog(
+        onDismissRequest = {
+            dismissButton.invoke()
+        },
+        confirmButton = {
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .clip(shape = RoundedCornerShape(20.dp))
+                    .background(Color.LightGray)
+                    .clickable {
+                        confirmButton.invoke()
+                    },
+                painter = painterResource(id = R.drawable.icons_watch_ads),
+                contentDescription = ""
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row {
+                    Text(
+                        text = "You have no rights left. Watch the video to continue !",
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                CountdownTimer(
+                    seconds = countdownValue,
+                    onCountdownFinished = {
+                        dismissButton.invoke()
+                    }
+                )
+            }
+        },
+    )
 }

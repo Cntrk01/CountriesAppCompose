@@ -48,4 +48,9 @@ object Constants {
 
     //ARGUMENTS
     const val DIFFICULT="difficulty"
+
+    //STRING
+    const val FINISH="Finish"
+    const val CONTINUE="Continue"
+    const val WATCH_ADS="Watch Ads"
 }

@@ -30,15 +30,11 @@ fun AppBar(
     backClick: (() -> Unit)? = null,
     backButtonCheck: Boolean = false,
     endButtonCheck: Boolean = false,
-    imageId: Int
+    imageId: Int,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val checkBackButton = remember {
-        mutableStateOf(backButtonCheck)
-    }
-    val checkEndButton = remember {
-        mutableStateOf(endButtonCheck)
-    }
+    val checkBackButton = remember { mutableStateOf(backButtonCheck) }
+    val checkEndButton = remember { mutableStateOf(endButtonCheck) }
 
     Row(
         modifier = Modifier

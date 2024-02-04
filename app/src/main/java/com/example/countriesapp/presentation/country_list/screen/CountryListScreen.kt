@@ -31,7 +31,7 @@ fun CountryListScreen(
 
     Column {
         AppBar(backButtonCheck = true,
-            imageId = R.drawable.icons_turkey,
+            imageId = R.drawable.icon_app_bar,
             backClick = {
                 backClick?.invoke()
                 countryListViewModel.resetState()

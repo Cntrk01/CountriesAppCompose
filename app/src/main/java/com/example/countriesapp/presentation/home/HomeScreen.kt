@@ -49,7 +49,7 @@ fun HomeScreen(
     )
 
     Column {
-        AppBar(imageId = R.drawable.icons_turkey,backButtonCheck=false)
+        AppBar(imageId = R.drawable.icon_app_bar,backButtonCheck=false)
 
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),

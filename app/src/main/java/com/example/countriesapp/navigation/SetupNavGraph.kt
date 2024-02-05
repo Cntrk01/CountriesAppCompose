@@ -17,6 +17,7 @@ import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.example.countriesapp.presentation.country_list.screen.CountryListScreen
 import com.example.countriesapp.presentation.currency.CurrencyPage
+import com.example.countriesapp.presentation.favorite.screen.FavoriteScreen
 import com.example.countriesapp.presentation.home.HomeScreen
 import com.example.countriesapp.presentation.play_quiz.screen.PlayQuiz
 import com.example.countriesapp.presentation.play_quiz.screen.detail.QuizPage
@@ -51,7 +52,7 @@ fun SetupNavGraph(
                     navController.navigate(route = Screen.PlayQuizPage.route)
                 }
                 if (it == Constants.Favorite) {
-                    //navController.navigate(route = Screen.PlayQuizPage.route)
+                    navController.navigate(route = Screen.FavoritePage.route)
                 }
             })
         }
@@ -93,6 +94,18 @@ fun SetupNavGraph(
         composable(route = Screen.CurrencyPage.route) {
             CurrencyPage(backClick = {
                 navController.popBackStack()
+            })
+        }
+
+        composable(route = Screen.FavoritePage.route) {
+            FavoriteScreen(backClick = {
+                navController.popBackStack()
+            }, clickFavoriteItem = {countryDetailItem->
+                navController.currentBackStackEntry?.savedStateHandle?.set(
+                    Screen.CountryDetailPage.route,
+                    countryDetailItem
+                )
+                navController.navigate(route = Screen.CountryDetailPage.route)
             })
         }
 

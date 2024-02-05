@@ -1,5 +1,6 @@
 package com.example.countriesapp.domain.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.countriesapp.data.response.CapitalInfo
@@ -10,8 +11,10 @@ import com.example.countriesapp.data.response.Maps
 import com.example.countriesapp.data.response.Name
 import com.example.countriesapp.data.response.PostalCode
 import com.example.countriesapp.data.response.Translations
+import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
+@Parcelize
 @Entity(tableName = "country_item")
 data class CountryRoomItem(
     @PrimaryKey(autoGenerate = true)
@@ -30,4 +33,4 @@ data class CountryRoomItem(
     val coatOfArms: @RawValue CoatOfArms?,
     val currencies: @RawValue Map<String, Currency>?,
     val latlng: List<Double>?
-)
+) : Parcelable

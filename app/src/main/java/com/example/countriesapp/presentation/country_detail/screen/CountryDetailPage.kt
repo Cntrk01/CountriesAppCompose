@@ -202,7 +202,6 @@ fun CountryDetailPage(
                             firstText = "Map",
                             secondText = "Location"
                         )
-
                         //AnimatedVisibility(modifier = Modifier.width(350.dp), visible = expandedMap) {
                         //                            Column {
                         //                                countryItem?.let { detail ->

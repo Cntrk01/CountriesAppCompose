@@ -1,11 +1,14 @@
 package com.example.countriesapp.presentation.favorite.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.countriesapp.common.Constants.FAVORITE
 import com.example.countriesapp.data.response.Name
 import com.example.countriesapp.data.response.Response
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.domain.use_case.FavoriteCountryUseCase
+import com.example.countriesapp.navigation.Screen
 import com.example.countriesapp.presentation.favorite.state.FavoriteState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +20,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: FavoriteCountryUseCase) :
+class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: FavoriteCountryUseCase,
+    private val savedStateHandle: SavedStateHandle) :
     ViewModel() {
+
+    init {
+        savedStateHandle.get<String>(FAVORITE)?.let {
+            if (it==FAVORITE){
+                getAllCountry()
+            }
+        }
+    }
 
     private val _state = MutableStateFlow(FavoriteState())
     val state: StateFlow<FavoriteState> = _state

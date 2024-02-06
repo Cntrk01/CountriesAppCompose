@@ -43,52 +43,58 @@ fun CountryDataList(
             columns = StaggeredGridCells.Fixed(2),
             contentPadding = PaddingValues(10.dp)
         ) {
-
-            items(countryStateListSize) { countryList1 ->
-                if (countryList1 >= countryStateListSize - 1 && !stateLoading) {
-                    if (countryStateListSize < loadListSize) {
-                        loadMore?.invoke()
+            items(
+                count = countryStateListSize,
+                key = {
+                    countryList[it].name.toString()
+                },
+                itemContent = {countryList1 ->
+                    if (countryList1 >= countryStateListSize - 1 && !stateLoading) {
+                        if (countryStateListSize < loadListSize) {
+                            loadMore?.invoke()
+                        }
                     }
-                }
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .padding(5.dp)
-                        .clickable {
-                            clickCountry?.invoke(countryList[countryList1].countryDetailItem)
-                        },
-                    shape = RoundedCornerShape(10.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(5.dp)
+                            .clickable {
+                                clickCountry?.invoke(countryList[countryList1].countryDetailItem)
+                            },
+                        shape = RoundedCornerShape(10.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
 
-                ) {
-                    Box {
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            model = countryList[countryList1].flag?.png,
-                            contentDescription = "Image",
-                            contentScale = ContentScale.FillHeight
-                        )
+                    ) {
+                        Box {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                model = countryList[countryList1].flag?.png,
+                                contentDescription = "Image",
+                                contentScale = ContentScale.FillHeight
+                            )
 
-                        Text(
-                            modifier = Modifier
-                                .padding(top = 10.dp)
-                                .background(Color.Transparent)
-                                .align(Alignment.BottomCenter)
-                                .padding(10.dp),
-                            maxLines = 1,
-                            text = countryList[countryList1].name.toString(),
-                            fontSize = 22.sp,
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.ExtraBold,
-                            textAlign = TextAlign.Center,
-                            color = Color.DarkGray
-                        )
+                            Text(
+                                modifier = Modifier
+                                    .padding(top = 10.dp)
+                                    .background(Color.Transparent)
+                                    .align(Alignment.BottomCenter)
+                                    .padding(10.dp),
+                                maxLines = 1,
+                                text = countryList[countryList1].name.toString(),
+                                fontSize = 22.sp,
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.ExtraBold,
+                                textAlign = TextAlign.Center,
+                                color = Color.DarkGray
+                            )
+                        }
                     }
+
                 }
-            }
+            )
         }
     }
 }

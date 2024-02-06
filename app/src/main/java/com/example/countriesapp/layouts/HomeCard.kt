@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeCard(
-    imageId:Int ?=null,
+    imageId: Int? = null,
     cardText: String,
     clickHomeCardItem: ((String) -> Unit)? = null,
     backgroundColor: Color
@@ -39,13 +39,7 @@ fun HomeCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .padding(5.dp)
-            .clickable {
-                coroutineScope.launch {
-                    delay(800)
-                    clickHomeCardItem?.invoke(cardText)
-                }
-            },
+            .padding(5.dp),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
         colors = CardDefaults.cardColors(
@@ -55,12 +49,20 @@ fun HomeCard(
         ) {
         Box(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .clickable {
+                    coroutineScope.launch {
+                        delay(800)
+                        clickHomeCardItem?.invoke(cardText)
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             imageId?.let { painterResource(id = it) }?.let {
                 Image(
-                    modifier=Modifier.fillMaxWidth().height(100.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
                     painter = it,
                     contentDescription = ""
                 )

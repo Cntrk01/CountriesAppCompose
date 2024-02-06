@@ -29,10 +29,7 @@ fun QuizItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(65.dp)
-            .padding(5.dp)
-            .clickable {
-                clickItem.invoke(quizText)
-            },
+            .padding(5.dp),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
         colors = CardDefaults.cardColors(
@@ -40,7 +37,11 @@ fun QuizItemCard(
         )
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    clickItem.invoke(quizText)
+                },
             contentAlignment = Alignment.Center
         ) {
             Text(

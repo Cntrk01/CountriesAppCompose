@@ -24,45 +24,67 @@ fun HomeScreen(
     clickHomeItem: (String) -> Unit
 ) {
     val homeItems = listOf(
-        ScreenItem(imageId = R.drawable.icons_planet_earth, cardText = All_Country,
-            clickHomeItem = { clickHomeItem.invoke(All_Country) }, backgroundColor = MaterialTheme.colorScheme.primary),
-
-        ScreenItem(imageId = R.drawable.icon_region, cardText = Region,
-            clickHomeItem = { clickHomeItem.invoke(Region) }, backgroundColor = MaterialTheme.colorScheme.tertiary
+        ScreenItem(imageId = R.drawable.icons_planet_earth,
+            cardText = All_Country,
+            clickHomeItem = { clickHomeItem.invoke(All_Country) },
+            backgroundColor = MaterialTheme.colorScheme.primary
         ),
 
-        ScreenItem(imageId = R.drawable.icon_country_region, cardText = Sub_Region,
-            clickHomeItem = { clickHomeItem.invoke(Sub_Region) }, backgroundColor = MaterialTheme.colorScheme.inversePrimary
+        ScreenItem(
+            imageId = R.drawable.icon_region,
+            cardText = Region,
+            clickHomeItem = { clickHomeItem.invoke(Region) },
+            backgroundColor = MaterialTheme.colorScheme.tertiary
         ),
 
-        ScreenItem(imageId = R.drawable.icon_currency_exchange, cardText = Currency,
-            clickHomeItem = { clickHomeItem.invoke(Currency) }, backgroundColor =  MaterialTheme.colorScheme.scrim
+        ScreenItem(
+            imageId = R.drawable.icon_country_region,
+            cardText = Sub_Region,
+            clickHomeItem = { clickHomeItem.invoke(Sub_Region) },
+            backgroundColor = MaterialTheme.colorScheme.inversePrimary
         ),
 
-        ScreenItem(imageId = R.drawable.icon_quiz, cardText = Play_Quiz,
-            clickHomeItem = { clickHomeItem.invoke(Play_Quiz) }, backgroundColor =  MaterialTheme.colorScheme.onPrimaryContainer
+        ScreenItem(
+            imageId = R.drawable.icon_currency_exchange,
+            cardText = Currency,
+            clickHomeItem = { clickHomeItem.invoke(Currency) },
+            backgroundColor = MaterialTheme.colorScheme.scrim
         ),
 
-        ScreenItem(imageId = R.drawable.icon_favorite_home, cardText = Favorite,
-            clickHomeItem = { clickHomeItem.invoke(Favorite) }, backgroundColor =  MaterialTheme.colorScheme.tertiaryContainer
+        ScreenItem(
+            imageId = R.drawable.icon_quiz,
+            cardText = Play_Quiz,
+            clickHomeItem = { clickHomeItem.invoke(Play_Quiz) },
+            backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
+
+        ScreenItem(
+            imageId = R.drawable.icon_favorite_home,
+            cardText = Favorite,
+            clickHomeItem = { clickHomeItem.invoke(Favorite) },
+            backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
         )
     )
 
     Column {
-        AppBar(imageId = R.drawable.icon_app_bar,backButtonCheck=false)
+        AppBar(imageId = R.drawable.icon_app_bar, backButtonCheck = false)
 
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
             contentPadding = PaddingValues(10.dp)
         ) {
-            items(homeItems) { homeItem ->
-                HomeCard(
-                    imageId = homeItem.imageId,
-                    cardText = homeItem.cardText,
-                    clickHomeCardItem = homeItem.clickHomeItem,
-                    backgroundColor = homeItem.backgroundColor
-                )
-            }
+            items(count = homeItems.size,
+                key = {
+                    homeItems[it].cardText
+                },
+                itemContent = { homeItemPosition ->
+                    HomeCard(
+                        imageId = homeItems[homeItemPosition].imageId,
+                        cardText = homeItems[homeItemPosition].cardText,
+                        clickHomeCardItem = homeItems[homeItemPosition].clickHomeItem,
+                        backgroundColor = homeItems[homeItemPosition].backgroundColor
+                    )
+                })
         }
     }
 }

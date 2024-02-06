@@ -11,6 +11,7 @@ import com.example.countriesapp.common.Constants
 import com.example.countriesapp.common.Constants.All_Country
 import com.example.countriesapp.common.Constants.Currency
 import com.example.countriesapp.common.Constants.DIFFICULT
+import com.example.countriesapp.common.Constants.FAVORITE
 import com.example.countriesapp.common.Constants.Region
 import com.example.countriesapp.common.Constants.Region_Name
 import com.example.countriesapp.common.Constants.Sub_Region
@@ -52,7 +53,7 @@ fun SetupNavGraph(
                     navController.navigate(route = Screen.PlayQuizPage.route)
                 }
                 if (it == Constants.Favorite) {
-                    navController.navigate(route = Screen.FavoritePage.route)
+                    navController.navigate(route = Screen.FavoritePage.route + "/$FAVORITE")
                 }
             })
         }
@@ -73,8 +74,8 @@ fun SetupNavGraph(
             CountryDetailPage(
                 navController = navController,
                 backClick = {
-                navController.popBackStack()
-            })
+                    navController.popBackStack()
+                })
         }
 
         composable(route = Screen.RegionPage.route) {
@@ -99,10 +100,20 @@ fun SetupNavGraph(
             })
         }
 
-        composable(route = Screen.FavoritePage.route) {
+        composable(
+            route = Screen.FavoritePage.route + "/{${FAVORITE}}",
+            arguments = listOf(
+                navArgument(name = FAVORITE) {
+                    type = NavType.StringType
+                })
+        ) {
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                Screen.FavoritePage.route,
+                FAVORITE
+            )
             FavoriteScreen(backClick = {
                 navController.popBackStack()
-            }, clickFavoriteItem = {countryDetailItem->
+            }, clickFavoriteItem = { countryDetailItem ->
                 navController.currentBackStackEntry?.savedStateHandle?.set(
                     Screen.CountryDetailPage.route,
                     countryDetailItem
@@ -137,40 +148,50 @@ fun SetupNavGraph(
                 backClick = {
                     navController.navigate(Screen.HomePage.route)
                 },
-                clickHomeItem = {quizLevel->
-                    navController.navigate(route = Screen.SharedDifficultyPage.route+"/${quizLevel}")
-                    if (quizLevel==Constants.EUROPE){
-                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.EUROPE)
+                clickHomeItem = { quizLevel ->
+                    navController.navigate(route = Screen.SharedDifficultyPage.route + "/${quizLevel}")
+                    if (quizLevel == Constants.EUROPE) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            DIFFICULT,
+                            Constants.EUROPE
+                        )
                         navController.navigate(route = Screen.QuizDetailPage.route)
-                    }
-                    else if (quizLevel==Constants.AMERICA){
-                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.AMERICA)
+                    } else if (quizLevel == Constants.AMERICA) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            DIFFICULT,
+                            Constants.AMERICA
+                        )
                         navController.navigate(route = Screen.QuizDetailPage.route)
-                    }
-                    else if (quizLevel==Constants.AFRICA){
-                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.AFRICA)
+                    } else if (quizLevel == Constants.AFRICA) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            DIFFICULT,
+                            Constants.AFRICA
+                        )
                         navController.navigate(route = Screen.QuizDetailPage.route)
-                    }
-                    else if (quizLevel==Constants.ASIA){
-                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.ASIA)
+                    } else if (quizLevel == Constants.ASIA) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            DIFFICULT,
+                            Constants.ASIA
+                        )
                         navController.navigate(route = Screen.QuizDetailPage.route)
-                    }
-                    else if (quizLevel==Constants.OCEANIA){
-                        navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, Constants.OCEANIA)
+                    } else if (quizLevel == Constants.OCEANIA) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            DIFFICULT,
+                            Constants.OCEANIA
+                        )
                         navController.navigate(route = Screen.QuizDetailPage.route)
-                    }
-                    else{
-                        navController.navigate(route = Screen.SharedDifficultyPage.route+"/${quizLevel}")
+                    } else {
+                        navController.navigate(route = Screen.SharedDifficultyPage.route + "/${quizLevel}")
                     }
                 })
         }
         composable(route = Screen.QuizDetailPage.route) {
             QuizPage(
                 backClick = {
-                    if (it?.isNotEmpty() == true){
+                    if (it?.isNotEmpty() == true) {
                         //bunu ekleme sebebim regionlardan geriye tıklayınca zorluk sayfasına yönelmemeli.
                         navController.navigate(Screen.PlayQuizPage.route)
-                    }else{
+                    } else {
                         navController.popBackStack()
                     }
                 },
@@ -178,31 +199,40 @@ fun SetupNavGraph(
             )
         }
 
-        composable(route ="${Screen.SharedDifficultyPage.route}/{${DIFFICULT}}",
+        composable(
+            route = "${Screen.SharedDifficultyPage.route}/{${DIFFICULT}}",
             arguments = listOf(
                 navArgument(name = DIFFICULT) {
                     type = NavType.StringType
                 })
-            )
-         {difficultLevel->
-             difficultLevel.arguments?.getString(DIFFICULT)?.let {
-                 SharedDifficultyScreen(
-                     difficultLevel = it,
-                     backClick = {
-                         navController.navigate(Screen.PlayQuizPage.route)
-                         navController.currentBackStackEntry?.savedStateHandle?.remove<String>(DIFFICULT)
-                     },
-                     chooseCategoryData = {quizItem ,diffLevel->
-                         navController.currentBackStackEntry?.savedStateHandle?.set(Screen.QuizDetailPage.route, quizItem)
+        )
+        { difficultLevel ->
+            difficultLevel.arguments?.getString(DIFFICULT)?.let {
+                SharedDifficultyScreen(
+                    difficultLevel = it,
+                    backClick = {
+                        navController.navigate(Screen.PlayQuizPage.route)
+                        navController.currentBackStackEntry?.savedStateHandle?.remove<String>(
+                            DIFFICULT
+                        )
+                    },
+                    chooseCategoryData = { quizItem, diffLevel ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            Screen.QuizDetailPage.route,
+                            quizItem
+                        )
 
-                         navController.currentBackStackEntry?.savedStateHandle?.set(DIFFICULT, diffLevel)
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            DIFFICULT,
+                            diffLevel
+                        )
 
-                         navController.navigate(route = Screen.QuizDetailPage.route)
-                     })
-             }
+                        navController.navigate(route = Screen.QuizDetailPage.route)
+                    })
+            }
         }
     }
 }
 
-val NavHostController.canGoBack:Boolean
-    get() = this.currentBackStackEntry?.lifecycle?.currentState==Lifecycle.State.RESUMED
+val NavHostController.canGoBack: Boolean
+    get() = this.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED

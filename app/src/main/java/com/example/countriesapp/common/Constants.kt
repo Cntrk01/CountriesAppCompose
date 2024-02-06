@@ -52,5 +52,5 @@ object Constants {
     //STRING
     const val FINISH="Finish"
     const val CONTINUE="Continue"
-    const val WATCH_ADS="Watch Ads"
+    const val FAVORITE="Favorite"
 }

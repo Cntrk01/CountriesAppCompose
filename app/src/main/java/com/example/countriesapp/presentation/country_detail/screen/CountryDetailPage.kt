@@ -404,7 +404,6 @@ private fun CountryImage(
                 )
             }
         }
-
         Box(
             modifier = Modifier
                 .zIndex(1f)
@@ -412,18 +411,20 @@ private fun CountryImage(
                 .height(50.dp)
                 .align(TopEnd)
                 .padding(top = 10.dp, end = 10.dp)
+                .background(Color.Transparent)
+                .clickable {
+                    if (checkExistsDb == 1) {
+                        favoriteViewModel.deleteCountry(countryItem)
+                    } else {
+                        favoriteViewModel.addCountry(countryItem)
+                    }
+                }
         ) {
             Image(
                 modifier = Modifier
                     .fillMaxSize()
                     .zIndex(1f)
-                    .clickable {
-                        if (checkExistsDb == 1) {
-                            favoriteViewModel.deleteCountry(countryItem)
-                        } else {
-                            favoriteViewModel.addCountry(countryItem)
-                        }
-                    },
+                    ,
                 painter = if (checkExistsDb == 1) {
                     painterResource(id = R.drawable.icons_star)
                 } else {

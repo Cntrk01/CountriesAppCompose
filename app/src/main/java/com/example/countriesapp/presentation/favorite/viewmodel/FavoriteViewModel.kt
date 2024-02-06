@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.countriesapp.data.response.Name
 import com.example.countriesapp.data.response.Response
-import com.example.countriesapp.domain.model.CountryRoomItem
+import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.domain.use_case.FavoriteCountryUseCase
 import com.example.countriesapp.presentation.favorite.state.FavoriteState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -22,7 +23,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
     private val _state = MutableStateFlow(FavoriteState())
     val state: StateFlow<FavoriteState> = _state
 
-    fun getAllCountry() = viewModelScope.launch {
+    fun getAllCountry() = viewModelScope.launch(Dispatchers.IO) {
         favoriteCountryUseCase.getAllCountry().collectLatest {
             when (it) {
                 is Response.Loading -> {
@@ -55,7 +56,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
         }
     }
 
-    fun addCountry(countryDetailItem: CountryRoomItem) = viewModelScope.launch {
+    fun addCountry(countryDetailItem: CountryDetailItem) = viewModelScope.launch(Dispatchers.IO) {
         favoriteCountryUseCase
             .insertCountry(countryDetailItem = countryDetailItem)
             .collectLatest {
@@ -82,7 +83,6 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
                             favoriteState.copy(
                                 loading = false,
                                 error = "",
-                                countryAdded = true
                             )
                         }
                     }
@@ -90,7 +90,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
             }
     }
 
-    fun deleteCountry(countryDetailItem: CountryRoomItem) = viewModelScope.launch {
+    fun deleteCountry(countryDetailItem: CountryDetailItem) = viewModelScope.launch(Dispatchers.IO) {
         favoriteCountryUseCase
             .deleteCountry(countryDetailItem = countryDetailItem)
             .collectLatest {
@@ -125,7 +125,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
             }
     }
 
-    fun checkExistCountry(name: Name) = viewModelScope.launch {
+    fun checkExistCountry(name: Name) = viewModelScope.launch(Dispatchers.IO) {
         favoriteCountryUseCase
             .checkExistCountry(name = name)
             .collectLatest {
@@ -166,7 +166,6 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
                 loading = false,
                 error = "",
                 favoriteList = null,
-                countryAdded = false,
                 countryDeleted = false,
                 checkExists = 0
             )

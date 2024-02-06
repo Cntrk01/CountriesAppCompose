@@ -21,6 +21,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +34,7 @@ import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.presentation.favorite.viewmodel.FavoriteViewModel
+import com.example.countriesapp.util.mapToDetailItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -42,6 +44,8 @@ fun FavoriteScreen(
     clickFavoriteItem: (CountryDetailItem) -> Unit,
     favoriteViewModel: FavoriteViewModel = hiltViewModel()
 ) {
+    favoriteViewModel.getAllCountry()
+
     val state by favoriteViewModel.state.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     
@@ -78,7 +82,7 @@ fun FavoriteScreen(
                                     .clickable {
                                         coroutineScope.launch {
                                             delay(800)
-                                            clickFavoriteItem.invoke(list[it] as CountryDetailItem)
+                                            clickFavoriteItem.invoke(list[it])
                                         }
                                     },
                                 shape = RoundedCornerShape(10.dp),
@@ -92,7 +96,8 @@ fun FavoriteScreen(
                                     AsyncImage(
                                         modifier = Modifier.fillMaxSize(),
                                         model = list[it].flags?.png,
-                                        contentDescription = ""
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop
                                     )
                                     list[it].name?.common?.let { it1 ->
                                         Text(
@@ -104,8 +109,7 @@ fun FavoriteScreen(
                                             fontSize = 22.sp,
                                             fontFamily = FontFamily.SansSerif,
                                             fontWeight = FontWeight.ExtraBold,
-                                            textAlign = TextAlign.Center,
-                                            color = Color.White
+                                            textAlign = TextAlign.Center
                                         )
                                     }
                                 }
@@ -113,7 +117,6 @@ fun FavoriteScreen(
                         }
                     }
                 }
-
             }
         }
     }

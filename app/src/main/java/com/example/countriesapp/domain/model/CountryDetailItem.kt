@@ -1,6 +1,8 @@
 package com.example.countriesapp.domain.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.countriesapp.data.response.CapitalInfo
 import com.example.countriesapp.data.response.CoatOfArms
 import com.example.countriesapp.data.response.Currency
@@ -13,7 +15,10 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
+@Entity(tableName = "country_item")
 data class CountryDetailItem(
+    @PrimaryKey(autoGenerate = true)
+    val id : Int =0,
     val capitalInfo: @RawValue CapitalInfo?,
     val flags:@RawValue Flags?,
     val maps:@RawValue Maps?,

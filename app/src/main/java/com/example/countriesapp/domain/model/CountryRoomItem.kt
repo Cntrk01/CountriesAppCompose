@@ -15,9 +15,7 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-@Entity(tableName = "country_item")
 data class CountryRoomItem(
-    @PrimaryKey(autoGenerate = true)
     val id : Int ?=0,
     val capitalInfo: @RawValue CapitalInfo?,
     val flags:@RawValue Flags?,

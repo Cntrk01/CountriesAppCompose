@@ -35,7 +35,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -54,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.countriesapp.R
@@ -63,7 +67,9 @@ import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.navigation.Screen
+import com.example.countriesapp.presentation.favorite.viewmodel.FavoriteViewModel
 import com.example.countriesapp.util.CreateFirstNameToIconMap
+import com.example.countriesapp.util.mapToRoomItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -75,6 +81,7 @@ import java.util.Locale
 fun CountryDetailPage(
     navController: NavHostController,
     backClick: () -> Unit,
+    favoriteViewModel: FavoriteViewModel = hiltViewModel()
 ) {
     //remember içinde yapmayınca da oluyor fakat geri tuşuna bastığım an saniyelik datalar null gözüküyordu remember ile çözdüm.
     var countryItem = remember {
@@ -96,6 +103,7 @@ fun CountryDetailPage(
         AppBar(
             backClick = {
                 backClick.invoke()
+                favoriteViewModel.resetState()
                 countryItem = null
             }, backButtonCheck = true,
             imageId = R.drawable.icon_app_bar
@@ -113,7 +121,10 @@ fun CountryDetailPage(
             ) {
                 item {
                     countryItem?.let {
-                        CountryImage(countryItem = it)
+                        CountryImage(
+                            favoriteViewModel = favoriteViewModel,
+                            countryItem = it,
+                            )
 
                         ItemRowDesign(
                             icon = R.drawable.icon_capital,
@@ -269,13 +280,13 @@ private fun ItemRowDesign(
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-private fun OpenGoogleMaps(latidude:Double,longitude:Double) {
+private fun OpenGoogleMaps(latidude: Double, longitude: Double) {
     Column(
         modifier = Modifier
             .height(350.dp)
             .fillMaxWidth()
     ) {
-        val currenctContext= LocalContext.current
+        val currenctContext = LocalContext.current
         AndroidView(modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 30.dp),
@@ -289,7 +300,7 @@ private fun OpenGoogleMaps(latidude:Double,longitude:Double) {
                     }
                 }
             },
-            update = {view ->
+            update = { view ->
                 view.controller.setZoom(5.0)
                 view.controller.setCenter(
                     GeoPoint(
@@ -319,10 +330,10 @@ private fun Translations(
                         val iconResId = CreateFirstNameToIconMap(firstName)
 
                         ItemRowDesign(
-                                icon = iconResId,
-                                firstText = firstName.capitalize(Locale.ROOT),
-                                secondText = official
-                            )
+                            icon = iconResId,
+                            firstText = firstName.capitalize(Locale.ROOT),
+                            secondText = official
+                        )
 
                     }
                 }
@@ -333,15 +344,30 @@ private fun Translations(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CountryImage(countryItem: CountryDetailItem) {
+private fun CountryImage(
+    favoriteViewModel: FavoriteViewModel,
+    countryItem: CountryDetailItem,
+) {
     val countryImageList = listOf(
         countryItem.flags?.png,
         countryItem.coatOfArms?.png ?: countryItem.coatOfArms?.svg
     )
+    var checkExistsDb by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = {
         countryImageList.size
     })
+    countryItem.name?.let { favoriteViewModel.checkExistCountry(it) }
+
+    val favoriteState by favoriteViewModel.state.collectAsState()
+
+    favoriteState.checkExists?.let {
+        checkExistsDb = if (it > 0) {
+            1
+        } else {
+            0
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
@@ -378,6 +404,35 @@ private fun CountryImage(countryItem: CountryDetailItem) {
                 )
             }
         }
+
+        Box(
+            modifier = Modifier
+                .zIndex(1f)
+                .width(50.dp)
+                .height(50.dp)
+                .align(TopEnd)
+                .padding(top = 10.dp, end = 10.dp)
+        ) {
+            Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(1f)
+                    .clickable {
+                        if (checkExistsDb == 1) {
+                            favoriteViewModel.deleteCountry(countryItem)
+                        } else {
+                            favoriteViewModel.addCountry(countryItem)
+                        }
+                    },
+                painter = if (checkExistsDb == 1) {
+                    painterResource(id = R.drawable.icons_star)
+                } else {
+                    painterResource(id = R.drawable.icons_un_star)
+                },
+                contentDescription = ""
+            )
+        }
+
         Box(
             modifier = Modifier
                 .offset(y = 20.dp)

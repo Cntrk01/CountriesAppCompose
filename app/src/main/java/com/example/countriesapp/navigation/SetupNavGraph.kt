@@ -70,7 +70,9 @@ fun SetupNavGraph(
         }
 
         composable(route = Screen.CountryDetailPage.route) {
-            CountryDetailPage(navController = navController, backClick = {
+            CountryDetailPage(
+                navController = navController,
+                backClick = {
                 navController.popBackStack()
             })
         }

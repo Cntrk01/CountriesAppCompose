@@ -3,7 +3,7 @@ package com.example.countriesapp.data.repositoryimpl
 import com.example.countriesapp.data.local_db.CountryDao
 import com.example.countriesapp.data.response.Name
 import com.example.countriesapp.data.response.Response
-import com.example.countriesapp.domain.model.CountryRoomItem
+import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.domain.repository.FavoriteCountryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -14,7 +14,7 @@ import java.lang.Exception
 class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
     FavoriteCountryRepository {
 
-    override fun getAllCountry(): Flow<Response<List<CountryRoomItem>>> =
+    override fun getAllCountry(): Flow<Response<List<CountryDetailItem>>> =
         channelFlow {
             try {
                 trySend(Response.Loading())
@@ -27,7 +27,7 @@ class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
             }
         }
 
-    override suspend fun deleteCountry(countryDetailItem: CountryRoomItem): Flow<Response<Unit>> =
+    override suspend fun deleteCountry(countryDetailItem: CountryDetailItem): Flow<Response<Unit>> =
         flow {
             try {
                 emit(Response.Loading())
@@ -38,12 +38,12 @@ class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
             }
         }
 
-    override suspend fun insertCountry(countryDetailItem: CountryRoomItem): Flow<Response<Unit>> =
+    override suspend fun insertCountry(countryDetailItem: CountryDetailItem): Flow<Response<Unit>> =
         flow {
             try {
                 emit(Response.Loading())
-                val insertCountry = countryDao.insertCountry(countryDetailItem = countryDetailItem)
-                emit(Response.Success(insertCountry))
+                countryDao.insertCountry(countryDetailItem = countryDetailItem)
+                emit(Response.Success(Unit))
             } catch (e: Exception) {
                 emit(Response.Error(e.localizedMessage ?: "Exception"))
             }

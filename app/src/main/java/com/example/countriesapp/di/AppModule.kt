@@ -33,7 +33,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLocalDatabase (@ApplicationContext context: Context) : CountryDatabase{
-        return Room.databaseBuilder(context = context, klass = CountryDatabase::class.java, name = "country_db")
+        return Room.databaseBuilder(context = context, klass = CountryDatabase::class.java, name = "country_db1")
+            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
     }

@@ -34,7 +34,7 @@ fun CountryListScreen(
             imageId = R.drawable.icon_app_bar,
             backClick = {
                 backClick?.invoke()
-                countryListViewModel.resetState()
+                //countryListViewModel.resetState()
             })
 
         Box(modifier = Modifier.fillMaxSize()) {

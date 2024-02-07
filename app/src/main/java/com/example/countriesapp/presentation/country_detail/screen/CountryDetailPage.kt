@@ -69,7 +69,6 @@ import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.navigation.Screen
 import com.example.countriesapp.presentation.favorite.viewmodel.FavoriteViewModel
 import com.example.countriesapp.util.CreateFirstNameToIconMap
-import com.example.countriesapp.util.mapToRoomItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory

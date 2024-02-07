@@ -51,10 +51,7 @@ fun HomeCard(
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    coroutineScope.launch {
-                        delay(800)
-                        clickHomeCardItem?.invoke(cardText)
-                    }
+                    clickHomeCardItem?.invoke(cardText)
                 },
             contentAlignment = Alignment.Center
         ) {

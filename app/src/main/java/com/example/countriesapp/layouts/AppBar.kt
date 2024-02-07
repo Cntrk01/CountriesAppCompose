@@ -57,10 +57,7 @@ fun AppBar(
                         .padding(start = 15.dp)
                         .clickable {
                             if (checkBackButton.value){
-                                coroutineScope.launch {
-                                    backClick?.invoke()
-                                    delay(500)
-                                }
+                                backClick?.invoke()
                             }
                         },
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),

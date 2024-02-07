@@ -73,7 +73,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
         }
     }
 
-    fun resetState(){
+    private fun resetState(){
         _state.update {
             it.copy(
                 loading = false,

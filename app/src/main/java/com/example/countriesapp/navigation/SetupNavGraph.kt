@@ -26,6 +26,7 @@ import com.example.countriesapp.presentation.play_quiz.screen.shared_difficult.S
 import com.example.countriesapp.presentation.region_subregion.region.screen.RegionScreen
 import com.example.countriesapp.presentation.region_subregion.regionlist.screen.RegionCountryList
 import com.example.countriesapp.presentation.region_subregion.subregion.SubRegionScreen
+import com.example.countriesapp.presentation.search.screen.SearchPage
 
 @Composable
 fun SetupNavGraph(
@@ -54,6 +55,9 @@ fun SetupNavGraph(
                 }
                 if (it == Constants.Favorite) {
                     navController.navigate(route = Screen.FavoritePage.route + "/$FAVORITE")
+                }
+                if (it == Constants.SearchCountry){
+                    navController.navigate(route = Screen.SearchPage.route)
                 }
             })
         }
@@ -120,6 +124,14 @@ fun SetupNavGraph(
                 )
                 navController.navigate(route = Screen.CountryDetailPage.route)
             })
+        }
+
+        composable(route=Screen.SearchPage.route){
+            SearchPage(
+                backClick = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(

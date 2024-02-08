@@ -50,7 +50,6 @@ fun CountryListScreen(
             }
 
             if (state.countryData.isNotEmpty()) {
-
                 CountryDataList(
                     loadListSize = 238,
                     countryList = state.countryData,

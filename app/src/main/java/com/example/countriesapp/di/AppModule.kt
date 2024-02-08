@@ -7,6 +7,7 @@ import com.example.countriesapp.data.local_db.CountryDao
 import com.example.countriesapp.data.local_db.CountryDatabase
 import com.example.countriesapp.data.remote.CountryApi
 import com.example.countriesapp.data.repositoryimpl.FavoriteCountryRepositoryImpl
+import com.example.countriesapp.data.repositoryimpl.SearchCountryRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,5 +50,11 @@ object AppModule {
     @Singleton
     fun provideFavoriteCountryRepositoryImpl(countryDao: CountryDao) : FavoriteCountryRepositoryImpl{
         return FavoriteCountryRepositoryImpl(countryDao = countryDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchCountryImpl (countryApi: CountryApi) : SearchCountryRepositoryImpl{
+        return SearchCountryRepositoryImpl(countryApi = countryApi)
     }
 }

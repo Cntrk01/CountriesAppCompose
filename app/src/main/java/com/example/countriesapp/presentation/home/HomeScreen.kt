@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
@@ -14,6 +13,7 @@ import com.example.countriesapp.common.Constants.Currency
 import com.example.countriesapp.common.Constants.Favorite
 import com.example.countriesapp.common.Constants.Play_Quiz
 import com.example.countriesapp.common.Constants.Region
+import com.example.countriesapp.common.Constants.SearchCountry
 import com.example.countriesapp.common.Constants.Sub_Region
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.HomeCard
@@ -63,6 +63,12 @@ fun HomeScreen(
             cardText = Favorite,
             clickHomeItem = { clickHomeItem.invoke(Favorite) },
             backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+        ),
+        ScreenItem(
+            imageId = R.drawable.icons_search,
+            cardText = SearchCountry,
+            clickHomeItem = { clickHomeItem.invoke(SearchCountry) },
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer
         )
     )
 

@@ -8,6 +8,7 @@ sealed class Screen(val route:String){
     object CurrencyPage : Screen(route = "currencies")
     object PlayQuizPage : Screen(route = "play_quiz")
     object FavoritePage : Screen(route = "favorite")
+    object SearchPage : Screen(route = "search")
 
     object RegionCountryListPage : Screen(route = "region_list_page")
     object CountryPage : Screen(route = "country_page")

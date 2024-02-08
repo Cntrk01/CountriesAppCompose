@@ -38,6 +38,7 @@ import com.example.countriesapp.R
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
+import com.example.countriesapp.layouts.ShowForEmptyResult
 import com.example.countriesapp.presentation.favorite.viewmodel.FavoriteViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -128,29 +129,11 @@ fun FavoriteScreen(
                     }
                 }
             }
-
             //else if yazınca geri tuşuna basınca anlık olarak bu kısımın gözükmesi problemini giderdim.else blogu vardı
             else if (state.favoriteList?.isNotEmpty() == false) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = CenterHorizontally
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .width(250.dp)
-                            .height(250.dp),
-                        painter = painterResource(id = R.drawable.icons_empty),
-                        contentDescription = ""
-                    )
-                    Text(
-                        modifier = Modifier.align(CenterHorizontally),
-                        text = "No Countries Are Favorites",
-                        textAlign = TextAlign.Center,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
+                ShowForEmptyResult(
+                    imageId = R.drawable.icons_empty,
+                    textBelowThePicture = "No Countries Are Favorites")
             }
         }
     }

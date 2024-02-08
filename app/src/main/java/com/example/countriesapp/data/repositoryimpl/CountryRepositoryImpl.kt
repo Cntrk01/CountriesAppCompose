@@ -11,11 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.Collections.max
-import java.util.Collections.min
 import javax.inject.Inject
-import kotlin.math.max
-import kotlin.math.min
 
 class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryApi) :
     CountryRepository {

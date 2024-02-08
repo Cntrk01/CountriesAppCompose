@@ -1,5 +1,4 @@
-##İçerik
-
+## İçerik
 
 Öncelikli olarak herkese merhaba.Bu projemde Jetpack Compose ile bir ülkeler uygulaması geliştirmeye çalıştımUygulama içerisinde 6 bölge , 16 alt bölge mevcuttur.
 Uygulama içerisinde ülkeleri listeleyebileceğimiz,bölgelere göre ülkeleri listeleyeceğimiz,bu ülkelerin

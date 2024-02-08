@@ -26,6 +26,7 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
     onSearch: (String) -> Unit = {},
+    lastQuery :String
 ){
     var text by remember {
         mutableStateOf("")
@@ -34,8 +35,8 @@ fun SearchBar(
         mutableStateOf(hint != "")
     }
 
-    if (text.isNotBlank()){
-        text=text
+    if (lastQuery.isNotBlank()){
+        text=lastQuery
         isHintDisplayed=false
     }
 

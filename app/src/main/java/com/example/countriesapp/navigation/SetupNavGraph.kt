@@ -130,6 +130,13 @@ fun SetupNavGraph(
             SearchPage(
                 backClick = {
                     navController.popBackStack()
+                },
+                countryDetailItem = {countryDetailItem->
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        Screen.CountryDetailPage.route,
+                        countryDetailItem
+                    )
+                    navController.navigate(route = Screen.CountryDetailPage.route)
                 }
             )
         }

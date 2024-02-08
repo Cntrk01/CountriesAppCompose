@@ -6,7 +6,7 @@ import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.domain.model.CountryRoomItem
 import java.util.Locale
 
-fun CreateFirstNameToIconMap(checkCountry:String): Int {
+fun createFirstNameToIconMap(checkCountry:String): Int {
     return when(checkCountry.lowercase(Locale.ROOT)){
         "tur" -> R.drawable.icons_turkey
         "ara" -> R.drawable.icons_arabic

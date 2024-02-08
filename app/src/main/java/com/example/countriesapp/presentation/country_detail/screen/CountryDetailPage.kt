@@ -68,7 +68,7 @@ import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.navigation.Screen
 import com.example.countriesapp.presentation.favorite.viewmodel.FavoriteViewModel
-import com.example.countriesapp.util.CreateFirstNameToIconMap
+import com.example.countriesapp.util.createFirstNameToIconMap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -326,7 +326,7 @@ private fun Translations(
             ) {
                 translationList[i].official?.let { official ->
                     translationList[i].firstName?.let { firstName ->
-                        val iconResId = CreateFirstNameToIconMap(firstName)
+                        val iconResId = createFirstNameToIconMap(firstName)
 
                         ItemRowDesign(
                             icon = iconResId,

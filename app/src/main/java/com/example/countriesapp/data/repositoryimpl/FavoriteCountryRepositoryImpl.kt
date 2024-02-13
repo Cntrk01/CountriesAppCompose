@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
+import java.io.IOException
 import java.lang.Exception
+import java.net.SocketTimeoutException
 
 class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
     FavoriteCountryRepository {
@@ -22,8 +25,14 @@ class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
                 allCountryData.collectLatest {
                     trySend(Response.Success(it))
                 }
-            } catch (e: Exception) {
-                trySend(Response.Error(e.localizedMessage ?: "Exception"))
+            } catch (e: SocketTimeoutException) {
+                trySend(Response.Error("Timeout.Try Again"))
+            } catch (e: HttpException) {
+                trySend(Response.Error("Check your internet connection.."))
+            } catch (e: IOException) {
+                trySend(Response.Error("Couldn't reach server.Check your internet connection.."))
+            }catch (e: Exception) {
+                trySend(Response.Error("An unexpected error occured"))
             }
         }
 
@@ -33,8 +42,14 @@ class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
                 emit(Response.Loading())
                 val deleteCountry = countryDao.deleteCountry(countryDetailItem = countryDetailItem)
                 emit(Response.Success(deleteCountry))
-            } catch (e: Exception) {
-                emit(Response.Error(e.localizedMessage ?: "Exception"))
+            } catch (e: SocketTimeoutException) {
+                emit(Response.Error("Timeout.Try Again"))
+            } catch (e: HttpException) {
+                emit(Response.Error("Check your internet connection.."))
+            } catch (e: IOException) {
+                emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+            }catch (e: Exception) {
+                emit(Response.Error("An unexpected error occured"))
             }
         }
 
@@ -44,8 +59,14 @@ class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
                 emit(Response.Loading())
                 countryDao.insertCountry(countryDetailItem = countryDetailItem)
                 emit(Response.Success(Unit))
-            } catch (e: Exception) {
-                emit(Response.Error(e.localizedMessage ?: "Exception"))
+            }catch (e: SocketTimeoutException) {
+                emit(Response.Error("Timeout.Try Again"))
+            } catch (e: HttpException) {
+                emit(Response.Error("Check your internet connection.."))
+            } catch (e: IOException) {
+                emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+            }catch (e: Exception) {
+                emit(Response.Error("An unexpected error occured"))
             }
         }
 
@@ -55,8 +76,14 @@ class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
                 emit(Response.Loading())
                 val insertCountry = countryDao.checkExistCountry(name = name)
                 emit(Response.Success(insertCountry))
-            } catch (e: Exception) {
-                emit(Response.Error(e.localizedMessage ?: "Exception"))
+            }catch (e: SocketTimeoutException) {
+                emit(Response.Error("Timeout.Try Again"))
+            } catch (e: HttpException) {
+                emit(Response.Error("Check your internet connection.."))
+            } catch (e: IOException) {
+                emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+            }catch (e: Exception) {
+                emit(Response.Error("An unexpected error occured"))
             }
         }
 }

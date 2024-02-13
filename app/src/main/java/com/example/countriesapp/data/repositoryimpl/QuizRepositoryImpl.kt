@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi) : QuizRepository {
@@ -20,12 +22,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
             emit(Response.Success(data = europeCountry.subList(0,10)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -34,12 +38,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItemCapital() }
             emit(Response.Success(data = europeCountry.subList(0,10)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -62,12 +68,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
                 }.flatten()
 
             emit(Response.Success(data = europeCountry.subList(0,10)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -77,12 +85,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
             val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
             emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -92,12 +102,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItemCapital() }
             val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItemCapital() }
             emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -134,12 +146,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
                     }
                 }.flatten()
             emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -150,12 +164,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
             val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
             emit(Response.Success(data = europeCountry.subList(20,30)+asiaCountry.subList(20,30)+americaCountry.subList(20,30)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -166,12 +182,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItemCapital() }
             val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItemCapital() }
             emit(Response.Success(data = europeCountry.subList(20,30)+asiaCountry.subList(20,30)+americaCountry.subList(20,30)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -224,12 +242,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
                 }.flatten()
 
             emit(Response.Success(data = europeCountry.subList(20,30)+asiaCountry.subList(20,30)+americaCountry.subList(20,30)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -241,12 +261,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
             val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
             emit(Response.Success(data = europeCountry.subList(30,40)+asiaCountry.subList(30,40)+americaCountry.subList(30,40)+africaCountry.subList(0,10)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -258,12 +280,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItemCapital() }
             val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
             emit(Response.Success(data = europeCountry.subList(30,40)+asiaCountry.subList(30,40)+americaCountry.subList(30,40)+africaCountry.subList(0,10)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -330,12 +354,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
                     }
                 }.flatten()
             emit(Response.Success(data = europeCountry.subList(30,40)+asiaCountry.subList(30,40)+americaCountry.subList(30,40)+africaCountry.subList(0,10)))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -344,12 +370,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
             emit(Response.Success(data = europeCountry))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -358,12 +386,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
             emit(Response.Success(data = americaCountry))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -372,12 +402,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
             emit(Response.Success(data = africaCountry))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -386,12 +418,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val africaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
             emit(Response.Success(data = africaCountry))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: java.lang.Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -400,12 +434,14 @@ class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi)
             emit(Response.Loading())
             val oceaniaCountry=countryApi.getCountryWithRegion("Oceania").map { it.toQuizItem() }
             emit(Response.Success(data = oceaniaCountry))
-        }catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 }

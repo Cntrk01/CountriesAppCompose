@@ -469,11 +469,8 @@ private fun CountryImage(
                     contentDescription = "Forward"
                 )
             }
-
         }
     }
-
-
 }
 
 

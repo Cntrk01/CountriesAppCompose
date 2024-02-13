@@ -26,6 +26,7 @@ class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : 
                 is Response.Loading -> {
                     _state.update {
                         it.copy(
+                            error = "",
                             loading = true
                         )
                     }

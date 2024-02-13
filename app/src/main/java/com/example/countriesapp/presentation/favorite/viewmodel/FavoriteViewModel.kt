@@ -36,11 +36,12 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
     val state: StateFlow<FavoriteState> = _state
 
     fun getAllCountry() = viewModelScope.launch(Dispatchers.IO) {
-        favoriteCountryUseCase.getAllCountry().collectLatest {
-            when (it) {
+        favoriteCountryUseCase.getAllCountry().collectLatest {reponse->
+            when (reponse) {
                 is Response.Loading -> {
                     _state.update { favoriteState ->
                         favoriteState.copy(
+                            error = "",
                             loading = true
                         )
                     }
@@ -50,7 +51,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
                     _state.update { favoriteState ->
                         favoriteState.copy(
                             loading = false,
-                            error = it.message.toString()
+                            error = reponse.message.toString()
                         )
                     }
                 }
@@ -60,7 +61,7 @@ class FavoriteViewModel @Inject constructor(private val favoriteCountryUseCase: 
                         favoriteState.copy(
                             loading = false,
                             error = "",
-                            favoriteList = it.data
+                            favoriteList = reponse.data
                         )
                     }
                 }

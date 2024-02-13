@@ -44,7 +44,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
                     _state.update {
                         it.copy(
                             loading = false,
-                            error = it.error
+                            error = response.message.toString()
                         )
                     }
                 }

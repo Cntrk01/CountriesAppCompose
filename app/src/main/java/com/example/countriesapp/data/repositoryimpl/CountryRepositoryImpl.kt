@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryApi) :
@@ -25,12 +26,14 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
             }
             val filteredData = data.subList(startingIndex - 20, startingIndex)
             emit(Response.Success(data = filteredData))
-        } catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        } catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 
@@ -42,12 +45,14 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
                     it.toCountryDetailItem()
                 }
                 emit(Response.Success(data = data))
-            } catch (e: Exception) {
-                emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            } catch (e: SocketTimeoutException) {
+                emit(Response.Error("Timeout.Try Again"))
             } catch (e: HttpException) {
-                emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+                emit(Response.Error("Check your internet connection.."))
             } catch (e: IOException) {
                 emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+            }catch (e: Exception) {
+                emit(Response.Error("An unexpected error occured"))
             }
         }
 
@@ -60,12 +65,14 @@ class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryA
                 it.toCountryItem()
             }
             emit(Response.Success(data = data))
-        } catch (e: Exception) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+        }catch (e: SocketTimeoutException) {
+            emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {
-            emit(Response.Error(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Response.Error("Check your internet connection.."))
         } catch (e: IOException) {
             emit(Response.Error("Couldn't reach server.Check your internet connection.."))
+        }catch (e: Exception) {
+            emit(Response.Error("An unexpected error occured"))
         }
     }
 }

@@ -9,6 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +18,7 @@ import com.example.countriesapp.R
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.CountryDataList
+import com.example.countriesapp.layouts.ErrorText
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.presentation.country_list.viewmodel.CountryListViewModel
 
@@ -26,8 +29,7 @@ fun CountryListScreen(
     backClick: (() -> Unit)? = null
 ) {
     val state by countryListViewModel.countryListState.collectAsState()
-
-    val checkLoadingSituation = remember { mutableStateOf(false) }
+    var checkError by remember { mutableStateOf(false) }
 
     Column {
         AppBar(backButtonCheck = true,
@@ -39,29 +41,40 @@ fun CountryListScreen(
 
         Box(modifier = Modifier.fillMaxSize()) {
             if (state.loading) {
-                checkLoadingSituation.value = true
+                checkError = false
                 LoadingCardView(modifier = Modifier.align(Center))
-            } else {
-                checkLoadingSituation.value = false
             }
 
             if (state.error.isNotBlank()) {
-                Text(text = state.error)
+                checkError = true
+                Box(
+                    modifier = Modifier.align(Center),
+                    contentAlignment = Center
+                ) {
+                    ErrorText(
+                        errorMessage = state.error,
+                        clickRetryButton = {
+                            countryListViewModel.getCountryList()
+                            checkError = false
+                        })
+                }
+            }
+            if (state.countryData.isNotEmpty()) {
+                if (!checkError) {
+                    CountryDataList(
+                        loadListSize = 238,
+                        countryList = state.countryData,
+                        countryStateListSize = state.countryData.size,
+                        stateLoading = state.loading,
+                        loadMore = {
+                            countryListViewModel.getCountryList()
+                        },
+                        clickCountry = { countryDetail ->
+                            clickCountry?.invoke(countryDetail)
+                        })
+                }
             }
 
-            if (state.countryData.isNotEmpty()) {
-                CountryDataList(
-                    loadListSize = 238,
-                    countryList = state.countryData,
-                    countryStateListSize = state.countryData.size,
-                    stateLoading = state.loading,
-                    loadMore = {
-                        countryListViewModel.getCountryList()
-                    },
-                    clickCountry = { countryDetail ->
-                        clickCountry?.invoke(countryDetail)
-                    })
-            }
             //NOT !!! ELSE ifadesini kullandığım için her seferinde aşağı kaydırıp yeni data gelince en başa atıyordu.
             //Fakat if bloklarına cevirince bu düzeldi en sonra gelince en sondan dataları göstermeye devam ediyor <3
             //  if (state.loading) {

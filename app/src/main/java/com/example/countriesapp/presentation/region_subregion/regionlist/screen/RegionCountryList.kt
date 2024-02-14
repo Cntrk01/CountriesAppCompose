@@ -3,7 +3,6 @@ package com.example.countriesapp.presentation.region_subregion.regionlist.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,6 +13,7 @@ import com.example.countriesapp.R
 import com.example.countriesapp.domain.model.CountryDetailItem
 import com.example.countriesapp.layouts.AppBar
 import com.example.countriesapp.layouts.CountryDataList
+import com.example.countriesapp.layouts.ErrorText
 import com.example.countriesapp.layouts.LoadingCardView
 import com.example.countriesapp.presentation.region_subregion.regionlist.viewmodel.RegionCountryListViewModel
 
@@ -39,7 +39,16 @@ fun RegionCountryList(
             }
 
             if (state.error.isNotBlank()) {
-                Text(text = state.error)
+                Box(
+                    modifier = Modifier.align(Alignment.Center),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ErrorText(
+                        errorMessage = state.error,
+                        clickRetryButton = {
+                            regionCountryListViewModel.getCountryList()
+                        })
+                }
             }
 
             if (state.countryData.isNotEmpty()) {

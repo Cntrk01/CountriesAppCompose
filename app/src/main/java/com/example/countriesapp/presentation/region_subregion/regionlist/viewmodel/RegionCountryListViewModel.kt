@@ -18,11 +18,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegionCountryListViewModel @Inject constructor(private val countryRegionUseCase: CountryRegionUseCase,
-    private val savedStateHandle: SavedStateHandle) :
+class RegionCountryListViewModel @Inject constructor(
+    private val countryRegionUseCase: CountryRegionUseCase,
+    private val savedStateHandle: SavedStateHandle
+) :
     ViewModel() {
 
-    private var regionName=""
+    private var regionName = ""
 
     private var countryList = mutableStateListOf<CountryItem>()
     private var _state = MutableStateFlow(RegionCountryState())
@@ -31,57 +33,58 @@ class RegionCountryListViewModel @Inject constructor(private val countryRegionUs
 
     init {
         savedStateHandle.get<String>(Constants.Region_Name)?.let {
-            getCountryList(countryName = it)
+            //retry butonuna tıkladığında region name yi tutmam gerektiği için kullandım
+            regionName = it
+            getCountryList(countryName = regionName)
         }
     }
 
-    private fun getCountryList(countryName:String?=null) = viewModelScope.launch {
-        countryName?.let {countryNAME->
-            countryRegionUseCase(regionName = countryNAME).collectLatest { response ->
-                when (response) {
-                    is Response.Loading -> {
-                        _state.update {
-                            it.copy(
-                                loading = true,
-                                error="",
-                            )
-                        }
+    fun getCountryList(countryName: String? = null) = viewModelScope.launch {
+        countryRegionUseCase(regionName = countryName ?: regionName).collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true,
+                            error = "",
+                        )
                     }
+                }
 
-                    is Response.Error -> {
-                        _state.update {
-                            it.copy(
-                                loading = false,
-                                error = it.error
-                            )
-                        }
+                is Response.Error -> {
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            error = response.message.toString()
+                        )
                     }
+                }
 
-                    else -> {
-                        val newData = response.data?.map { countryItem ->
-                            CountryItem(
-                                flag = countryItem.flag,
-                                name = countryItem.name,
-                                countryDetailItem = countryItem.countryDetailItem
-                            )
-                        } ?: emptyList() //null geleceği için böyle yaptım ? var datadan önce
+                else -> {
+                    val newData = response.data?.map { countryItem ->
+                        CountryItem(
+                            flag = countryItem.flag,
+                            name = countryItem.name,
+                            countryDetailItem = countryItem.countryDetailItem
+                        )
+                    } ?: emptyList() //null geleceği için böyle yaptım ? var datadan önce
 
-                        countryList +=newData
+                    countryList += newData
 
-                        _state.update {
-                            it.copy(
-                                loading = false,
-                                error = "",
-                                countryData = countryList
-                            )
-                        }
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            error = "",
+                            countryData = countryList
+                        )
                     }
                 }
             }
         }
+
     }
 
-    fun resetState(){
+    fun resetState() {
         _state.update {
             it.copy(
                 loading = false,

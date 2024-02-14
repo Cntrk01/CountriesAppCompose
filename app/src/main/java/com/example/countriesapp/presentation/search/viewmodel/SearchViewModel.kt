@@ -27,6 +27,7 @@ class SearchViewModel @Inject constructor(private val searchUseCase:SearchCountr
                     is Response.Loading->{
                         _state.update { updateState->
                             updateState.copy(
+                                error = "",
                                 loading = true,
                             )
                         }

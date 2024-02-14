@@ -10,6 +10,7 @@ import com.example.countriesapp.presentation.country_list.state.CountryListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,7 +30,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
     }
 
     fun getCountryList() = viewModelScope.launch {
-        countryListUseCase(page = PAGE_SIZE).collectLatest { response ->
+        countryListUseCase(page = PAGE_SIZE).collect { response ->
             when (response) {
                 is Response.Loading -> {
                     _state.update {
@@ -44,7 +45,8 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
                     _state.update {
                         it.copy(
                             loading = false,
-                            error = response.message.toString()
+                            error = response.message.toString(),
+                            countryData = emptyList()
                         )
                     }
                 }
@@ -73,7 +75,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
         }
     }
 
-    private fun resetState(){
+    fun resetState(){
         _state.update {
             it.copy(
                 loading = false,
@@ -84,7 +86,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
     }
 
     override fun onCleared() {
-        resetState()
         super.onCleared()
+        resetState()
     }
 }

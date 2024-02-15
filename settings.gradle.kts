@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Countries App"
+rootProject.name = "World Countries & Flags"
 include(":app")
  

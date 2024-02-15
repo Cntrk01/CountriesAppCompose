@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.countriesapp"
+    namespace = "com.mckstuido.countriesapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.countriesapp"
+        applicationId = "com.mckstuido.countriesapp"
         minSdk = 22
         targetSdk = 34
         versionCode = 1

@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.mckstudio.countriesapp.layouts.BannerAd
 import com.mckstudio.countriesapp.navigation.SetupNavGraph
 import com.mckstudio.countriesapp.ui.theme.CountriesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,9 +24,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                       //Burada cagırınca görünme durumu düzeliyor
-                       //AppBar(imageId = R.drawable.icon_app_bar)
-                       SetupNavGraph(navController = navHostController)
+                    //Burada cagırınca görünme durumu düzeliyor
+                    //AppBar(imageId = R.drawable.icon_app_bar)
+                    SetupNavGraph(navController = navHostController)
+                    BannerAd()
                 }
             }
         }

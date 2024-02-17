@@ -29,7 +29,6 @@ fun AppBar(
     endButtonCheck: Boolean = false,
     imageId: Int,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val checkBackButton = remember { mutableStateOf(backButtonCheck) }
     val checkEndButton = remember { mutableStateOf(endButtonCheck) }
 
@@ -99,6 +98,4 @@ fun AppBar(
             }
         }
     }
-
-
 }

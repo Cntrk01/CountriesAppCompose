@@ -30,7 +30,6 @@ fun HomeCard(
     clickHomeCardItem: ((String) -> Unit)? = null,
     backgroundColor: Color
 ) {
-    val coroutineScope = rememberCoroutineScope()
     Card(
         modifier = Modifier
             .fillMaxWidth()

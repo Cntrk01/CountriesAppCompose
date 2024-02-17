@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.domain.model.CountryItem
+import com.mckstuido.countriesapp.R
 
 @Composable
 fun CountryDataList(
@@ -37,7 +39,6 @@ fun CountryDataList(
     loadMore: (() -> Unit)? = null,
     clickCountry: ((CountryDetailItem) -> Unit)? = null
 ) {
-
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp)
@@ -71,7 +72,7 @@ fun CountryDataList(
                                 .fillMaxWidth()
                                 .fillMaxHeight(),
                             model = countryList[countryList1].flag?.png,
-                            contentDescription = "Image",
+                            contentDescription = stringResource(R.string.image),
                             contentScale = ContentScale.FillHeight
                         )
 

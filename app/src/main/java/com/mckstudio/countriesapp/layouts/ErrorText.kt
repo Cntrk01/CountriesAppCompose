@@ -9,17 +9,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mckstuido.countriesapp.R
 
 @Composable
 fun ErrorText(
     errorMessage: String,
     showButton: Boolean? = true,
     clickRetryButton: (() -> Unit)? = null,
-    buttonText : String = "Try Again"
+    buttonText : String = stringResource(R.string.try_again)
 ) {
     Column(
         modifier=Modifier.padding(10.dp),

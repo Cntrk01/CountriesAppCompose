@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,7 +46,7 @@ fun SearchPage(
 
         SearchBar(
             modifier = Modifier.padding(16.dp),
-            hint = "Search Country",
+            hint = stringResource(R.string.search_country),
             onSearch = {
                 query = it
                 searchViewModel.searchCountry(countryName = it)
@@ -67,7 +68,7 @@ fun SearchPage(
                } else if (state.searchCountry?.isNotEmpty() == false) {
                    ShowForEmptyResult(
                        imageId = R.drawable.icons_empty,
-                       textBelowThePicture = "No country found as a result of the search."
+                       textBelowThePicture = stringResource(R.string.no_country_found_as_a_result_of_the_search),
                    )
                } else if (state.searchCountry?.isNotEmpty() == true) {
                    CountryDataList(
@@ -84,7 +85,7 @@ fun SearchPage(
                searchViewModel.resetState()
                ShowForEmptyResult(
                    imageId = R.drawable.icons_empty,
-                   textBelowThePicture = "Query Is Empty..."
+                   textBelowThePicture = stringResource(R.string.query_is_empty)
                )
            }
        }

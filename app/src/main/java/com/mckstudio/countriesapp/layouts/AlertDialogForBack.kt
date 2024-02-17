@@ -9,7 +9,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.mckstudio.countriesapp.common.Constants
+import com.mckstuido.countriesapp.R
 
 @Composable
 fun AlertDialogForBack(
@@ -24,7 +26,7 @@ fun AlertDialogForBack(
             Button(onClick = {
                 confirmButton.invoke()
             }) {
-                Text(text = Constants.CONTINUE)
+                Text(text = stringResource(R.string.continueString))
             }
         },
         text = {
@@ -32,7 +34,7 @@ fun AlertDialogForBack(
                 modifier = Modifier.fillMaxWidth()
             ){
                 Row {
-                    Text(text = "Are you sure you want to finish the quiz ?")
+                    Text(text = stringResource(R.string.are_you_sure_you_want_to_finish_the_quiz))
                 }
             }
         },
@@ -40,7 +42,7 @@ fun AlertDialogForBack(
             OutlinedButton(onClick = {
                 dismissButton.invoke()
             }) {
-                Text(text = Constants.FINISH)
+                Text(text = stringResource(R.string.finish))
             }
         })
 }

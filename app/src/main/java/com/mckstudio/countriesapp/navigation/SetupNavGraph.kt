@@ -1,6 +1,9 @@
 package com.mckstudio.countriesapp.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -33,6 +36,7 @@ fun SetupNavGraph(
     navController: NavHostController
 ) {
     NavHost(
+        modifier=Modifier.padding(bottom = 60.dp),
         navController = navController,
         startDestination = Screen.HomePage.route
     ) {

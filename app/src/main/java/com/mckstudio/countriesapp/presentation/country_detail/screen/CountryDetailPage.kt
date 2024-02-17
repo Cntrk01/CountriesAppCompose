@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -128,7 +129,7 @@ fun CountryDetailPage(
                         ItemRowDesign(
                             icon = R.drawable.icon_capital,
                             firstText = it.name?.common.toString(),
-                            secondText = "Country"
+                            secondText = stringResource(id = R.string.country)
                         )
 
                         it.currencies?.let { currencies ->
@@ -136,7 +137,7 @@ fun CountryDetailPage(
                                 ItemRowDesign(
                                     icon = R.drawable.icons_currency,
                                     firstText = "${currencyData.name} (${currencyData.symbol ?: ""})",
-                                    secondText = "Currency"
+                                    secondText = stringResource(R.string.currency)
                                 )
                             }
                         }
@@ -144,45 +145,45 @@ fun CountryDetailPage(
                         ItemRowDesign(
                             icon = R.drawable.icon_official,
                             firstText = countryItem?.name?.official.toString(),
-                            secondText = "Official Name"
+                            secondText = stringResource(R.string.official_name)
                         )
 
                         ItemRowDesign(
                             icon = R.drawable.icons_population,
                             firstText = countryItem?.population.toString(),
-                            secondText = "Population"
+                            secondText = stringResource(R.string.population)
                         )
 
                         ItemRowDesign(
                             icon = R.drawable.icons_region,
                             firstText = countryItem?.region.toString(),
-                            secondText = "Region"
+                            secondText = stringResource(R.string.region)
                         )
 
                         ItemRowDesign(
                             icon = R.drawable.icons_status,
                             firstText = countryItem?.status?.capitalize(Locale.ROOT).toString(),
-                            secondText = "Status"
+                            secondText = stringResource(R.string.status)
                         )
 
                         ItemRowDesign(
                             icon = R.drawable.icons_region,
-                            firstText = countryItem?.subregion ?: "Unknown",
-                            secondText = "Sub Region"
+                            firstText = countryItem?.subregion ?: stringResource(R.string.unknown),
+                            secondText = stringResource(R.string.sub_region)
                         )
 
                         countryItem?.timezones?.let { timeZones ->
                             ItemRowDesign(
                                 icon = R.drawable.icons_timezone,
                                 firstText = timeZones.joinToString(", "),
-                                secondText = "Time Zones"
+                                secondText = stringResource(R.string.time_zones)
                             )
                         }
 
                         ItemRowDesign(
                             icon = R.drawable.icons_translation,
-                            firstText = "Other Language Names",
-                            secondText = "Translations"
+                            firstText = stringResource(R.string.other_language_names),
+                            secondText = stringResource(R.string.translations),
                         )
 
                         AnimatedVisibility(visible = expandedTranslation) {
@@ -200,7 +201,7 @@ fun CountryDetailPage(
                                 }) {
                             Icon(
                                 imageVector = if (expandedTranslation) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                contentDescription = "Clear",
+                                contentDescription = stringResource(R.string.clear),
                                 tint = Color.Black,
                                 modifier = Modifier.align(CenterHorizontally)
                             )
@@ -209,8 +210,8 @@ fun CountryDetailPage(
 
                         ItemRowDesign(
                             icon = R.drawable.icons_location,
-                            firstText = "Map",
-                            secondText = "Location"
+                            firstText = stringResource(R.string.map),
+                            secondText = stringResource(R.string.location)
                         )
                         //AnimatedVisibility(modifier = Modifier.width(350.dp), visible = expandedMap) {
                         //                            Column {
@@ -252,7 +253,7 @@ private fun ItemRowDesign(
     ) {
         Image(
             painter = painterResource(id = icon),
-            contentDescription = "Icon",
+            contentDescription = stringResource(R.string.icon),
             modifier = Modifier
                 .size(45.dp)
         )
@@ -393,7 +394,7 @@ private fun CountryImage(
                                 0.dp
                             }
                         ),
-                    contentDescription = "Image",
+                    contentDescription = stringResource(id = R.string.image),
                     contentScale =
                     if (index > 0) {
                         ContentScale.FillHeight
@@ -452,7 +453,8 @@ private fun CountryImage(
                     }
                 }
             ) {
-                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Back")
+                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = stringResource(R.string.back)
+                )
             }
             IconButton(
                 modifier = Modifier.align(Alignment.CenterEnd),
@@ -466,7 +468,7 @@ private fun CountryImage(
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = "Forward"
+                    contentDescription = stringResource(R.string.forward)
                 )
             }
         }

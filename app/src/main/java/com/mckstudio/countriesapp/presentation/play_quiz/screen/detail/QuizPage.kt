@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -150,7 +151,7 @@ fun QuizPage(
         if (difficultLevel == Constants.OCEANIA) {
             quizViewModel.getOceaniaCountryQuizQuestion()
         }
-        StateCollect(
+        stateCollect(
             coroutineScope = coroutineScope,
             state = state,
             checkErrorMessage = {
@@ -222,14 +223,10 @@ fun QuizPage(
                                 var newItem: String
 
                                 do {
-                                    newItem =
-                                        newList1.shuffled().take(1).map { it.name }.first()
-                                            .toString()
-                                } while (correctAnswerIndex < newList1.size && newItem == newList1[correctAnswerIndex].name || otherOptions.contains(
-                                        newItem
-                                    )
+                                    newItem = newList1.shuffled().take(1).map { it.name }.first().toString()
+                                } while (correctAnswerIndex < newList1.size && newItem ==
+                                    newList1[correctAnswerIndex].name || otherOptions.contains(newItem)
                                 )
-
                                 otherOptions[i] = newItem
                             }
                             correctAnswerLastIndex = correctAnswerIndex
@@ -315,7 +312,6 @@ fun QuizPage(
                                                     } else if (correctAnswerIndex == newList1.size) {
                                                         //son indexe geldiğinde tekrar döngüye girmemesini engelliyorum .
                                                         isFinished = false
-                                                        println("Quiz bitti, yeni bir şey yapabilirsiniz.")
                                                     }
                                                 } else {
                                                     userCheckWrongAnswer--
@@ -323,7 +319,6 @@ fun QuizPage(
                                             }
                                         } else {
                                             isFinishedCheck = true
-                                            println("Oyun bitti, başka bir şey yapabilirsiniz.")
                                         }
                                     }, correctAnswer = checkAnswerString.toString())
                                 }
@@ -341,11 +336,10 @@ fun QuizPage(
                 }
             }
         }
-
     }
 }
 
-private fun StateCollect(
+private fun stateCollect(
     coroutineScope: CoroutineScope,
     state: StateFlow<QuizState>,
     checkLoading: (Boolean) -> Unit,
@@ -478,7 +472,7 @@ fun CountdownTimer(
     seconds: Int,
     onCountdownFinished: () -> Unit
 ) {
-    var remainingSeconds by remember { mutableStateOf(seconds) }
+    var remainingSeconds by remember { mutableIntStateOf(seconds) }
 
     LaunchedEffect(key1 = remainingSeconds) {
         while (remainingSeconds > 0) {
@@ -522,7 +516,7 @@ fun AlertDialogWithCountdown(
             ) {
                 Row {
                     Text(
-                        text = "You have no rights left. Watch the video to continue !",
+                        text = stringResource(R.string.you_have_no_rights_left_watch_the_video_to_continue),
                         textAlign = TextAlign.Center,
                         fontSize = 18.sp
                     )

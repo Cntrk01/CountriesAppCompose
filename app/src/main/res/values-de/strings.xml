@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Weltländer und Flaggen</string>
+
+    <string name="flag">Flagge</string>
+    <string name="currencies">Währungen</string>
+    <string name="country">Land</string>
+    <string name="are_you_sure_you_want_to_finish_the_quiz">Sind Sie sicher, dass Sie das Quiz beenden möchten?</string>
+    <string name="continueString">Weiter</string>
+    <string name="finish">Beenden</string>
+    <string name="image">Bild</string>
+    <string name="try_again">Erneut versuchen</string>
+    <string name="loading">Laden...</string>
+    <string name="official_name">Offizieller Name</string>
+    <string name="population">Bevölkerung</string>
+    <string name="status">Status</string>
+    <string name="unknown">Unbekannt</string>
+    <string name="time_zones">Zeitzonen</string>
+    <string name="other_language_names">Andere Sprachnamen</string>
+    <string name="translations">Übersetzungen</string>
+    <string name="clear">Löschen</string>
+    <string name="map">Karte</string>
+    <string name="location">Ort</string>
+    <string name="icon">Symbol</string>
+    <string name="back">Zurück</string>
+    <string name="forward">Vorwärts</string>
+    <string name="no_countries_are_favorites">Keine Länder sind Favoriten</string>
+    <string name="you_have_no_rights_left_watch_the_video_to_continue">Sie haben keine Rechte mehr. Sehen Sie sich das Video an, um fortzufahren!</string>
+    <string name="no_country_found_as_a_result_of_the_search">Kein Land als Suchergebnis gefunden.</string>
+    <string name="query_is_empty">Die Abfrage ist leer...</string>
+
+    <!-- Regionen -->
+    <string name="antarctic">Antarktis</string>
+    <string name="europe">Europa</string>
+    <string name="americas">Amerikas</string>
+    <string name="america">Amerika</string>
+    <string name="africa">Afrika</string>
+    <string name="oceania">Ozeanien</string>
+    <string name="asia">Asien</string>
+    <string name="southern_europe">Südeuropa</string>
+    <string name="south_eastern_asia">Südostasien</string>
+    <string name="north_america">Nordamerika</string>
+    <string name="melanesia">Melanesien</string>
+    <string name="central_europe">Mitteleuropa</string>
+    <string name="eastern_africa">Ostafrika</string>
+    <string name="western_africa">Westafrika</string>
+    <string name="northern_africa">Nordafrika</string>
+    <string name="southern_africa">Südafrika</string>
+    <string name="northern_europe">Nordeuropa</string>
+    <string name="caribbean">Karibik</string>
+    <string name="south_america">Südamerika</string>
+    <string name="southeast_europe">Südosteuropa</string>
+    <string name="middle_africa">Mittelafrika</string>
+    <string name="southern_asia">Südasien</string>
+    <string name="eastern_asia">Ostasien</string>
+
+    <!-- Ana Sayfa -->
+    <string name="all_country">Alle Länder</string>
+    <string name="region">Region</string>
+    <string name="region_name">Regionsname</string>
+    <string name="sub_region">Unterregion</string>
+    <string name="currency">Währung</string>
+    <string name="play_quiz">Quiz spielen</string>
+    <string name="favorite">Favorit</string>
+    <string name="search_country">Land suchen</string>
+
+    <!-- Zorluk Seviyeleri -->
+    <string name="easy">Leicht</string>
+    <string name="medium">Mittel</string>
+    <string name="hard">Schwer</string>
+    <string name="expert">Experte</string>
+
+    <!-- Argümanlar -->
+    <string name="difficulty">Schwierigkeit</string>
+</resources>

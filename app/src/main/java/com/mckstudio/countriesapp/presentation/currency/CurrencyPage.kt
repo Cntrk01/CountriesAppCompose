@@ -82,14 +82,14 @@ fun CurrencyPage(
                                 textAlign = TextAlign.Center)
                         }
                         Column(
-                            modifier = Modifier.weight(1f).padding(start = 15.dp)
+                            modifier = Modifier.weight(1f).padding(start = 20.dp)
                         ) {
                             Text(
                                 text = stringResource(R.string.country),
                                 textAlign = TextAlign.Center)
                         }
                         Column(
-                            modifier = Modifier.weight(1f).padding(start = 10.dp)
+                            modifier = Modifier.weight(1f).padding(start = 25.dp)
                         ) {
                             Text(
                                 text = stringResource(R.string.currencies),

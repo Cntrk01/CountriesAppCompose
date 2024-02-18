@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants
 import com.mckstudio.countriesapp.domain.model.ScreenItem
@@ -21,23 +22,23 @@ fun PlayQuiz(
     clickHomeItem: ((String) -> Unit)
 ) {
     val quizItems = listOf(
-        ScreenItem(imageId = R.drawable.icons_planet_earth, cardText = Constants.EASY, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icons_planet_earth, cardText = stringResource(id = R.string.easy), clickHomeItem = { clickHomeItem.invoke(
             Constants.EASY) }, backgroundColor = Color.Green),
-        ScreenItem(imageId = R.drawable.icons_medium, cardText = Constants.MEDIUM, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icons_medium, cardText = stringResource(id = R.string.medium), clickHomeItem = { clickHomeItem.invoke(
             Constants.MEDIUM) }, backgroundColor = MaterialTheme.colorScheme.inversePrimary),
-        ScreenItem(imageId = R.drawable.icons_hard, cardText = Constants.HARD, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icons_hard, cardText = stringResource(id = R.string.hard), clickHomeItem = { clickHomeItem.invoke(
             Constants.HARD) }, backgroundColor = Color.Red),
-        ScreenItem(imageId = R.drawable.icons_expert, cardText = Constants.EXPERT, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icons_expert, cardText = stringResource(id = R.string.expert), clickHomeItem = { clickHomeItem.invoke(
             Constants.EXPERT) }, backgroundColor = MaterialTheme.colorScheme.onErrorContainer),
-        ScreenItem(imageId = R.drawable.icons_europe, cardText = Constants.EUROPE, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icons_europe, cardText = stringResource(id = R.string.europe), clickHomeItem = { clickHomeItem.invoke(
             Constants.EUROPE) }, backgroundColor = MaterialTheme.colorScheme.outlineVariant),
-        ScreenItem(imageId = R.drawable.icon_america, cardText = Constants.AMERICA, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icon_america, cardText = stringResource(id = R.string.america), clickHomeItem = { clickHomeItem.invoke(
             Constants.AMERICA) }, backgroundColor = MaterialTheme.colorScheme.secondaryContainer),
-        ScreenItem(imageId = R.drawable.icon_africa, cardText = Constants.AFRICA, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icon_africa, cardText = stringResource(id = R.string.africa), clickHomeItem = { clickHomeItem.invoke(
             Constants.AFRICA) }, backgroundColor = MaterialTheme.colorScheme.tertiary),
-        ScreenItem(imageId = R.drawable.icon_asia, cardText = Constants.ASIA, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icon_asia, cardText = stringResource(id = R.string.asia), clickHomeItem = { clickHomeItem.invoke(
             Constants.ASIA) }, backgroundColor = MaterialTheme.colorScheme.scrim),
-        ScreenItem(imageId = R.drawable.icon_oceania, cardText = Constants.OCEANIA, clickHomeItem = { clickHomeItem.invoke(
+        ScreenItem(imageId = R.drawable.icon_oceania, cardText = stringResource(id = R.string.oceania), clickHomeItem = { clickHomeItem.invoke(
             Constants.OCEANIA) }, backgroundColor = MaterialTheme.colorScheme.outline),
         )
 

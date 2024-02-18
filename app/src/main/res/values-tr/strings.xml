@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Dünya Ülkeleri ve Bayrakları</string>
+
+    <string name="flag">Bayrak</string>
+    <string name="currencies">Para Birimleri</string>
+    <string name="country">Ülke</string>
+    <string name="are_you_sure_you_want_to_finish_the_quiz">Quiz\'i bitirmek istediğinizden emin misiniz?</string>
+    <string name="continueString">Devam Et</string>
+    <string name="finish">Bitir</string>
+    <string name="image">Resim</string>
+    <string name="try_again">Tekrar Deneyin</string>
+    <string name="loading">Yükleniyor...</string>
+    <string name="official_name">Resmi Adı</string>
+    <string name="population">Nüfus</string>
+    <string name="status">Durum</string>
+    <string name="unknown">Bilinmiyor</string>
+    <string name="time_zones">Zaman Dilimleri</string>
+    <string name="other_language_names">Diğer Dil Adları</string>
+    <string name="translations">Çeviriler</string>
+    <string name="clear">Temizle</string>
+    <string name="map">Harita</string>
+    <string name="location">Konum</string>
+    <string name="icon">Simge</string>
+    <string name="back">Geri</string>
+    <string name="forward">İleri</string>
+    <string name="no_countries_are_favorites">Favoride Ülke Yok...</string>
+    <string name="you_have_no_rights_left_watch_the_video_to_continue">Kalan haklarınız yok. Devam etmek için video izleyin!</string>
+    <string name="no_country_found_as_a_result_of_the_search">Arama sonucunda ülke bulunamadı.</string>
+    <string name="query_is_empty">Arama Sorgusu Boş...</string>
+
+    <!-- Regions -->
+    <string name="antarctic">Antarktika</string>
+    <string name="europe">Avrupa</string>
+    <string name="americas">Amerikalar</string>
+    <string name="america">Amerika</string>
+    <string name="africa">Afrika</string>
+    <string name="oceania">Okyanusya</string>
+    <string name="asia">Asya</string>
+    <string name="southern_europe">Güney Avrupa</string>
+    <string name="south_eastern_asia">Güneydoğu Asya</string>
+    <string name="north_america">Kuzey Amerika</string>
+    <string name="melanesia">Melanezya</string>
+    <string name="central_europe">Orta Avrupa</string>
+    <string name="eastern_africa">Doğu Afrika</string>
+    <string name="western_africa">Batı Afrika</string>
+    <string name="northern_africa">Kuzey Afrika</string>
+    <string name="southern_africa">Güney Afrika</string>
+    <string name="northern_europe">Kuzey Avrupa</string>
+    <string name="caribbean">Karayipler</string>
+    <string name="south_america">Güney Amerika</string>
+    <string name="southeast_europe">Güneydoğu Avrupa</string>
+    <string name="middle_africa">Orta Afrika</string>
+    <string name="southern_asia">Güney Asya</string>
+    <string name="eastern_asia">Doğu Asya</string>
+
+    <!-- Home Page -->
+    <string name="all_country">Tüm Ülkeler</string>
+    <string name="region">Bölge</string>
+    <string name="region_name">Bölge Adı</string>
+    <string name="sub_region">Alt Bölge</string>
+    <string name="currency">Para Birimi</string>
+    <string name="play_quiz">Sınav</string>
+    <string name="favorite">Favoriler</string>
+    <string name="search_country">Ülke Ara</string>
+
+    <!-- Difficulty Levels -->
+    <string name="easy">Kolay</string>
+    <string name="medium">Orta</string>
+    <string name="hard">Zor</string>
+    <string name="expert">Uzman</string>
+
+    <!-- Arguments -->
+    <string name="difficulty">Zorluk</string>
+</resources>

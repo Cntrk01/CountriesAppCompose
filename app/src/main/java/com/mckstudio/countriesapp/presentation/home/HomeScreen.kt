@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants.All_Country
 import com.mckstudio.countriesapp.common.Constants.Currency
@@ -26,48 +27,48 @@ fun HomeScreen(
 ) {
     val homeItems = listOf(
         ScreenItem(imageId = R.drawable.icons_planet_earth,
-            cardText = All_Country,
+            cardText = stringResource(id = R.string.all_country),
             clickHomeItem = { clickHomeItem.invoke(All_Country) },
             backgroundColor = MaterialTheme.colorScheme.primary
         ),
 
         ScreenItem(
             imageId = R.drawable.icon_region,
-            cardText = Region,
+            cardText = stringResource(id = R.string.region),
             clickHomeItem = { clickHomeItem.invoke(Region) },
             backgroundColor = MaterialTheme.colorScheme.tertiary
         ),
 
         ScreenItem(
             imageId = R.drawable.icon_country_region,
-            cardText = Sub_Region,
+            cardText = stringResource(id = R.string.sub_region),
             clickHomeItem = { clickHomeItem.invoke(Sub_Region) },
             backgroundColor = MaterialTheme.colorScheme.inversePrimary
         ),
 
         ScreenItem(
             imageId = R.drawable.icon_currency_exchange,
-            cardText = Currency,
+            cardText = stringResource(id = R.string.currency),
             clickHomeItem = { clickHomeItem.invoke(Currency) },
             backgroundColor = MaterialTheme.colorScheme.scrim
         ),
 
         ScreenItem(
             imageId = R.drawable.icon_quiz,
-            cardText = Play_Quiz,
+            cardText =stringResource(id = R.string.play_quiz),
             clickHomeItem = { clickHomeItem.invoke(Play_Quiz) },
             backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
 
         ScreenItem(
             imageId = R.drawable.icon_favorite_home,
-            cardText = Favorite,
+            cardText = stringResource(id = R.string.favorite),
             clickHomeItem = { clickHomeItem.invoke(Favorite) },
             backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
         ),
         ScreenItem(
             imageId = R.drawable.icons_search,
-            cardText = SearchCountry,
+            cardText = stringResource(id = R.string.search_country),
             clickHomeItem = { clickHomeItem.invoke(SearchCountry) },
             backgroundColor = MaterialTheme.colorScheme.primaryContainer
         )

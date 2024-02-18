@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">世界各国和旗帜</string>
+
+    <string name="flag">旗帜</string>
+    <string name="currencies">货币</string>
+    <string name="country">国家</string>
+    <string name="are_you_sure_you_want_to_finish_the_quiz">您确定要结束测验吗？</string>
+    <string name="continueString">继续</string>
+    <string name="finish">完成</string>
+    <string name="image">图片</string>
+    <string name="try_again">重试</string>
+    <string name="loading">加载中...</string>
+    <string name="official_name">正式名称</string>
+    <string name="population">人口</string>
+    <string name="status">状态</string>
+    <string name="unknown">未知</string>
+    <string name="time_zones">时区</string>
+    <string name="other_language_names">其他语言名称</string>
+    <string name="translations">翻译</string>
+    <string name="clear">清除</string>
+    <string name="map">地图</string>
+    <string name="location">位置</string>
+    <string name="icon">图标</string>
+    <string name="back">返回</string>
+    <string name="forward">前进</string>
+    <string name="no_countries_are_favorites">没有国家是收藏夹中的收藏项</string>
+    <string name="you_have_no_rights_left_watch_the_video_to_continue">您没有剩余的权限。观看视频以继续！</string>
+    <string name="no_country_found_as_a_result_of_the_search">搜索结果中未找到任何国家。</string>
+    <string name="query_is_empty">查询为空...</string>
+
+    <string name="antarctic">南极洲</string>
+    <string name="europe">欧洲</string>
+    <string name="americas">美洲</string>
+    <string name="america">美洲</string>
+    <string name="africa">非洲</string>
+    <string name="oceania">大洋洲</string>
+    <string name="asia">亚洲</string>
+    <string name="southern_europe">南欧</string>
+    <string name="south_eastern_asia">东南亚</string>
+    <string name="north_america">北美洲</string>
+    <string name="melanesia">美拉尼西亚</string>
+    <string name="central_europe">中欧</string>
+    <string name="eastern_africa">东非</string>
+    <string name="western_africa">西非</string>
+    <string name="northern_africa">北非</string>
+    <string name="southern_africa">南非</string>
+    <string name="northern_europe">北欧</string>
+    <string name="caribbean">加勒比</string>
+    <string name="south_america">南美洲</string>
+    <string name="southeast_europe">东南欧</string>
+    <string name="middle_africa">中非</string>
+    <string name="southern_asia">南亚</string>
+    <string name="eastern_asia">东亚</string>
+
+    <string name="all_country">所有国家</string>
+    <string name="region">地区</string>
+    <string name="region_name">地区名称</string>
+    <string name="sub_region">子地区</string>
+    <string name="currency">货币</string>
+    <string name="play_quiz">玩测验</string>
+    <string name="favorite">收藏夹</string>
+    <string name="search_country">搜索国家</string>
+
+    <string name="easy">简单</string>
+    <string name="medium">中等</string>
+    <string name="hard">困难</string>
+    <string name="expert">专家</string>
+
+    <string name="difficulty">难度</string>
+</resources>

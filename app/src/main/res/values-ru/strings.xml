@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Страны и флаги мира</string>
+
+    <string name="flag">Флаг</string>
+    <string name="currencies">Валюты</string>
+    <string name="country">Страна</string>
+    <string name="are_you_sure_you_want_to_finish_the_quiz">Вы уверены, что хотите завершить викторину?</string>
+    <string name="continueString">Продолжить</string>
+    <string name="finish">Завершить</string>
+    <string name="image">Изображение</string>
+    <string name="try_again">Попробовать снова</string>
+    <string name="loading">Загрузка...</string>
+    <string name="official_name">Официальное название</string>
+    <string name="population">Население</string>
+    <string name="status">Статус</string>
+    <string name="unknown">Неизвестно</string>
+    <string name="time_zones">Часовые пояса</string>
+    <string name="other_language_names">Другие языковые названия</string>
+    <string name="translations">Переводы</string>
+    <string name="clear">Очистить</string>
+    <string name="map">Карта</string>
+    <string name="location">Местоположение</string>
+    <string name="icon">Иконка</string>
+    <string name="back">Назад</string>
+    <string name="forward">Вперед</string>
+    <string name="no_countries_are_favorites">Нет избранных стран</string>
+    <string name="you_have_no_rights_left_watch_the_video_to_continue">У вас больше нет прав. Смотрите видео, чтобы продолжить!</string>
+    <string name="no_country_found_as_a_result_of_the_search">Поиск не дал результатов по странам.</string>
+    <string name="query_is_empty">Запрос пуст...</string>
+
+    <string name="antarctic">Антарктика</string>
+    <string name="europe">Европа</string>
+    <string name="americas">Америки</string>
+    <string name="america">Америка</string>
+    <string name="africa">Африка</string>
+    <string name="oceania">Океания</string>
+    <string name="asia">Азия</string>
+    <string name="southern_europe">Южная Европа</string>
+    <string name="south_eastern_asia">Юго-Восточная Азия</string>
+    <string name="north_america">Северная Америка</string>
+    <string name="melanesia">Меланезия</string>
+    <string name="central_europe">Центральная Европа</string>
+    <string name="eastern_africa">Восточная Африка</string>
+    <string name="western_africa">Западная Африка</string>
+    <string name="northern_africa">Северная Африка</string>
+    <string name="southern_africa">Южная Африка</string>
+    <string name="northern_europe">Северная Европа</string>
+    <string name="caribbean">Карибы</string>
+    <string name="south_america">Южная Америка</string>
+    <string name="southeast_europe">Юго-Восточная Европа</string>
+    <string name="middle_africa">Центральная Африка</string>
+    <string name="southern_asia">Южная Азия</string>
+    <string name="eastern_asia">Восточная Азия</string>
+
+    <string name="all_country">Все страны</string>
+    <string name="region">Регион</string>
+    <string name="region_name">Название региона</string>
+    <string name="sub_region">Подрегион</string>
+    <string name="currency">Валюта</string>
+    <string name="play_quiz">Играть в викторину</string>
+    <string name="favorite">Избранное</string>
+    <string name="search_country">Поиск по странам</string>
+
+    <string name="easy">Легко</string>
+    <string name="medium">Средне</string>
+    <string name="hard">Сложно</string>
+    <string name="expert">Эксперт</string>
+
+    <string name="difficulty">Сложность</string>
+</resources>

@@ -67,4 +67,7 @@
     <string name="expert">専門家</string>
 
     <string name="difficulty">難易度</string>
+    <string name="capital">首都</string>
+    <string name="emblems">エンブレム</string>
+    <string name="examCompleted">試験は無事に完了しました</string>
 </resources>

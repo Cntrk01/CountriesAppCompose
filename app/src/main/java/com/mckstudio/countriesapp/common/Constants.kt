@@ -49,6 +49,9 @@ object Constants {
 
     // ARGUMENTS
     const val DIFFICULT = "difficulty"
-
     const val FAVORITE = "Favorite"
+
+    const val Flag = "Flag"
+    const val Capital = "Capital"
+    const val Emblems = "Emblems"
 }

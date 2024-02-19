@@ -68,4 +68,8 @@
     <string name="expert">Expert</string>
 
     <string name="difficulty">Difficulté</string>
+
+    <string name="capital">Capitale</string>
+    <string name="emblems">Emblèmes</string>
+    <string name="examCompleted">Vous avez réussi l\'examen</string>
 </resources>

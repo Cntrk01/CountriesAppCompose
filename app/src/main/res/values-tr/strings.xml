@@ -71,4 +71,7 @@
 
     <!-- Arguments -->
     <string name="difficulty">Zorluk</string>
+    <string name="capital">Başkent</string>
+    <string name="emblems">Amblemler</string>
+    <string name="examCompleted">Sınavı Başarıyla Tamamladın</string>
 </resources>

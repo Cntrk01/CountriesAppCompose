@@ -71,4 +71,7 @@
 
     <!-- Arguments -->
     <string name="difficulty">difficulty</string>
+    <string name="capital">Capital</string>
+    <string name="emblems">Emblems</string>
+    <string name="examCompleted">You have successfully completed the exam</string>
 </resources>

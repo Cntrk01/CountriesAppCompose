@@ -71,4 +71,5 @@
 
     <!-- Argümanlar -->
     <string name="difficulty">Schwierigkeit</string>
+    <string name="examCompleted">Sie haben die Prüfung erfolgreich abgeschlossen</string>
 </resources>

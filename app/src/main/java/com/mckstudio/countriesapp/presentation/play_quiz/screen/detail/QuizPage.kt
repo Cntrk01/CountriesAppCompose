@@ -1,6 +1,7 @@
 package com.mckstudio.countriesapp.presentation.play_quiz.screen.detail
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -76,6 +79,7 @@ fun QuizPage(
         remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>(DIFFICULT) }
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     val state = quizViewModel.quizState
     var checkLoading by remember { mutableStateOf(false) }
     var checkErrorMessage by remember { mutableStateOf("") }
@@ -305,12 +309,12 @@ fun QuizPage(
                                                     sliderState += 1f
 
                                                     if (correctAnswerIndex < newList1.size) {
-                                                        currentQuizQuestion =
-                                                            newList1[correctAnswerIndex]
-                                                        checkAnswerString =
-                                                            currentQuizQuestion?.name
+                                                        currentQuizQuestion = newList1[correctAnswerIndex]
+                                                        checkAnswerString = currentQuizQuestion?.name
                                                     } else if (correctAnswerIndex == newList1.size) {
                                                         //son indexe geldiğinde tekrar döngüye girmemesini engelliyorum .
+                                                        backClick.invoke(difficultLevel)
+                                                        Toast.makeText(context, R.string.examCompleted,Toast.LENGTH_LONG).show()
                                                         isFinished = false
                                                     }
                                                 } else {

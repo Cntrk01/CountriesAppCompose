@@ -67,4 +67,7 @@
     <string name="expert">Эксперт</string>
 
     <string name="difficulty">Сложность</string>
+    <string name="capital">Столица</string>
+    <string name="emblems">Гербы</string>
+    <string name="examCompleted">Вы успешно сдали экзамен</string>
 </resources>

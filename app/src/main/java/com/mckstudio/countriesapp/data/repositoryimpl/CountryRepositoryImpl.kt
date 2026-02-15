@@ -14,21 +14,28 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryApi) :
     CountryRepository {
+    private var regionList : List<CountryItem> = listOf()
 
     override suspend fun getAllCountry(): Flow<Response<List<CountryItem>>> = flow {
         try {
             emit(Response.Loading())
 
+            if (regionList.isNotEmpty()){
+                emit(Response.Success(regionList))
+                return@flow
+            }
             val allCountries = mutableListOf<CountryItem>()
 
             Constants.regions.forEach { region ->
                 val response = countryApi.getCountryWithRegion(region)
                 allCountries += response.map { it.toCountryItem() }
             }
-
+            regionList += allCountries
             emit(Response.Success(allCountries))
         } catch (e: SocketTimeoutException) {
             emit(Response.Error("Timeout.Try Again"))

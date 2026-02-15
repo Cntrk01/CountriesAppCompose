@@ -32,11 +32,8 @@ import com.mckstuido.countriesapp.R
 
 @Composable
 fun CountryDataList(
-    loadListSize: Int,
     countryList: List<CountryItem>,
     countryStateListSize: Int,
-    stateLoading: Boolean,
-    loadMore: (() -> Unit)? = null,
     clickCountry: ((CountryDetailItem) -> Unit)? = null
 ) {
     LazyVerticalStaggeredGrid(
@@ -49,11 +46,6 @@ fun CountryDataList(
                 countryList[it].name.toString()
             },
             itemContent = { countryList1 ->
-                if (countryList1 >= countryStateListSize - 1 && !stateLoading) {
-                    if (countryStateListSize < loadListSize) {
-                        loadMore?.invoke()
-                    }
-                }
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

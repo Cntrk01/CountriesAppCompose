@@ -101,12 +101,6 @@ fun CurrencyPage(
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         items(state.countryData.size) { countryList ->
-                            if (countryList >= state.countryData.size - 1 && !state.loading) {
-                                if (state.countryData.size < 238) {
-                                    currencyViewModel.getCountryList()
-                                }
-                            }
-
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()

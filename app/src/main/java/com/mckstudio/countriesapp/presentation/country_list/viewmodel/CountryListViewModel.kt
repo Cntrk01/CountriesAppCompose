@@ -18,8 +18,6 @@ import javax.inject.Inject
 class CountryListViewModel @Inject constructor(private val countryListUseCase: CountryListUseCase) :
     ViewModel() {
 
-    private var PAGE_SIZE = 1
-    private var countryList = mutableStateListOf<CountryItem>()
     private var _state = MutableStateFlow(CountryListState())
     val countryListState: StateFlow<CountryListState> = _state
 
@@ -28,7 +26,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
     }
 
     fun getCountryList() = viewModelScope.launch {
-        countryListUseCase(page = PAGE_SIZE).collect { response ->
+        countryListUseCase().collect { response ->
             when (response) {
                 is Response.Loading -> {
                     _state.update {
@@ -58,16 +56,13 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
                         )
                     } ?: emptyList() //null geleceği için böyle yaptım ? var datadan önce
 
-                    countryList +=newData
-
                     _state.update {
                         it.copy(
                             loading = false,
                             error = "",
-                            countryData = countryList
+                            countryData = newData
                         )
                     }
-                    PAGE_SIZE++
                 }
             }
         }

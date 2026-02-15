@@ -41,6 +41,25 @@ object Constants {
     const val Southern_Asia = "Southern Asia"
     const val Eastern_Asia = "Eastern Asia"
 
+    val regions = listOf(
+        SOUTHERN_EUROPE,
+        SOUTH_EASTERN_ASIA,
+        North_America,
+        Melanesia,
+        Central_Europe,
+        Eastern_Africa,
+        Western_Africa,
+        Northern_Africa,
+        Southern_Africa,
+        Northern_Europe,
+        Caribbean,
+        South_America,
+        Southeast_Europe,
+        Middle_Africa,
+        Southern_Asia,
+        Eastern_Asia
+    )
+
     // LEVEL
     const val EASY = "Easy"
     const val MEDIUM = "Medium"

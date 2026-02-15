@@ -1,5 +1,6 @@
 package com.mckstudio.countriesapp.data.repositoryimpl
 
+import com.mckstudio.countriesapp.common.Constants
 import com.mckstudio.countriesapp.data.remote.CountryApi
 import com.mckstudio.countriesapp.data.response.Response
 import com.mckstudio.countriesapp.data.response.toCountryDetailItem
@@ -17,15 +18,18 @@ import javax.inject.Inject
 class CountryRepositoryImpl @Inject constructor(private val countryApi: CountryApi) :
     CountryRepository {
 
-    override suspend fun getAllCountry(page: Int): Flow<Response<List<CountryItem>>> = flow {
+    override suspend fun getAllCountry(): Flow<Response<List<CountryItem>>> = flow {
         try {
             emit(Response.Loading())
-            val startingIndex = page * 20
-            val data = countryApi.getAllCountry().map {
-                it.toCountryItem()
+
+            val allCountries = mutableListOf<CountryItem>()
+
+            Constants.regions.forEach { region ->
+                val response = countryApi.getCountryWithRegion(region)
+                allCountries += response.map { it.toCountryItem() }
             }
-            val filteredData = data.subList(startingIndex - 20, startingIndex)
-            emit(Response.Success(data = filteredData))
+
+            emit(Response.Success(allCountries))
         } catch (e: SocketTimeoutException) {
             emit(Response.Error("Timeout.Try Again"))
         } catch (e: HttpException) {

@@ -60,13 +60,8 @@ fun CountryListScreen(
 
             if (state.countryData.isNotEmpty()) {
                 CountryDataList(
-                    loadListSize = 238,
                     countryList =state.countryData,
                     countryStateListSize = state.countryData.size,
-                    stateLoading = state.loading,
-                    loadMore = {
-                        countryListViewModel.getCountryList()
-                    },
                     clickCountry = { countryDetail ->
                         clickCountry?.invoke(countryDetail)
                     })

@@ -72,10 +72,8 @@ fun SearchPage(
                    )
                } else if (state.searchCountry?.isNotEmpty() == true) {
                    CountryDataList(
-                       loadListSize = 100,
                        countryList = state.searchCountry!!,
                        countryStateListSize = state.searchCountry!!.size,
-                       stateLoading = state.loading,
                        clickCountry = {
                            countryDetailItem.invoke(it)
                        }

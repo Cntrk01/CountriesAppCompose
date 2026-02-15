@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CountryListUseCase @Inject constructor(private val countryRepositoryImpl: CountryRepositoryImpl) {
-    suspend operator fun invoke(page:Int) : Flow<Response<List<CountryItem>>> = countryRepositoryImpl.getAllCountry(page = page)
+    suspend operator fun invoke() : Flow<Response<List<CountryItem>>> = countryRepositoryImpl.getAllCountry()
 }

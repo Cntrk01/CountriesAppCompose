@@ -65,6 +65,7 @@ import com.mckstudio.countriesapp.data.response.toList
 import com.mckstudio.countriesapp.domain.model.BaseTranslation
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.layouts.AppBar
+import com.mckstudio.countriesapp.layouts.BaseComposable
 import com.mckstudio.countriesapp.layouts.LoadingCardView
 import com.mckstudio.countriesapp.navigation.Screen
 import com.mckstudio.countriesapp.presentation.favorite.viewmodel.FavoriteViewModel
@@ -99,152 +100,146 @@ fun CountryDetailPage(
         }
     }
 
-    Column {
-        AppBar(
-            backClick = {
-                backClick.invoke()
-                favoriteViewModel.resetState()
-                countryItem = null
-            },
-            imageId = R.drawable.icon_app_bar
-        )
-
-        if (loading) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                LoadingCardView(modifier = Modifier.align(Alignment.Center))
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp),
-            ) {
-                item {
-                    countryItem?.let {
-                        CountryImage(
-                            favoriteViewModel = favoriteViewModel,
-                            countryItem = it,
-                        )
-
-                        ItemRowDesign(
-                            icon = R.drawable.icon_capital,
-                            firstText = it.name?.common.toString(),
-                            secondText = stringResource(id = R.string.country)
-                        )
-
-                        it.currencies?.let { currencies ->
-                            currencies.forEach { (currencyCode, currencyData) ->
-                                ItemRowDesign(
-                                    icon = R.drawable.icons_currency,
-                                    firstText = "${currencyData.name} (${currencyData.symbol ?: ""})",
-                                    secondText = stringResource(R.string.currency)
-                                )
-                            }
-                        }
-
-                        ItemRowDesign(
-                            icon = R.drawable.icon_official,
-                            firstText = countryItem?.name?.official.toString(),
-                            secondText = stringResource(R.string.official_name)
-                        )
-
-                        ItemRowDesign(
-                            icon = R.drawable.icons_population,
-                            firstText = countryItem?.population.toString(),
-                            secondText = stringResource(R.string.population)
-                        )
-
-                        ItemRowDesign(
-                            icon = R.drawable.icons_region,
-                            firstText = countryItem?.region.toString(),
-                            secondText = stringResource(R.string.region)
-                        )
-
-                        ItemRowDesign(
-                            icon = R.drawable.icons_status,
-                            firstText = countryItem?.status?.capitalize(Locale.ROOT).toString(),
-                            secondText = stringResource(R.string.status)
-                        )
-
-                        ItemRowDesign(
-                            icon = R.drawable.icons_region,
-                            firstText = countryItem?.subregion ?: stringResource(R.string.unknown),
-                            secondText = stringResource(R.string.sub_region)
-                        )
-
-                        countryItem?.timezones?.let { timeZones ->
-                            ItemRowDesign(
-                                icon = R.drawable.icons_timezone,
-                                firstText = timeZones.joinToString(", "),
-                                secondText = stringResource(R.string.time_zones)
+    BaseComposable(
+        backClick = backClick,
+        content = { modifier ->
+            if (loading) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    LoadingCardView(modifier = Modifier.align(Alignment.Center))
+                }
+            } else {
+                LazyColumn(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(20.dp),
+                ) {
+                    item {
+                        countryItem?.let {
+                            CountryImage(
+                                favoriteViewModel = favoriteViewModel,
+                                countryItem = it,
                             )
-                        }
 
-                        ItemRowDesign(
-                            icon = R.drawable.icons_translation,
-                            firstText = stringResource(R.string.other_language_names),
-                            secondText = stringResource(R.string.translations),
-                        )
+                            ItemRowDesign(
+                                icon = R.drawable.icon_capital,
+                                firstText = it.name?.common.toString(),
+                                secondText = stringResource(id = R.string.country)
+                            )
 
-                        AnimatedVisibility(visible = expandedTranslation) {
-                            Column {
-                                countryItem?.translations?.let { translations ->
-                                    Translations(translationList = translations.toList())
+                            it.currencies?.let { currencies ->
+                                currencies.forEach { (currencyCode, currencyData) ->
+                                    ItemRowDesign(
+                                        icon = R.drawable.icons_currency,
+                                        firstText = "${currencyData.name} (${currencyData.symbol ?: ""})",
+                                        secondText = stringResource(R.string.currency)
+                                    )
                                 }
                             }
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable (
-                                    indication = null,
-                                    interactionSource = null,
-                                ) {
-                                    expandedTranslation = !expandedTranslation
-                                }) {
-                            Icon(
-                                imageVector = if (expandedTranslation) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                contentDescription = stringResource(R.string.clear),
-                                tint = Color.Black,
-                                modifier = Modifier.align(CenterHorizontally)
+
+                            ItemRowDesign(
+                                icon = R.drawable.icon_official,
+                                firstText = countryItem?.name?.official.toString(),
+                                secondText = stringResource(R.string.official_name)
                             )
+
+                            ItemRowDesign(
+                                icon = R.drawable.icons_population,
+                                firstText = countryItem?.population.toString(),
+                                secondText = stringResource(R.string.population)
+                            )
+
+                            ItemRowDesign(
+                                icon = R.drawable.icons_region,
+                                firstText = countryItem?.region.toString(),
+                                secondText = stringResource(R.string.region)
+                            )
+
+                            ItemRowDesign(
+                                icon = R.drawable.icons_status,
+                                firstText = countryItem?.status?.capitalize(Locale.ROOT).toString(),
+                                secondText = stringResource(R.string.status)
+                            )
+
+                            ItemRowDesign(
+                                icon = R.drawable.icons_region,
+                                firstText = countryItem?.subregion ?: stringResource(R.string.unknown),
+                                secondText = stringResource(R.string.sub_region)
+                            )
+
+                            countryItem?.timezones?.let { timeZones ->
+                                ItemRowDesign(
+                                    icon = R.drawable.icons_timezone,
+                                    firstText = timeZones.joinToString(", "),
+                                    secondText = stringResource(R.string.time_zones)
+                                )
+                            }
+
+                            ItemRowDesign(
+                                icon = R.drawable.icons_translation,
+                                firstText = stringResource(R.string.other_language_names),
+                                secondText = stringResource(R.string.translations),
+                            )
+
+                            AnimatedVisibility(visible = expandedTranslation) {
+                                Column {
+                                    countryItem?.translations?.let { translations ->
+                                        Translations(translationList = translations.toList())
+                                    }
+                                }
+                            }
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable (
+                                        indication = null,
+                                        interactionSource = null,
+                                    ) {
+                                        expandedTranslation = !expandedTranslation
+                                    }) {
+                                Icon(
+                                    imageVector = if (expandedTranslation) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = stringResource(R.string.clear),
+                                    tint = Color.Black,
+                                    modifier = Modifier.align(CenterHorizontally)
+                                )
+                            }
+
+
+                            ItemRowDesign(
+                                icon = R.drawable.icons_location,
+                                firstText = stringResource(R.string.map),
+                                secondText = stringResource(R.string.location)
+                            )
+                            //AnimatedVisibility(modifier = Modifier.width(350.dp), visible = expandedMap) {
+                            //                            Column {
+                            //                                countryItem?.let { detail ->
+                            //                                    //OpenGoogleMaps(latidude = detail.latlng?.get(0) ?: 0.0, longitude = detail.latlng?.get(1) ?: 0.0)
+                            //                                }
+                            //                            }
+                            //                        }
+                            //                        Column(
+                            //                            modifier = Modifier
+                            //                                .fillMaxWidth()
+                            //                                 .clickable (
+                            //                                      indication = null,
+                            //                                      interactionSource = null,
+                            //
+                            //                                  ) {
+                            //                                    expandedMap = !expandedMap
+                            //                                }) {
+                            //                            Icon(
+                            //                                imageVector = if (expandedMap) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            //                                contentDescription = "Clear",
+                            //                                tint = Color.Black,
+                            //                                modifier = Modifier.align(CenterHorizontally)
+                            //                            )
+                            //                        }
                         }
-
-
-                        ItemRowDesign(
-                            icon = R.drawable.icons_location,
-                            firstText = stringResource(R.string.map),
-                            secondText = stringResource(R.string.location)
-                        )
-                        //AnimatedVisibility(modifier = Modifier.width(350.dp), visible = expandedMap) {
-                        //                            Column {
-                        //                                countryItem?.let { detail ->
-                        //                                    //OpenGoogleMaps(latidude = detail.latlng?.get(0) ?: 0.0, longitude = detail.latlng?.get(1) ?: 0.0)
-                        //                                }
-                        //                            }
-                        //                        }
-                        //                        Column(
-                        //                            modifier = Modifier
-                        //                                .fillMaxWidth()
-                        //                                 .clickable (
-                        //                                      indication = null,
-                        //                                      interactionSource = null,
-                        //
-                    //                                  ) {
-                        //                                    expandedMap = !expandedMap
-                        //                                }) {
-                        //                            Icon(
-                        //                                imageVector = if (expandedMap) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        //                                contentDescription = "Clear",
-                        //                                tint = Color.Black,
-                        //                                modifier = Modifier.align(CenterHorizontally)
-                        //                            )
-                        //                        }
                     }
                 }
             }
         }
-    }
+    )
 }
 
 @Composable

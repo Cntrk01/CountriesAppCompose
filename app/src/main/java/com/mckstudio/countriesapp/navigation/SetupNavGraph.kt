@@ -1,9 +1,6 @@
 package com.mckstudio.countriesapp.navigation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -36,7 +33,6 @@ fun SetupNavGraph(
     navController: NavHostController
 ) {
     NavHost(
-        modifier=Modifier.padding(bottom = 60.dp),
         navController = navController,
         startDestination = Screen.HomePage.route
     ) {
@@ -60,22 +56,24 @@ fun SetupNavGraph(
                 if (it == Constants.Favorite) {
                     navController.navigate(route = Screen.FavoritePage.route + "/$FAVORITE")
                 }
-                if (it == Constants.SearchCountry){
+                if (it == Constants.SearchCountry) {
                     navController.navigate(route = Screen.SearchPage.route)
                 }
             })
         }
         composable(route = Screen.CountryPage.route) {
-            CountryListScreen(clickCountry = { countryItem ->
-                navController.currentBackStackEntry?.savedStateHandle?.set(
-                    Screen.CountryDetailPage.route,
-                    countryItem
-                )
-                navController.navigate(route = Screen.CountryDetailPage.route)
-            },
+            CountryListScreen(
+                clickCountry = { countryItem ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        Screen.CountryDetailPage.route,
+                        countryItem
+                    )
+                    navController.navigate(route = Screen.CountryDetailPage.route)
+                },
                 backClick = {
                     navController.popBackStack()
-                })
+                }
+            )
         }
 
         composable(route = Screen.CountryDetailPage.route) {
@@ -130,12 +128,12 @@ fun SetupNavGraph(
             })
         }
 
-        composable(route= Screen.SearchPage.route){
+        composable(route = Screen.SearchPage.route) {
             SearchPage(
                 backClick = {
                     navController.popBackStack()
                 },
-                countryDetailItem = {countryDetailItem->
+                countryDetailItem = { countryDetailItem ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(
                         Screen.CountryDetailPage.route,
                         countryDetailItem

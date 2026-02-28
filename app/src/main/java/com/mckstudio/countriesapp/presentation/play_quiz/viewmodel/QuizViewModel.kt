@@ -2,7 +2,7 @@ package com.example.countriesapp.presentation.play_quiz.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mckstudio.countriesapp.data.response.Response
+import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.use_case.QuizUseCase
 import com.example.countriesapp.presentation.play_quiz.state.QuizState
 import dagger.hilt.android.lifecycle.HiltViewModel

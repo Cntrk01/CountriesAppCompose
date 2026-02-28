@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mckstudio.countriesapp.common.Constants.FAVORITE
 import com.mckstudio.countriesapp.data.response.Name
-import com.mckstudio.countriesapp.data.response.Response
+import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.domain.use_case.FavoriteCountryUseCase
 import com.mckstudio.countriesapp.presentation.favorite.state.FavoriteState

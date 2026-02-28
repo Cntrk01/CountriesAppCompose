@@ -26,7 +26,7 @@ fun RegionCountryList(
     val state by regionCountryListViewModel.countryListState.collectAsState()
 
     Column {
-        AppBar(backButtonCheck = true,
+        AppBar(
             imageId = R.drawable.icon_app_bar,
             backClick = {
                 backClick.invoke()

@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mckstudio.countriesapp.common.Constants
-import com.mckstudio.countriesapp.data.response.Response
+import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.model.CountryItem
 import com.mckstudio.countriesapp.domain.use_case.CountryRegionUseCase
 import com.mckstudio.countriesapp.presentation.region_subregion.regionlist.state.RegionCountryState

@@ -56,7 +56,6 @@ fun FavoriteScreen(
                 backClick.invoke()
                 favoriteViewModel.resetState()
             },
-            backButtonCheck = true
         )
         Box(modifier = Modifier.fillMaxSize()) {
             if (state.loading == true) {

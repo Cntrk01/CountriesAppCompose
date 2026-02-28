@@ -45,7 +45,10 @@ fun HomeCard(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable {
+                .clickable (
+                    indication = null,
+                    interactionSource = null,
+                ){
                     clickHomeCardItem?.invoke(cardText)
                 },
             contentAlignment = Alignment.Center

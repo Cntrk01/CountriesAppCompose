@@ -172,7 +172,6 @@ fun QuizPage(
 
     Column {
         AppBar(
-            backButtonCheck = true,
             imageId = R.drawable.icon_app_bar,
             backClick = {
                 checkBackClick = true
@@ -431,7 +430,10 @@ private fun AnswerButton(
             .fillMaxWidth()
             .padding(10.dp)
             .height(50.dp)
-            .clickable {
+            .clickable (
+                indication = null,
+                interactionSource = null,
+            ) {
                 onClick(text)
                 if (text == correctAnswer) {
                     backgroundColor = Color.Green
@@ -506,7 +508,10 @@ fun AlertDialogWithCountdown(
                     .height(50.dp)
                     .clip(shape = RoundedCornerShape(20.dp))
                     .background(Color.LightGray)
-                    .clickable {
+                    .clickable (
+                        indication = null,
+                        interactionSource = null,
+                    ) {
                         confirmButton.invoke()
                     },
                 painter = painterResource(id = R.drawable.icons_watch_ads),

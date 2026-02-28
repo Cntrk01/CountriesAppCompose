@@ -1,11 +1,10 @@
 package com.mckstudio.countriesapp.presentation.country_list.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mckstudio.countriesapp.data.response.Response
+import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.model.CountryItem
-import com.mckstudio.countriesapp.domain.use_case.CountryListUseCase
+import com.mckstudio.countriesapp.domain.repository.CountryRepository
 import com.mckstudio.countriesapp.presentation.country_list.state.CountryListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +14,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CountryListViewModel @Inject constructor(private val countryListUseCase: CountryListUseCase) :
-    ViewModel() {
+class CountryListViewModel @Inject constructor(
+    private val countryRepository: CountryRepository,
+) : ViewModel() {
 
     private var _state = MutableStateFlow(CountryListState())
     val countryListState: StateFlow<CountryListState> = _state
@@ -26,7 +26,7 @@ class CountryListViewModel @Inject constructor(private val countryListUseCase: C
     }
 
     fun getCountryList() = viewModelScope.launch {
-        countryListUseCase().collect { response ->
+        countryRepository.getAllCountry().collect { response ->
             when (response) {
                 is Response.Loading -> {
                     _state.update {

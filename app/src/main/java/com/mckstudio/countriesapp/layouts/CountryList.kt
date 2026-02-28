@@ -51,7 +51,10 @@ fun CountryDataList(
                         .fillMaxWidth()
                         .height(200.dp)
                         .padding(5.dp)
-                        .clickable {
+                        .clickable (
+                            indication = null,
+                            interactionSource = null,
+                        ) {
                             clickCountry?.invoke(countryList[countryList1].countryDetailItem)
                         },
                     shape = RoundedCornerShape(10.dp),

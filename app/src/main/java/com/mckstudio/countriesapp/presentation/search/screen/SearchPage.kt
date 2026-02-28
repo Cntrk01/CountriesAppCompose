@@ -38,11 +38,9 @@ fun SearchPage(
 
     Column {
         AppBar(
-            backButtonCheck = true,
             imageId = R.drawable.icon_app_bar,
-            backClick = {
-                backClick.invoke()
-            })
+            backClick = backClick
+        )
 
         SearchBar(
             modifier = Modifier.padding(16.dp),

@@ -39,7 +39,10 @@ fun QuizItemCard(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable {
+                .clickable (
+                    indication = null,
+                    interactionSource = null,
+                ) {
                     clickItem.invoke(quizText)
                 },
             contentAlignment = Alignment.Center

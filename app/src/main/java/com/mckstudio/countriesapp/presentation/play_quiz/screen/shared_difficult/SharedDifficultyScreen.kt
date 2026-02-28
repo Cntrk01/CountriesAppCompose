@@ -31,7 +31,6 @@ fun SharedDifficultyScreen(
 
     Column {
         AppBar(
-            backButtonCheck = true,
             imageId = R.drawable.icon_app_bar,
             backClick = {
                 backClick.invoke()

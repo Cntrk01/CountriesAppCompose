@@ -19,12 +19,13 @@ import com.mckstuido.countriesapp.R
 @Composable
 fun ErrorText(
     errorMessage: String,
+    modifier: Modifier = Modifier,
     showButton: Boolean? = true,
     clickRetryButton: (() -> Unit)? = null,
     buttonText : String = stringResource(R.string.try_again)
 ) {
     Column(
-        modifier=Modifier.padding(10.dp),
+        modifier=modifier.padding(10.dp),
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

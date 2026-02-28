@@ -35,7 +35,7 @@ fun RegionScreen(
     )
 
     Column {
-        AppBar(backButtonCheck = true,
+        AppBar(
             imageId = R.drawable.icon_app_bar,
             backClick = {
                 backClick?.invoke()

@@ -2,7 +2,7 @@ package com.mckstudio.countriesapp.presentation.search.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mckstudio.countriesapp.data.response.Response
+import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.use_case.SearchCountryUseCase
 import com.mckstudio.countriesapp.presentation.search.state.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel

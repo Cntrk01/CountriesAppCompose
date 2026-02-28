@@ -2,10 +2,14 @@ package com.mckstudio.countriesapp.presentation.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants.All_Country
@@ -19,8 +23,10 @@ import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.HomeCard
 import com.mckstudio.countriesapp.domain.model.ScreenItem
 import com.mckstudio.countriesapp.layouts.BannerAd
+import com.mckstudio.countriesapp.layouts.BaseComposable
 import com.mckstuido.countriesapp.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     clickHomeItem: (String) -> Unit
@@ -74,25 +80,29 @@ fun HomeScreen(
         )
     )
 
-    Column {
-        AppBar(imageId = R.drawable.icon_app_bar, backButtonCheck = false)
-
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            items(count = homeItems.size,
-                key = {
-                    homeItems[it].cardText
-                },
-                itemContent = { homeItemPosition ->
-                    HomeCard(
-                        imageId = homeItems[homeItemPosition].imageId,
-                        cardText = homeItems[homeItemPosition].cardText,
-                        clickHomeCardItem = homeItems[homeItemPosition].clickHomeItem,
-                        backgroundColor = homeItems[homeItemPosition].backgroundColor
-                    )
-                })
+    BaseComposable(
+        content = { modifier ->
+            Column (
+                modifier = modifier,
+            ){
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    contentPadding = PaddingValues(10.dp)
+                ) {
+                    items(count = homeItems.size,
+                        key = {
+                            homeItems[it].cardText
+                        },
+                        itemContent = { homeItemPosition ->
+                            HomeCard(
+                                imageId = homeItems[homeItemPosition].imageId,
+                                cardText = homeItems[homeItemPosition].cardText,
+                                clickHomeCardItem = homeItems[homeItemPosition].clickHomeItem,
+                                backgroundColor = homeItems[homeItemPosition].backgroundColor
+                            )
+                        })
+                }
+            }
         }
-    }
+    )
 }

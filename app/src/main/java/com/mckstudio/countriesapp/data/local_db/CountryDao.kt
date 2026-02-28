@@ -18,7 +18,7 @@ interface CountryDao {
     suspend fun deleteCountry(countryDetailItem: CountryDetailItem)
 
     @Query("SELECT*FROM country_item")
-    fun getAllCountry () : Flow<List<CountryDetailItem>>
+    fun getAllCountry () : List<CountryDetailItem>
 
     @Query("SELECT COUNT(*) FROM country_item WHERE country_item.name=:name")
     suspend fun checkExistCountry(name: Name) : Int

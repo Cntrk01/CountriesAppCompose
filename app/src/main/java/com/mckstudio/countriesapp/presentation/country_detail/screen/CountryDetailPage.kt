@@ -105,7 +105,7 @@ fun CountryDetailPage(
                 backClick.invoke()
                 favoriteViewModel.resetState()
                 countryItem = null
-            }, backButtonCheck = true,
+            },
             imageId = R.drawable.icon_app_bar
         )
 
@@ -124,7 +124,7 @@ fun CountryDetailPage(
                         CountryImage(
                             favoriteViewModel = favoriteViewModel,
                             countryItem = it,
-                            )
+                        )
 
                         ItemRowDesign(
                             icon = R.drawable.icon_capital,
@@ -196,7 +196,10 @@ fun CountryDetailPage(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {
+                                .clickable (
+                                    indication = null,
+                                    interactionSource = null,
+                                ) {
                                     expandedTranslation = !expandedTranslation
                                 }) {
                             Icon(
@@ -223,7 +226,11 @@ fun CountryDetailPage(
                         //                        Column(
                         //                            modifier = Modifier
                         //                                .fillMaxWidth()
-                        //                                .clickable {
+                        //                                 .clickable (
+                        //                                      indication = null,
+                        //                                      interactionSource = null,
+                        //
+                    //                                  ) {
                         //                                    expandedMap = !expandedMap
                         //                                }) {
                         //                            Icon(
@@ -287,9 +294,10 @@ private fun OpenGoogleMaps(latidude: Double, longitude: Double) {
             .fillMaxWidth()
     ) {
         val currenctContext = LocalContext.current
-        AndroidView(modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 30.dp),
+        AndroidView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 30.dp),
             factory = { _ ->
                 MapView(currenctContext).apply {
                     setTileSource(TileSourceFactory.CLOUDMADESMALLTILES)
@@ -371,7 +379,7 @@ private fun CountryImage(
 
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
-            beyondBoundsPageCount = countryImageList.size,
+            //beyondBoundsPageCount = countryImageList.size,
             state = pagerState,
             key = { it }
         ) { index ->
@@ -396,11 +404,11 @@ private fun CountryImage(
                         ),
                     contentDescription = stringResource(id = R.string.image),
                     contentScale =
-                    if (index > 0) {
-                        ContentScale.FillHeight
-                    } else {
-                        ContentScale.Crop
-                    }
+                        if (index > 0) {
+                            ContentScale.FillHeight
+                        } else {
+                            ContentScale.Crop
+                        }
                 )
             }
         }
@@ -412,7 +420,10 @@ private fun CountryImage(
                 .align(TopEnd)
                 .padding(top = 10.dp, end = 10.dp)
                 .background(Color.Transparent)
-                .clickable {
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                ) {
                     if (checkExistsDb == 1) {
                         favoriteViewModel.deleteCountry(countryItem)
                     } else {
@@ -423,8 +434,7 @@ private fun CountryImage(
             Image(
                 modifier = Modifier
                     .fillMaxSize()
-                    .zIndex(1f)
-                    ,
+                    .zIndex(1f),
                 painter = if (checkExistsDb == 1) {
                     painterResource(id = R.drawable.icons_star)
                 } else {
@@ -453,7 +463,9 @@ private fun CountryImage(
                     }
                 }
             ) {
-                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = stringResource(R.string.back)
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.back)
                 )
             }
             IconButton(

@@ -1,447 +1,215 @@
 package com.mckstudio.countriesapp.data.repositoryimpl
 
+import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.data.remote.CountryApi
-import com.mckstudio.countriesapp.data.response.Response
 import com.mckstudio.countriesapp.data.response.toQuizItem
 import com.mckstudio.countriesapp.data.response.toQuizItemCapital
 import com.mckstudio.countriesapp.data.response.toQuizItemEmblems
-import com.mckstudio.countriesapp.domain.model.QuizItem
 import com.mckstudio.countriesapp.domain.repository.QuizRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
-import java.lang.Exception
-import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-class QuizRepositoryImpl @Inject constructor(private val countryApi: CountryApi) : QuizRepository {
+class QuizRepositoryImpl @Inject constructor(
+    private val countryApi: CountryApi
+) : QuizRepository {
 
-    override suspend fun getEasyQuizFlagQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
-            emit(Response.Success(data = europeCountry.subList(0,10)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    // ---------------- EASY ----------------
+
+    override suspend fun getEasyQuizFlagQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItem() }
         }
-    }
 
-    override suspend fun getEasyQuizCapitalQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItemCapital() }
-            emit(Response.Success(data = europeCountry.subList(0,10)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    override suspend fun getEasyQuizCapitalQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItemCapital() }
+                .subList(0, 10)
         }
-    }
 
-    override suspend fun getEasyQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry = countryApi.getCountryWithRegion("Europe")
+    override suspend fun getEasyQuizEmblemsQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
                 .take(10)
-                .mapNotNull { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Europe").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
-
-            emit(Response.Success(data = europeCountry.subList(0,10)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
         }
-    }
 
-    override suspend fun getMediumQuizFlagQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
-            val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
-            emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    // ---------------- MEDIUM ----------------
+
+    override suspend fun getMediumQuizFlagQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItem() }
+
+            val asia = countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItem() }
+
+            europe.subList(10, 20) + asia.subList(10, 20)
         }
-    }
 
-    override suspend fun getMediumQuizCapitalQuestion(): Flow<Response<List<QuizItem>>>  = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItemCapital() }
-            val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItemCapital() }
-            emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    override suspend fun getMediumQuizCapitalQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItemCapital() }
+
+            val asia = countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItemCapital() }
+
+            europe.subList(10, 20) + asia.subList(10, 20)
         }
-    }
 
-    override suspend fun getMediumQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry = countryApi.getCountryWithRegion("Europe")
+    override suspend fun getMediumQuizEmblemsQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
-                .take(20)
-                .mapNotNull { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Europe").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            val asiaCountry = countryApi.getCountryWithRegion("Asia")
+            val asia = countryApi.getCountryWithRegion("Asia")
                 .map { it.toQuizItemEmblems() }
-                .take(20)
-                .map { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Asia").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
-            emit(Response.Success(data = europeCountry.subList(10,20)+asiaCountry.subList(10,20)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
-        }
-    }
 
-    override suspend fun getHardQuizFlagQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
-            val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
-            val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
-            emit(Response.Success(data = europeCountry.subList(20,30)+asiaCountry.subList(20,30)+americaCountry.subList(20,30)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+            europe.subList(10, 20) + asia.subList(10, 20)
         }
-    }
 
-    override suspend fun getHardQuizCapitalQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItemCapital() }
-            val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItemCapital() }
-            val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItemCapital() }
-            emit(Response.Success(data = europeCountry.subList(20,30)+asiaCountry.subList(20,30)+americaCountry.subList(20,30)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    // ---------------- HARD ----------------
+
+    override suspend fun getHardQuizFlagQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItem() }
+
+            val asia = countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItem() }
+
+            val america = countryApi.getCountryWithRegion("America")
+                .map { it.toQuizItem() }
+
+            europe.subList(20, 30) +
+                    asia.subList(20, 30) +
+                    america.subList(20, 30)
         }
-    }
 
-    override suspend fun getHardQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry = countryApi.getCountryWithRegion("Europe")
+    override suspend fun getHardQuizCapitalQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItemCapital() }
+
+            val asia = countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItemCapital() }
+
+            val america = countryApi.getCountryWithRegion("America")
+                .map { it.toQuizItemCapital() }
+
+            europe.subList(20, 30) +
+                    asia.subList(20, 30) +
+                    america.subList(20, 30)
+        }
+
+    override suspend fun getHardQuizEmblemsQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
-                .take(30)
-                .mapNotNull { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Europe").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            val asiaCountry = countryApi.getCountryWithRegion("Asia")
+            val asia = countryApi.getCountryWithRegion("Asia")
                 .map { it.toQuizItemEmblems() }
-                .take(30)
-                .map { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Asia").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            val americaCountry = countryApi.getCountryWithRegion("America")
+            val america = countryApi.getCountryWithRegion("America")
                 .map { it.toQuizItemEmblems() }
-                .take(30)
-                .map { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("America").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            emit(Response.Success(data = europeCountry.subList(20,30)+asiaCountry.subList(20,30)+americaCountry.subList(20,30)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+            europe.subList(20, 30) +
+                    asia.subList(20, 30) +
+                    america.subList(20, 30)
         }
-    }
 
-    override suspend fun getExpertQuizFlagQuestion(): Flow<Response<List<QuizItem>>>  = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
-            val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
-            val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
-            val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
-            emit(Response.Success(data = europeCountry.subList(30,40)+asiaCountry.subList(30,40)+americaCountry.subList(30,40)+africaCountry.subList(0,10)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    // ---------------- EXPERT ----------------
+
+    override suspend fun getExpertQuizFlagQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItem() }
+
+            val asia = countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItem() }
+
+            val america = countryApi.getCountryWithRegion("America")
+                .map { it.toQuizItem() }
+
+            val africa = countryApi.getCountryWithRegion("Africa")
+                .map { it.toQuizItem() }
+
+            europe.subList(30, 40) +
+                    asia.subList(30, 40) +
+                    america.subList(30, 40) +
+                    africa.subList(0, 10)
         }
-    }
 
-    override suspend fun getExpertQuizCapitalQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItemCapital() }
-            val asiaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItemCapital() }
-            val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItemCapital() }
-            val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
-            emit(Response.Success(data = europeCountry.subList(30,40)+asiaCountry.subList(30,40)+americaCountry.subList(30,40)+africaCountry.subList(0,10)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    override suspend fun getExpertQuizCapitalQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItemCapital() }
+
+            val asia = countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItemCapital() }
+
+            val america = countryApi.getCountryWithRegion("America")
+                .map { it.toQuizItemCapital() }
+
+            val africa = countryApi.getCountryWithRegion("Africa")
+                .map { it.toQuizItemCapital() }
+
+            europe.subList(30, 40) +
+                    asia.subList(30, 40) +
+                    america.subList(30, 40) +
+                    africa.subList(0, 10)
         }
-    }
 
-    override suspend fun getExpertQuizEmblemsQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry = countryApi.getCountryWithRegion("Europe")
+    override suspend fun getExpertQuizEmblemsQuestion() =
+        Response.safeOperation {
+            val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
-                .take(40)
-                .mapNotNull { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Europe").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            val asiaCountry = countryApi.getCountryWithRegion("Asia")
+            val asia = countryApi.getCountryWithRegion("Asia")
                 .map { it.toQuizItemEmblems() }
-                .take(40)
-                .map { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Asia").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            val americaCountry = countryApi.getCountryWithRegion("America")
+            val america = countryApi.getCountryWithRegion("America")
                 .map { it.toQuizItemEmblems() }
-                .take(40)
-                .map { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("America").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
 
-            val africaCountry = countryApi.getCountryWithRegion("Africa")
+            val africa = countryApi.getCountryWithRegion("Africa")
                 .map { it.toQuizItemEmblems() }
-                .take(20)
-                .map { quizItem ->
-                    if (quizItem.flag.isNullOrEmpty()) {
-                        countryApi.getCountryWithRegion("Africa").take(1).map { it.toQuizItemEmblems() }.let { newFlag ->
-                            newFlag.map {
-                                quizItem.copy(flag = it.flag)
-                            }
-                        }
-                    } else {
-                        listOf(quizItem)
-                    }
-                }.flatten()
-            emit(Response.Success(data = europeCountry.subList(30,40)+asiaCountry.subList(30,40)+americaCountry.subList(30,40)+africaCountry.subList(0,10)))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
-        }
-    }
 
-    override suspend fun getEuropeCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val europeCountry=countryApi.getCountryWithRegion("Europe").map { it.toQuizItem() }
-            emit(Response.Success(data = europeCountry))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+            europe.subList(30, 40) +
+                    asia.subList(30, 40) +
+                    america.subList(30, 40) +
+                    africa.subList(0, 10)
         }
-    }
 
-    override suspend fun getAmericaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val americaCountry=countryApi.getCountryWithRegion("America").map { it.toQuizItem() }
-            emit(Response.Success(data = americaCountry))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
-        }
-    }
+    // ---------------- REGION BASED ----------------
 
-    override suspend fun getAfricaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val africaCountry=countryApi.getCountryWithRegion("Africa").map { it.toQuizItem() }
-            emit(Response.Success(data = africaCountry))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    override suspend fun getEuropeCountryQuizQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Europe")
+                .map { it.toQuizItem() }
         }
-    }
 
-    override suspend fun getAsiaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val africaCountry=countryApi.getCountryWithRegion("Asia").map { it.toQuizItem() }
-            emit(Response.Success(data = africaCountry))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: java.lang.Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    override suspend fun getAmericaCountryQuizQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("America")
+                .map { it.toQuizItem() }
         }
-    }
 
-    override suspend fun getOceaniaCountryQuizQuestion(): Flow<Response<List<QuizItem>>> = flow {
-        try {
-            emit(Response.Loading())
-            val oceaniaCountry=countryApi.getCountryWithRegion("Oceania").map { it.toQuizItem() }
-            emit(Response.Success(data = oceaniaCountry))
-        }catch (e: SocketTimeoutException) {
-            emit(Response.Error("Timeout.Try Again"))
-        } catch (e: HttpException) {
-            emit(Response.Error("Check your internet connection.."))
-        } catch (e: IOException) {
-            emit(Response.Error("Couldn't reach server.Check your internet connection.."))
-        }catch (e: Exception) {
-            emit(Response.Error("An unexpected error occured"))
+    override suspend fun getAfricaCountryQuizQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Africa")
+                .map { it.toQuizItem() }
         }
-    }
+
+    override suspend fun getAsiaCountryQuizQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Asia")
+                .map { it.toQuizItem() }
+        }
+
+    override suspend fun getOceaniaCountryQuizQuestion() =
+        Response.safeOperation {
+            countryApi.getCountryWithRegion("Oceania")
+                .map { it.toQuizItem() }
+        }
 }

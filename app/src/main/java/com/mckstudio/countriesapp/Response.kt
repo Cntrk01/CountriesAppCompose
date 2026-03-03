@@ -1,13 +1,17 @@
 package com.mckstudio.countriesapp
 
 import com.mckstudio.countriesapp.data.BaseError
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
-sealed class Response<out T>(val data: T? = null, val message:String? = null) {
-    class Success<T>(data: T) : Response<T>(data = data)
-    class Error(message: String) : Response<Nothing>(message=message)
+sealed class Response<out T> {
+    data class Success<T>(val data: T) : Response<T>()
+    data class Error(val message: String) : Response<Nothing>()
     object Loading : Response<Nothing>()
 
     companion object {

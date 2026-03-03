@@ -1,12 +1,15 @@
-package com.example.countriesapp.presentation.play_quiz.viewmodel
+package com.mckstudio.countriesapp.presentation.play_quiz.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mckstudio.countriesapp.Response
-import com.mckstudio.countriesapp.domain.use_case.QuizUseCase
-import com.example.countriesapp.presentation.play_quiz.state.QuizState
+import com.mckstudio.countriesapp.common.Constants
+import com.mckstudio.countriesapp.domain.model.QuizItem
+import com.mckstudio.countriesapp.domain.repository.QuizRepository
+import com.mckstudio.countriesapp.presentation.play_quiz.state.QuizState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -14,574 +17,72 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+//YAPACAĞIM.
+enum class QuizLevel { EASY, MEDIUM, HARD, EXPERT }
+enum class QuizType { FLAG, CAPITAL, EMBLEMS }
+enum class Region { EUROPE, AMERICA, AFRICA, ASIA, OCEANIA }
+
 @HiltViewModel
-class QuizViewModel @Inject constructor(private val quizUseCase: QuizUseCase) : ViewModel() {
+class QuizViewModel @Inject constructor(
+    private val quizRepository: QuizRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(QuizState())
     val quizState: StateFlow<QuizState> = _state
 
-    fun getEasyQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = true
-                        )
-                    }
-                }
+    private val quizMap: Map<Pair<String, String>, () -> Flow<Response<List<QuizItem>>>> = mapOf(
+        Constants.EASY to mapOf(
+            Constants.Flag to { quizRepository.getEasyQuizFlagQuestion() },
+            Constants.Capital to { quizRepository.getEasyQuizCapitalQuestion() },
+            Constants.Emblems to { quizRepository.getEasyQuizEmblemsQuestion() }
+        ),
+        Constants.MEDIUM to mapOf(
+            Constants.Flag to { quizRepository.getMediumQuizFlagQuestion() },
+            Constants.Capital to { quizRepository.getMediumQuizCapitalQuestion() },
+            Constants.Emblems to { quizRepository.getMediumQuizEmblemsQuestion() }
+        ),
+        Constants.HARD to mapOf(
+            Constants.Flag to { quizRepository.getHardQuizFlagQuestion() },
+            Constants.Capital to { quizRepository.getHardQuizCapitalQuestion() },
+            Constants.Emblems to { quizRepository.getHardQuizEmblemsQuestion() }
+        ),
+        Constants.EXPERT to mapOf(
+            Constants.Flag to { quizRepository.getExpertQuizFlagQuestion() },
+            Constants.Capital to { quizRepository.getExpertQuizCapitalQuestion() },
+            Constants.Emblems to { quizRepository.getExpertQuizEmblemsQuestion() }
+        )
+    ).flatMap { (level, typeMap) ->
+        typeMap.map { (type, func) -> level to type to func }
+    }.toMap()
 
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
+    private val regionMap: Map<String, () -> Flow<Response<List<QuizItem>>>> = mapOf(
+        Constants.EUROPE to { quizRepository.getEuropeCountryQuizQuestion() },
+        Constants.AMERICA to { quizRepository.getAmericaCountryQuizQuestion() },
+        Constants.AFRICA to { quizRepository.getAfricaCountryQuizQuestion() },
+        Constants.ASIA to { quizRepository.getAsiaCountryQuizQuestion() },
+        Constants.OCEANIA to { quizRepository.getOceaniaCountryQuizQuestion() }
+    )
 
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
+    fun getQuiz(difficulty: String, type: String) {
+        val flow = quizMap[difficulty to type]?.invoke()
+            ?: regionMap[difficulty]?.invoke()
+
+        flow?.reduceQuizState()
+    }
+
+    private fun Flow<Response<List<QuizItem>>>.reduceQuizState() {
+        viewModelScope.launch(Dispatchers.IO) {
+            collectLatest { response ->
+                when (response) {
+                    is Response.Loading -> _state.update { it.copy(loading = true, error = "") }
+                    is Response.Error -> _state.update { it.copy(loading = false, error = response.message) }
+                    is Response.Success -> _state.update { it.copy(loading = false, error = "", quizData = response.data) }
                 }
             }
         }
     }
 
-    fun getEasyQuizCapitalQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getOceaniaCountryQuizQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getEasyQuizEmblemsQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getEasyQuizEmblemsQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getMediumQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getMediumQuizFlagQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getMediumQuizCapitalQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getMediumQuizCapitalQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getMediumQuizEmblemsQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getMediumQuizEmblemsQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getHardQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getHardQuizFlagQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getHardQuizCapitalQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getHardQuizCapitalQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getHardQuizEmblemsQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getHardQuizEmblemsQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getExpertQuizFlagQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getExpertQuizFlagQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getExpertQuizCapitalQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getExpertQuizCapitalQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getExpertQuizEmblemsQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getExpertQuizEmblemsQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getEuropeCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        quizUseCase.getEuropeCountryQuizQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-    fun getAmericaCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO){
-        quizUseCase.getAmericaCountryQuizQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getAfricaCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO){
-        quizUseCase.getAfricaCountryQuizQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getAsiaCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO){
-        quizUseCase.getAsiaCountryQuizQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getOceaniaCountryQuizQuestion() = viewModelScope.launch(Dispatchers.IO){
-        quizUseCase.getOceaniaCountryQuizQuestion().collectLatest { response ->
-            when (response) {
-                is Response.Loading -> {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                }
-
-                is Response.Error -> {
-                    _state.update {
-                        it.copy(
-                            error =response.message.toString(),
-                            loading = false
-                        )
-                    }
-                }
-
-                else -> {
-                    _state.update {
-                        it.copy(
-                            error = "",
-                            loading = false,
-                            quizData = response.data
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun resetState(){
+    private fun resetState(){
         _state.update {
             it.copy(
                 loading = false,

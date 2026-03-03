@@ -65,6 +65,7 @@ object Constants {
     const val MEDIUM = "Medium"
     const val HARD = "Hard"
     const val EXPERT = "Expert"
+    const val COUNTRY = "Country"
 
     // ARGUMENTS
     const val DIFFICULT = "difficulty"

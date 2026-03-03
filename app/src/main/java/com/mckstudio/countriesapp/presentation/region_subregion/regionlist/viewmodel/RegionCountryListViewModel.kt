@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.mckstudio.countriesapp.common.Constants
 import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.model.CountryItem
-import com.mckstudio.countriesapp.domain.use_case.CountryRegionUseCase
+import com.mckstudio.countriesapp.domain.repository.CountryRepository
 import com.mckstudio.countriesapp.presentation.region_subregion.regionlist.state.RegionCountryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegionCountryListViewModel @Inject constructor(
-    private val countryRegionUseCase: CountryRegionUseCase,
+    private val countryRepository: CountryRepository,
     private val savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -40,7 +40,7 @@ class RegionCountryListViewModel @Inject constructor(
     }
 
     fun getCountryList(countryName: String? = null) = viewModelScope.launch {
-        countryRegionUseCase(regionName = countryName ?: regionName).collectLatest { response ->
+        countryRepository.getCountryWithRegion(regionName = countryName ?: regionName).collectLatest { response ->
             when (response) {
                 is Response.Loading -> {
                     _state.update {

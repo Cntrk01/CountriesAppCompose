@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException
 
 class SearchCountryRepositoryImpl(private val countryApi: CountryApi) : SearchRepository {
 
-    override suspend fun searchRepository(countryName: String): Flow<Response<List<CountryItem>>> =
+    override suspend fun searchCountry(countryName: String): Flow<Response<List<CountryItem>>> =
         Response.safeOperation {
             countryApi.getCountryWithName(name = countryName).map { it.toCountryItem() }
         }

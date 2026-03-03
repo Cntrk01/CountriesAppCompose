@@ -22,7 +22,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,8 +57,8 @@ import com.mckstudio.countriesapp.layouts.AlertDialogForBack
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.LoadingCardView
 import com.mckstudio.countriesapp.navigation.Screen
-import com.example.countriesapp.presentation.play_quiz.state.QuizState
-import com.example.countriesapp.presentation.play_quiz.viewmodel.QuizViewModel
+import com.mckstudio.countriesapp.presentation.play_quiz.state.QuizState
+import com.mckstudio.countriesapp.presentation.play_quiz.viewmodel.QuizViewModel
 import com.mckstuido.countriesapp.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -88,85 +87,15 @@ fun QuizPage(
     var checkBackClick by remember { mutableStateOf(false) }
     var isFinishedCheck by remember { mutableStateOf(false) }
 
-    //Side effect yazınca saçmaladı.
     LaunchedEffect(Unit) {
+        quizViewModel.getQuiz(difficultLevel ?: Constants.EASY, countryItem ?: Constants.Flag)
 
-        if (difficultLevel == Constants.EASY) {
-            if (countryItem == "Flag") {
-                quizViewModel.getEasyQuizFlagQuestion()
-            }
-            if (countryItem == "Capital") {
-                quizViewModel.getEasyQuizCapitalQuestion()
-            }
-            if (countryItem == "Emblems") {
-                quizViewModel.getEasyQuizEmblemsQuestion()
-            }
-        }
-
-        if (difficultLevel == Constants.MEDIUM) {
-            if (countryItem == "Flag") {
-                quizViewModel.getMediumQuizFlagQuestion()
-            }
-            if (countryItem == "Capital") {
-                quizViewModel.getMediumQuizCapitalQuestion()
-            }
-            if (countryItem == "Emblems") {
-                quizViewModel.getMediumQuizEmblemsQuestion()
-            }
-        }
-
-        if (difficultLevel == Constants.HARD) {
-            if (countryItem == "Flag") {
-                quizViewModel.getHardQuizFlagQuestion()
-            }
-            if (countryItem == "Capital") {
-                quizViewModel.getHardQuizCapitalQuestion()
-            }
-            if (countryItem == "Emblems") {
-                quizViewModel.getHardQuizEmblemsQuestion()
-            }
-        }
-
-        if (difficultLevel == Constants.EXPERT) {
-            if (countryItem == "Flag") {
-                quizViewModel.getExpertQuizFlagQuestion()
-            }
-            if (countryItem == "Capital") {
-                quizViewModel.getExpertQuizCapitalQuestion()
-            }
-            if (countryItem == "Emblems") {
-                quizViewModel.getExpertQuizEmblemsQuestion()
-            }
-        }
-
-        if (difficultLevel == Constants.EUROPE) {
-            quizViewModel.getEuropeCountryQuizQuestion()
-        }
-        if (difficultLevel == Constants.AMERICA) {
-            quizViewModel.getAmericaCountryQuizQuestion()
-        }
-        if (difficultLevel == Constants.AFRICA) {
-            quizViewModel.getAfricaCountryQuizQuestion()
-        }
-
-        if (difficultLevel == Constants.ASIA) {
-            quizViewModel.getAsiaCountryQuizQuestion()
-        }
-        if (difficultLevel == Constants.OCEANIA) {
-            quizViewModel.getOceaniaCountryQuizQuestion()
-        }
         stateCollect(
             coroutineScope = coroutineScope,
             state = state,
-            checkErrorMessage = {
-                checkErrorMessage = it
-            },
-            quizListData = {
-                quizListData = it
-            },
-            checkLoading = {
-                checkLoading = it
-            }
+            checkErrorMessage = { checkErrorMessage = it },
+            quizListData = { quizListData = it },
+            checkLoading = { checkLoading = it }
         )
     }
 
@@ -212,10 +141,6 @@ fun QuizPage(
                 var answerOptions: List<String?> by remember { mutableStateOf(emptyList()) }
                 val otherOptions = newList1.shuffled().take(3).map { it.name }.toMutableList()
 
-                //LaunchedEffect tek seferlik işlemler için RememberCoroutineScope ise uzun ömürlü işlemler içindir
-                //LaunchedEffect, Composable yaşam döngüsüne sıkı sıkıya bağlı bir Composable işlevidir; RememberCoroutineScope ise Composable işlevlerinin dışında kullanılabilir
-                //Burada LaunchedEffect kullanamayız.Çünkü her yeni gelecek soru için kontrol sağlanıp işlem yapması lazım.
-                //LaunchedEffect tek sefer çalışıp bırakıyor
                 if (isFinished) {
                     coroutineScope.launch {
                         if (correctAnswerIndex != 0) {

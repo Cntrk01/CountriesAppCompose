@@ -74,15 +74,29 @@ class QuizViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             collectLatest { response ->
                 when (response) {
-                    is Response.Loading -> _state.update { it.copy(loading = true, error = "") }
-                    is Response.Error -> _state.update { it.copy(loading = false, error = response.message) }
-                    is Response.Success -> _state.update { it.copy(loading = false, error = "", quizData = response.data) }
+                    is Response.Loading -> _state.update {
+                        it.copy(loading = true, error = "")
+                    }
+                    is Response.Error -> _state.update {
+                        it.copy(
+                            loading = false,
+                            error = response.message
+                        )
+                    }
+
+                    is Response.Success -> _state.update {
+                        it.copy(
+                            loading = false,
+                            error = "",
+                            quizData = response.data
+                        )
+                    }
                 }
             }
         }
     }
 
-    private fun resetState(){
+    private fun resetState() {
         _state.update {
             it.copy(
                 loading = false,

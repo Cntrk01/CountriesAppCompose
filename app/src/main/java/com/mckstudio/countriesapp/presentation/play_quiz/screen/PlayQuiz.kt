@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.ScreenItem
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.HomeCard
@@ -42,25 +43,23 @@ fun PlayQuiz(
             Constants.OCEANIA) }, backgroundColor = MaterialTheme.colorScheme.outline),
         )
 
-    Column {
-        AppBar(
-            imageId = R.drawable.icon_app_bar,
-            backClick = {
-                backClick.invoke()
-            })
-
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            items(quizItems) { quizItems ->
-                HomeCard(
-                    imageId = quizItems.imageId,
-                    cardText = quizItems.cardText,
-                    clickHomeCardItem = quizItems.clickHomeItem,
-                    backgroundColor = quizItems.backgroundColor
-                )
+    CABaseScreen(
+        title = "Quiz",
+        backClick = backClick,
+        content = {
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
+                contentPadding = PaddingValues(10.dp)
+            ) {
+                items(quizItems) { quizItems ->
+                    HomeCard(
+                        imageId = quizItems.imageId,
+                        cardText = quizItems.cardText,
+                        clickHomeCardItem = quizItems.clickHomeItem,
+                        backgroundColor = quizItems.backgroundColor
+                    )
+                }
             }
         }
-    }
+    )
 }

@@ -8,13 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mckstudio.countriesapp.common.Constants
-import com.mckstudio.countriesapp.common.Constants.All_Country
-import com.mckstudio.countriesapp.common.Constants.Currency
+import com.mckstudio.countriesapp.common.Constants.Country_Title
+import com.mckstudio.countriesapp.common.Constants.Currency_Title
 import com.mckstudio.countriesapp.common.Constants.DIFFICULT
 import com.mckstudio.countriesapp.common.Constants.FAVORITE
-import com.mckstudio.countriesapp.common.Constants.Region
+import com.mckstudio.countriesapp.common.Constants.Region_Title
 import com.mckstudio.countriesapp.common.Constants.Region_Name
-import com.mckstudio.countriesapp.common.Constants.Sub_Region
+import com.mckstudio.countriesapp.common.Constants.Sub_Region_Title
 import com.mckstudio.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.mckstudio.countriesapp.presentation.country_list.screen.CountryListScreen
 import com.mckstudio.countriesapp.presentation.currency.CurrencyPage
@@ -38,22 +38,22 @@ fun SetupNavGraph(
     ) {
         composable(route = Screen.HomePage.route) {
             HomeScreen(clickHomeItem = {
-                if (it == All_Country) {
+                if (it == Country_Title) {
                     navController.navigate(route = Screen.CountryPage.route)
                 }
-                if (it == Region) {
+                if (it == Region_Title) {
                     navController.navigate(route = Screen.RegionPage.route)
                 }
-                if (it == Sub_Region) {
+                if (it == Sub_Region_Title) {
                     navController.navigate(route = Screen.SubRegionPage.route)
                 }
-                if (it == Currency) {
+                if (it == Currency_Title) {
                     navController.navigate(route = Screen.CurrencyPage.route)
                 }
-                if (it == Constants.Play_Quiz) {
+                if (it == Constants.Quiz_Title) {
                     navController.navigate(route = Screen.PlayQuizPage.route)
                 }
-                if (it == Constants.Favorite) {
+                if (it == Constants.Favorite_Title) {
                     navController.navigate(route = Screen.FavoritePage.route + "/$FAVORITE")
                 }
                 if (it == Constants.SearchCountry) {
@@ -75,7 +75,6 @@ fun SetupNavGraph(
                 }
             )
         }
-
         composable(route = Screen.CountryDetailPage.route) {
             CountryDetailPage(
                 navController = navController,
@@ -83,7 +82,6 @@ fun SetupNavGraph(
                     navController.popBackStack()
                 })
         }
-
         composable(route = Screen.RegionPage.route) {
             RegionScreen(backClick = {
                 navController.popBackStack()

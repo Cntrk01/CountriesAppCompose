@@ -25,6 +25,7 @@ import com.mckstudio.countriesapp.common.Constants.Southeast_Europe
 import com.mckstudio.countriesapp.common.Constants.Southern_Africa
 import com.mckstudio.countriesapp.common.Constants.Southern_Asia
 import com.mckstudio.countriesapp.common.Constants.Western_Africa
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.HomeCard
 import com.mckstudio.countriesapp.domain.model.ScreenItem
@@ -54,25 +55,26 @@ fun SubRegionScreen(
         ScreenItem(imageId = R.drawable.icons_east_asia, cardText = stringResource(R.string.eastern_asia), clickHomeItem = { clickSubRegionItem?.invoke(Eastern_Asia) }, backgroundColor = MaterialTheme.colorScheme.onTertiaryContainer)
     )
 
-    Column {
-        AppBar(
-            imageId = R.drawable.icon_app_bar,
-            backClick = {
-                backClick?.invoke()
-            })
-
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            contentPadding = PaddingValues(10.dp)
-        ){
-            items(subRegionItem) { subRegionItem ->
-                HomeCard(
-                    imageId=subRegionItem.imageId,
-                    cardText = subRegionItem.cardText,
-                    clickHomeCardItem = { subRegionItem.clickHomeItem.invoke(it) },
-                    backgroundColor = subRegionItem.backgroundColor
-                )
+    CABaseScreen(
+        title = "Sub Regions",
+        backClick = {
+            backClick?.invoke()
+        },
+        content = { modifier ->
+            LazyVerticalStaggeredGrid(
+                modifier = modifier,
+                columns = StaggeredGridCells.Fixed(2),
+                contentPadding = PaddingValues(10.dp)
+            ){
+                items(subRegionItem) { subRegionItem ->
+                    HomeCard(
+                        imageId=subRegionItem.imageId,
+                        cardText = subRegionItem.cardText,
+                        clickHomeCardItem = { subRegionItem.clickHomeItem.invoke(it) },
+                        backgroundColor = subRegionItem.backgroundColor
+                    )
+                }
             }
         }
-    }
+    )
 }

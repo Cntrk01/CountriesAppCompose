@@ -60,14 +60,14 @@ class RegionCountryListViewModel @Inject constructor(
                     }
                 }
 
-                else -> {
-                    val newData = response.data?.map { countryItem ->
+                is Response.Success -> {
+                    val newData = response.data.map { countryItem ->
                         CountryItem(
                             flag = countryItem.flag,
                             name = countryItem.name,
                             countryDetailItem = countryItem.countryDetailItem
                         )
-                    } ?: emptyList() //null geleceği için böyle yaptım ? var datadan önce
+                    }
 
                     countryList += newData
 

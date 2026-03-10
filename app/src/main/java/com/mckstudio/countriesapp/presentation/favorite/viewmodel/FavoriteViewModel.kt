@@ -55,12 +55,13 @@ class FavoriteViewModel @Inject constructor(
                     _state.update { favoriteState ->
                         favoriteState.copy(
                             loading = false,
-                            error = reponse.message.toString()
+                            error = reponse.message
                         )
                     }
                 }
 
-                else -> {
+                is Response.Success ->  {
+                    println(reponse.data)
                     _state.update { favoriteState ->
                         favoriteState.copy(
                             loading = false,
@@ -160,12 +161,12 @@ class FavoriteViewModel @Inject constructor(
                         _state.update { favoriteState ->
                             favoriteState.copy(
                                 loading = false,
-                                error = it.message.toString()
+                                error = it.message
                             )
                         }
                     }
 
-                    else -> {
+                    is Response.Success -> {
                         _state.update { favoriteState ->
                             favoriteState.copy(
                                 loading = false,

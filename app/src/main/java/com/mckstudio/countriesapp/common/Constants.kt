@@ -5,13 +5,19 @@ object Constants {
     const val BASE_URL="https://restcountries.com/v3.1/"
 
     //HOME SCREEN
-    const val All_Country = "All Country"
-    const val Region = "Region"
+    const val Country_Title = "All Country"
+    const val Country_Subtitle = "250+ nations"
+    const val Region_Title = "Region"
+    const val Region_Subtitle = "Explore continents"
     const val Region_Name = "Region Name"
-    const val Sub_Region = "Sub Region"
-    const val Currency = "Currency"
-    const val Play_Quiz = "Play Quiz"
-    const val Favorite = "Favorite"
+    const val Sub_Region_Title = "Sub Region"
+    const val Sub_Region_Subtitle = "Detailed areas"
+    const val Currency_Title = "Currency"
+    const val Currency_Subtitle = "Money & rates"
+    const val Quiz_Title = "Quiz"
+    const val Quiz_Subtitle = "Test your knowledge"
+    const val Favorite_Title = "Favorite"
+    const val Favorite_Subtitle = "Saved places"
     const val SearchCountry = "Search Country"
 
     //REGION

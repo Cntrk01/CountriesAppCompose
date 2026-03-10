@@ -14,20 +14,20 @@ class QuizRepositoryImpl @Inject constructor(
 
     // ---------------- EASY ----------------
 
-    override suspend fun getEasyQuizFlagQuestion() =
+    override fun getEasyQuizFlagQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItem() }
         }
 
-    override suspend fun getEasyQuizCapitalQuestion() =
+    override fun getEasyQuizCapitalQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemCapital() }
                 .subList(0, 10)
         }
 
-    override suspend fun getEasyQuizEmblemsQuestion() =
+    override fun getEasyQuizEmblemsQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
@@ -36,7 +36,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     // ---------------- MEDIUM ----------------
 
-    override suspend fun getMediumQuizFlagQuestion() =
+    override fun getMediumQuizFlagQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItem() }
@@ -47,7 +47,7 @@ class QuizRepositoryImpl @Inject constructor(
             europe.subList(10, 20) + asia.subList(10, 20)
         }
 
-    override suspend fun getMediumQuizCapitalQuestion() =
+    override fun getMediumQuizCapitalQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemCapital() }
@@ -58,7 +58,7 @@ class QuizRepositoryImpl @Inject constructor(
             europe.subList(10, 20) + asia.subList(10, 20)
         }
 
-    override suspend fun getMediumQuizEmblemsQuestion() =
+    override fun getMediumQuizEmblemsQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
@@ -71,7 +71,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     // ---------------- HARD ----------------
 
-    override suspend fun getHardQuizFlagQuestion() =
+    override fun getHardQuizFlagQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItem() }
@@ -87,7 +87,7 @@ class QuizRepositoryImpl @Inject constructor(
                     america.subList(20, 30)
         }
 
-    override suspend fun getHardQuizCapitalQuestion() =
+    override fun getHardQuizCapitalQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemCapital() }
@@ -103,7 +103,7 @@ class QuizRepositoryImpl @Inject constructor(
                     america.subList(20, 30)
         }
 
-    override suspend fun getHardQuizEmblemsQuestion() =
+    override fun getHardQuizEmblemsQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
@@ -121,7 +121,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     // ---------------- EXPERT ----------------
 
-    override suspend fun getExpertQuizFlagQuestion() =
+    override fun getExpertQuizFlagQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItem() }
@@ -141,7 +141,7 @@ class QuizRepositoryImpl @Inject constructor(
                     africa.subList(0, 10)
         }
 
-    override suspend fun getExpertQuizCapitalQuestion() =
+    override fun getExpertQuizCapitalQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemCapital() }
@@ -161,7 +161,7 @@ class QuizRepositoryImpl @Inject constructor(
                     africa.subList(0, 10)
         }
 
-    override suspend fun getExpertQuizEmblemsQuestion() =
+    override fun getExpertQuizEmblemsQuestion() =
         Response.safeOperation {
             val europe = countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItemEmblems() }
@@ -183,31 +183,31 @@ class QuizRepositoryImpl @Inject constructor(
 
     // ---------------- REGION BASED ----------------
 
-    override suspend fun getEuropeCountryQuizQuestion() =
+    override fun getEuropeCountryQuizQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Europe")
                 .map { it.toQuizItem() }
         }
 
-    override suspend fun getAmericaCountryQuizQuestion() =
+    override fun getAmericaCountryQuizQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("America")
                 .map { it.toQuizItem() }
         }
 
-    override suspend fun getAfricaCountryQuizQuestion() =
+    override fun getAfricaCountryQuizQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Africa")
                 .map { it.toQuizItem() }
         }
 
-    override suspend fun getAsiaCountryQuizQuestion() =
+    override fun getAsiaCountryQuizQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Asia")
                 .map { it.toQuizItem() }
         }
 
-    override suspend fun getOceaniaCountryQuizQuestion() =
+    override fun getOceaniaCountryQuizQuestion() =
         Response.safeOperation {
             countryApi.getCountryWithRegion("Oceania")
                 .map { it.toQuizItem() }

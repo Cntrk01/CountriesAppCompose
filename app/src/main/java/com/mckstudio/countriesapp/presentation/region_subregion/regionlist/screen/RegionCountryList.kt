@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.CountryDataList
@@ -19,46 +20,44 @@ import com.mckstuido.countriesapp.R
 
 @Composable
 fun RegionCountryList(
-    regionCountryListViewModel: RegionCountryListViewModel = hiltViewModel(),
+    clickCountry : (CountryDetailItem)->Unit,
     backClick : ()->Unit,
-    clickCountry : (CountryDetailItem)->Unit
+    regionCountryListViewModel: RegionCountryListViewModel = hiltViewModel()
 ){
     val state by regionCountryListViewModel.countryListState.collectAsState()
 
-    Column {
-        AppBar(
-            imageId = R.drawable.icon_app_bar,
-            backClick = {
-                backClick.invoke()
-                regionCountryListViewModel.resetState()
-            })
+    CABaseScreen(
+        backClick = {
+            backClick.invoke()
+        },
+        content = { modifier ->
+            Box(modifier = modifier.fillMaxSize()) {
+                if (state.loading) {
+                    LoadingCardView(modifier = Modifier.align(Alignment.Center))
+                }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            if (state.loading) {
-                LoadingCardView(modifier = Modifier.align(Alignment.Center))
-            }
+                if (state.error.isNotBlank()) {
+                    Box(
+                        modifier = Modifier.align(Alignment.Center),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ErrorText(
+                            errorMessage = state.error,
+                            clickRetryButton = {
+                                regionCountryListViewModel.getCountryList()
+                            })
+                    }
+                }
 
-            if (state.error.isNotBlank()) {
-                Box(
-                    modifier = Modifier.align(Alignment.Center),
-                    contentAlignment = Alignment.Center
-                ) {
-                    ErrorText(
-                        errorMessage = state.error,
-                        clickRetryButton = {
-                            regionCountryListViewModel.getCountryList()
+                if (state.countryData.isNotEmpty()) {
+                    CountryDataList(
+                        countryList = state.countryData,
+                        countryStateListSize = state.countryData.size,
+                        clickCountry = { countryDetail ->
+                            clickCountry.invoke(countryDetail)
                         })
                 }
             }
-
-            if (state.countryData.isNotEmpty()) {
-                CountryDataList(
-                    countryList = state.countryData,
-                    countryStateListSize = state.countryData.size,
-                    clickCountry = { countryDetail ->
-                        clickCountry.invoke(countryDetail)
-                    })
-            }
         }
-    }
+    )
 }

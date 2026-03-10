@@ -2,13 +2,30 @@ package com.mckstudio.countriesapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// --- LİGHT MODE RENKLERİ ---
+val CAWhite = Color(0xFFFFFFFF)
+val CABlue = Color(0xFF1A56DB)
+val CABgWhite = Color(0xFFF8F9FA)
+val CACardWhite = Color(0xFFFFFFFF)
+val CABlack = Color(0xFF000000)
+val CAGray = Color(0xFF9E9E9E)
+val CAGrayLight = Color(0xE2C9C9D2)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+
+// Soft İkon Arka Planları
+val SoftBlue = Color(0xFFD7DAE7)
+val SoftPurple = Color(0xFF7049C9)
+val SoftOrange = Color(0xFFEC7A43)
+val SoftPink = Color(0xFFEC3B91)
+val SoftGreen = Color(0xFF159F63)
+val SoftRed = Color(0xFFE53E3E)
 
 
-val TopBarColor = Color(0xFF1C7DCB)
+val CADividerLight = Color(0xFFE5E7EB) // Divider için
+
+// --- DARK MODE RENKLERİ ---
+val CABlueDark = Color(0xFF91BEFF)
+val CABgDark = Color(0xFF121212)
+val CASurfaceDark = Color(0xFF1E1E1E)
+val CAGrayDark = Color(0xFF9E9E9E) // Dark mod yardımcı yazılar
+val CAOutlineDark = Color(0xFF2C2C2C) // Dark mod çizgiler ve SearchBar dolgusu

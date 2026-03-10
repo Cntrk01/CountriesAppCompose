@@ -44,7 +44,7 @@ class SearchViewModel @Inject constructor(
                         }
                     }
 
-                    else->{
+                    is Response.Success ->{
                         _state.value= SearchState(
                             error = "",
                             loading = false,

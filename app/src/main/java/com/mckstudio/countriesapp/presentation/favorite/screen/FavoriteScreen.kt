@@ -1,6 +1,7 @@
 package com.mckstudio.countriesapp.presentation.favorite.screen
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.LoadingCardView
@@ -49,88 +52,91 @@ fun FavoriteScreen(
     val state by favoriteViewModel.state.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
-    Column {
-        AppBar(
-            imageId = R.drawable.icon_app_bar,
-            backClick = {
-                backClick.invoke()
-                favoriteViewModel.resetState()
-            },
-        )
-        Box(modifier = Modifier.fillMaxSize()) {
-            if (state.loading == true) {
-                LoadingCardView(modifier = Modifier.align(Alignment.Center))
-            }
+    CABaseScreen(
+        title = "Favorite Countries",
+        backClick = {
+            backClick.invoke()
+            favoriteViewModel.resetState()
+        },
+        content = { modifier ->
+            Box(modifier = modifier.fillMaxSize()) {
+                if (state.loading == true) {
+                    LoadingCardView(modifier = Modifier.align(Alignment.Center))
+                }
 
-            if (state.error.isNotBlank()) {
-                Text(text = state.error)
-            }
+                if (state.error.isNotBlank()) {
+                    Text(text = state.error)
+                }
 
-            if (state.favoriteList?.isNotEmpty() == true) {
-                state.favoriteList?.let { list ->
-                    LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Fixed(2),
-                        contentPadding = PaddingValues(10.dp)
-                    ) {
-                        items(
-                            count = list.size,
-                            key = {
-                                list[it].id
-                            },
-                            itemContent = {
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(200.dp)
-                                        .padding(5.dp),
-                                    shape = RoundedCornerShape(10.dp),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
-                                ) {
-                                    Box(
+                if (state.favoriteList?.isNotEmpty() == true) {
+                    state.favoriteList?.let { list ->
+                        LazyVerticalStaggeredGrid(
+                            columns = StaggeredGridCells.Fixed(2),
+                            contentPadding = PaddingValues(10.dp)
+                        ) {
+                            items(
+                                count = list.size,
+                                key = {
+                                    list[it].id
+                                },
+                                itemContent = {
+                                    Card(
                                         modifier = Modifier
-                                            .fillMaxSize(),
-                                        contentAlignment = Alignment.Center
+                                            .fillMaxWidth()
+                                            .height(200.dp)
+                                            .padding(5.dp),
+                                        shape = RoundedCornerShape(10.dp),
+                                        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
                                     ) {
-                                        AsyncImage(
+                                        Box(
                                             modifier = Modifier
-                                                .fillMaxSize()
-                                                .clickable {
-                                                    coroutineScope.launch {
-                                                        delay(800)
-                                                        clickFavoriteItem.invoke(list[it])
-                                                    }
-                                                },
-                                            model = list[it].flags?.png,
-                                            contentDescription = "",
-                                            contentScale = ContentScale.Crop
-                                        )
-                                        list[it].name?.common?.let { it1 ->
-                                            Text(
+                                                .fillMaxSize(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            AsyncImage(
                                                 modifier = Modifier
-                                                    .align(Alignment.BottomCenter)
-                                                    .padding(bottom = 10.dp),
-                                                maxLines = 2,
-                                                text = it1,
-                                                fontSize = 22.sp,
-                                                fontFamily = FontFamily.SansSerif,
-                                                fontWeight = FontWeight.ExtraBold,
-                                                textAlign = TextAlign.Center,
-                                                color = Color.Transparent
+                                                    .fillMaxSize()
+                                                    .clickable(
+                                                        interactionSource = remember { MutableInteractionSource() },
+                                                        indication = null
+                                                    ) {
+                                                        coroutineScope.launch {
+                                                            delay(800)
+                                                            clickFavoriteItem.invoke(list[it])
+                                                        }
+                                                    },
+                                                model = list[it].flags?.png,
+                                                contentDescription = "",
+                                                contentScale = ContentScale.Crop
                                             )
+                                            list[it].name?.common?.let { it1 ->
+                                                Text(
+                                                    modifier = Modifier
+                                                        .align(Alignment.BottomCenter)
+                                                        .padding(bottom = 10.dp),
+                                                    maxLines = 2,
+                                                    text = it1,
+                                                    fontSize = 22.sp,
+                                                    fontFamily = FontFamily.SansSerif,
+                                                    fontWeight = FontWeight.ExtraBold,
+                                                    textAlign = TextAlign.Center,
+                                                    color = Color.Transparent
+                                                )
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
-            }
-            //else if yazınca geri tuşuna basınca anlık olarak bu kısımın gözükmesi problemini giderdim.else blogu vardı
-            else if (state.favoriteList?.isNotEmpty() == false) {
-                ShowForEmptyResult(
-                    imageId = R.drawable.icons_empty,
-                    textBelowThePicture = stringResource(R.string.no_countries_are_favorites))
+                //else if yazınca geri tuşuna basınca anlık olarak bu kısımın gözükmesi problemini giderdim.else blogu vardı
+                else if (state.favoriteList?.isNotEmpty() == false) {
+                    ShowForEmptyResult(
+                        imageId = R.drawable.icons_empty,
+                        textBelowThePicture = stringResource(R.string.no_countries_are_favorites))
+                }
             }
         }
-    }
+    )
 }

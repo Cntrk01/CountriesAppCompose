@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.BaseComposable
@@ -34,7 +35,8 @@ fun CountryListScreen(
 ) {
     val state by countryListViewModel.countryListState.collectAsStateWithLifecycle()
 
-    BaseComposable(
+    CABaseScreen(
+        title = "All Country",
         backClick = {
             backClick?.invoke()
         },
@@ -44,11 +46,13 @@ fun CountryListScreen(
                 verticalArrangement = Arrangement.Center
             ){
                 if (state.loading) {
-                    //checkError = false
-                    LoadingCardView(modifier =
-                        Modifier
-                            .align(Alignment.CenterHorizontally)
-                    )
+                    Box(modifier = Modifier.fillMaxSize()
+                        .align(Alignment.CenterHorizontally)) {
+                        LoadingCardView(modifier =
+                            Modifier
+                                .align(Center)
+                        )
+                    }
                 }
 
                 if (state.error.isNotBlank()) {

@@ -2,6 +2,7 @@ package com.mckstudio.countriesapp.layouts
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,16 +41,12 @@ fun HomeCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
-        ),
-
+            ),
         ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable (
-                    indication = null,
-                    interactionSource = null,
-                ){
+                .clickable {
                     clickHomeCardItem?.invoke(cardText)
                 },
             contentAlignment = Alignment.Center

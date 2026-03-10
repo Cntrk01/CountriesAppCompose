@@ -3,7 +3,7 @@ package com.mckstudio.countriesapp.presentation.search.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mckstudio.countriesapp.Response
-import com.mckstudio.countriesapp.domain.use_case.SearchCountryUseCase
+import com.mckstudio.countriesapp.domain.repository.SearchRepository
 import com.mckstudio.countriesapp.presentation.search.state.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,14 +14,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchUseCase: SearchCountryUseCase): ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val searchRepository: SearchRepository,
+): ViewModel() {
 
     private val _state = MutableStateFlow(SearchState())
     val state : StateFlow<SearchState> = _state
 
     fun searchCountry(countryName:String) = viewModelScope.launch {
-        searchUseCase
-            .searchRepository(countryName = countryName)
+        searchRepository
+            .searchCountry(countryName = countryName)
             .collectLatest {
                 when(it){
                     is Response.Loading->{
@@ -42,7 +44,7 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchCount
                         }
                     }
 
-                    else->{
+                    is Response.Success ->{
                         _state.value= SearchState(
                             error = "",
                             loading = false,

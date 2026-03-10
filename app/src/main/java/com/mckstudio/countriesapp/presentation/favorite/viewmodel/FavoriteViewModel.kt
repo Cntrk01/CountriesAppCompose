@@ -7,7 +7,8 @@ import com.mckstudio.countriesapp.common.Constants.FAVORITE
 import com.mckstudio.countriesapp.data.response.Name
 import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
-import com.mckstudio.countriesapp.domain.use_case.FavoriteCountryUseCase
+import com.mckstudio.countriesapp.domain.repository.FavoriteCountryRepository
+import com.mckstudio.countriesapp.domain.repository.SearchRepository
 import com.mckstudio.countriesapp.presentation.favorite.state.FavoriteState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val favoriteCountryUseCase: FavoriteCountryUseCase,
+    private val favoriteRepository: FavoriteCountryRepository,
     private val savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -37,7 +38,9 @@ class FavoriteViewModel @Inject constructor(
     val state: StateFlow<FavoriteState> = _state
 
     fun getAllCountry() = viewModelScope.launch(Dispatchers.IO) {
-        favoriteCountryUseCase.getAllCountry().collectLatest { reponse ->
+        favoriteRepository
+            .getAllCountry()
+            .collectLatest { reponse ->
             when (reponse) {
                 is Response.Loading -> {
                     _state.update { favoriteState ->
@@ -52,12 +55,13 @@ class FavoriteViewModel @Inject constructor(
                     _state.update { favoriteState ->
                         favoriteState.copy(
                             loading = false,
-                            error = reponse.message.toString()
+                            error = reponse.message
                         )
                     }
                 }
 
-                else -> {
+                is Response.Success ->  {
+                    println(reponse.data)
                     _state.update { favoriteState ->
                         favoriteState.copy(
                             loading = false,
@@ -71,7 +75,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun addCountry(countryDetailItem: CountryDetailItem) = viewModelScope.launch(Dispatchers.IO) {
-        favoriteCountryUseCase
+        favoriteRepository
             .insertCountry(countryDetailItem = countryDetailItem)
             .collectLatest {
                 when (it) {
@@ -106,7 +110,7 @@ class FavoriteViewModel @Inject constructor(
 
     fun deleteCountry(countryDetailItem: CountryDetailItem) =
         viewModelScope.launch(Dispatchers.IO) {
-            favoriteCountryUseCase
+            favoriteRepository
                 .deleteCountry(countryDetailItem = countryDetailItem)
                 .collectLatest {
                     when (it) {
@@ -141,7 +145,7 @@ class FavoriteViewModel @Inject constructor(
         }
 
     fun checkExistCountry(name: Name) = viewModelScope.launch(Dispatchers.IO) {
-        favoriteCountryUseCase
+        favoriteRepository
             .checkExistCountry(name = name)
             .collectLatest {
                 when (it) {
@@ -157,12 +161,12 @@ class FavoriteViewModel @Inject constructor(
                         _state.update { favoriteState ->
                             favoriteState.copy(
                                 loading = false,
-                                error = it.message.toString()
+                                error = it.message
                             )
                         }
                     }
 
-                    else -> {
+                    is Response.Success -> {
                         _state.update { favoriteState ->
                             favoriteState.copy(
                                 loading = false,

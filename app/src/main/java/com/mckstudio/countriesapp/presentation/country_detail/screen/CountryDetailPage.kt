@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,6 +63,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.data.response.toList
 import com.mckstudio.countriesapp.domain.model.BaseTranslation
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
@@ -100,7 +103,7 @@ fun CountryDetailPage(
         }
     }
 
-    BaseComposable(
+    CABaseScreen(
         backClick = backClick,
         content = { modifier ->
             if (loading) {
@@ -192,7 +195,7 @@ fun CountryDetailPage(
                                     .fillMaxWidth()
                                     .clickable (
                                         indication = null,
-                                        interactionSource = null,
+                                        interactionSource = remember { MutableInteractionSource() },
                                     ) {
                                         expandedTranslation = !expandedTranslation
                                     }) {
@@ -417,7 +420,7 @@ private fun CountryImage(
                 .background(Color.Transparent)
                 .clickable(
                     indication = null,
-                    interactionSource = null,
+                    interactionSource = remember { MutableInteractionSource() },
                 ) {
                     if (checkExistsDb == 1) {
                         favoriteViewModel.deleteCountry(countryItem)
@@ -481,5 +484,3 @@ private fun CountryImage(
         }
     }
 }
-
-

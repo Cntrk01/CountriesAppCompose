@@ -12,8 +12,8 @@ import com.mckstudio.countriesapp.common.Constants.Country_Title
 import com.mckstudio.countriesapp.common.Constants.Currency_Title
 import com.mckstudio.countriesapp.common.Constants.DIFFICULT
 import com.mckstudio.countriesapp.common.Constants.FAVORITE
-import com.mckstudio.countriesapp.common.Constants.Region_Title
 import com.mckstudio.countriesapp.common.Constants.Region_Name
+import com.mckstudio.countriesapp.common.Constants.Region_Title
 import com.mckstudio.countriesapp.common.Constants.Sub_Region_Title
 import com.mckstudio.countriesapp.presentation.country_detail.screen.CountryDetailPage
 import com.mckstudio.countriesapp.presentation.country_list.screen.CountryListScreen
@@ -26,7 +26,6 @@ import com.mckstudio.countriesapp.presentation.play_quiz.screen.shared_difficult
 import com.mckstudio.countriesapp.presentation.region_subregion.region.screen.RegionScreen
 import com.mckstudio.countriesapp.presentation.region_subregion.regionlist.screen.RegionCountryList
 import com.mckstudio.countriesapp.presentation.region_subregion.subregion.SubRegionScreen
-import com.mckstudio.countriesapp.presentation.search.screen.SearchPage
 
 @Composable
 fun SetupNavGraph(
@@ -34,10 +33,11 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.HomePage.route
+        startDestination = Screen.HomePage.route,
     ) {
         composable(route = Screen.HomePage.route) {
-            HomeScreen(clickHomeItem = {
+            HomeScreen(
+                clickHomeItem = {
                 if (it == Country_Title) {
                     navController.navigate(route = Screen.CountryPage.route)
                 }
@@ -56,10 +56,15 @@ fun SetupNavGraph(
                 if (it == Constants.Favorite_Title) {
                     navController.navigate(route = Screen.FavoritePage.route + "/$FAVORITE")
                 }
-                if (it == Constants.SearchCountry) {
-                    navController.navigate(route = Screen.SearchPage.route)
+            },
+                selectedCountry = {
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        Screen.CountryDetailPage.route,
+                        it
+                    )
+                    navController.navigate(route = Screen.CountryDetailPage.route)
                 }
-            })
+            )
         }
         composable(route = Screen.CountryPage.route) {
             CountryListScreen(
@@ -124,21 +129,6 @@ fun SetupNavGraph(
                 )
                 navController.navigate(route = Screen.CountryDetailPage.route)
             })
-        }
-
-        composable(route = Screen.SearchPage.route) {
-            SearchPage(
-                backClick = {
-                    navController.popBackStack()
-                },
-                countryDetailItem = { countryDetailItem ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set(
-                        Screen.CountryDetailPage.route,
-                        countryDetailItem
-                    )
-                    navController.navigate(route = Screen.CountryDetailPage.route)
-                }
-            )
         }
 
         composable(

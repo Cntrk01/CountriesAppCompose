@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.QuizItemCard
 import com.mckstuido.countriesapp.R
@@ -29,35 +30,34 @@ fun SharedDifficultyScreen(
     //String ifadeleri aldık ama int olarak geliyordu burada getString ile ifadeleri stringe çevirip listede tuttum
     val stringAnswerOptions: List<String> = answerOptions.map { context.getString(it) }
 
-    Column {
-        AppBar(
-            imageId = R.drawable.icon_app_bar,
-            backClick = {
-                backClick.invoke()
-            })
-
-        LazyColumn(
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            itemsIndexed(stringAnswerOptions) { index, item ->
-                QuizItemCard(
-                    quizText = stringAnswerOptions[index],
-                    clickItem = {
-                        when (index) {
-                            0 -> {
-                                chooseCategoryData.invoke(Constants.Flag, difficultLevel)
+    CABaseScreen(
+        title = "Difficult Type",
+        backClick = backClick,
+        content = { modifier ->
+            LazyColumn(
+                modifier = modifier,
+                contentPadding = PaddingValues(10.dp)
+            ) {
+                itemsIndexed(stringAnswerOptions) { index, item ->
+                    QuizItemCard(
+                        quizText = stringAnswerOptions[index],
+                        clickItem = {
+                            when (index) {
+                                0 -> {
+                                    chooseCategoryData.invoke(Constants.Flag, difficultLevel)
+                                }
+                                1 -> {
+                                    chooseCategoryData.invoke(Constants.Capital, difficultLevel)
+                                }
+                                2 -> {
+                                    chooseCategoryData.invoke(Constants.Emblems, difficultLevel)
+                                }
                             }
-                            1 -> {
-                                chooseCategoryData.invoke(Constants.Capital, difficultLevel)
-                            }
-                            2 -> {
-                                chooseCategoryData.invoke(Constants.Emblems, difficultLevel)
-                            }
-                        }
-                    },
-                    backgroundColor = backgroundColors[index]
-                )
+                        },
+                        backgroundColor = backgroundColors[index]
+                    )
+                }
             }
         }
-    }
+    )
 }

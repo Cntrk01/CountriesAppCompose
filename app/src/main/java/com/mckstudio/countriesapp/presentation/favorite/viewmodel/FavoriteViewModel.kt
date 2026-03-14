@@ -8,7 +8,6 @@ import com.mckstudio.countriesapp.data.response.Name
 import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
 import com.mckstudio.countriesapp.domain.repository.FavoriteCountryRepository
-import com.mckstudio.countriesapp.domain.repository.SearchRepository
 import com.mckstudio.countriesapp.presentation.favorite.state.FavoriteState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

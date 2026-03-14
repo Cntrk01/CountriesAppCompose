@@ -46,8 +46,9 @@ fun PlayQuiz(
     CABaseScreen(
         title = "Quiz",
         backClick = backClick,
-        content = {
+        content = { modifier ->
             LazyVerticalStaggeredGrid(
+                modifier = modifier,
                 columns = StaggeredGridCells.Fixed(2),
                 contentPadding = PaddingValues(10.dp)
             ) {

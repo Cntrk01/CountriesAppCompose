@@ -18,7 +18,6 @@ object Constants {
     const val Quiz_Subtitle = "Test your knowledge"
     const val Favorite_Title = "Favorite"
     const val Favorite_Subtitle = "Saved places"
-    const val SearchCountry = "Search Country"
 
     //REGION
     const val ANTARCTIC = "Antarctic"

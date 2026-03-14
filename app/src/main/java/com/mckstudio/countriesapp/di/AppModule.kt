@@ -7,7 +7,6 @@ import com.mckstudio.countriesapp.data.local_db.CountryDao
 import com.mckstudio.countriesapp.data.local_db.CountryDatabase
 import com.mckstudio.countriesapp.data.remote.CountryApi
 import com.mckstudio.countriesapp.data.repositoryimpl.FavoriteCountryRepositoryImpl
-import com.mckstudio.countriesapp.data.repositoryimpl.SearchCountryRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +33,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLocalDatabase (@ApplicationContext context: Context) : CountryDatabase {
-        return Room.databaseBuilder(context = context, klass = CountryDatabase::class.java, name = "country_db1")
+        return Room
+            .databaseBuilder(
+                context = context,
+                klass = CountryDatabase::class.java,
+                name = "country_db1",
+            )
             .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
@@ -44,17 +48,5 @@ object AppModule {
     @Singleton
     fun provideCountryDao(countryDb: CountryDatabase) : CountryDao {
         return countryDb.countryDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideFavoriteCountryRepositoryImpl(countryDao: CountryDao) : FavoriteCountryRepositoryImpl {
-        return FavoriteCountryRepositoryImpl(countryDao = countryDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSearchCountryImpl (countryApi: CountryApi) : SearchCountryRepositoryImpl {
-        return SearchCountryRepositoryImpl(countryApi = countryApi)
     }
 }

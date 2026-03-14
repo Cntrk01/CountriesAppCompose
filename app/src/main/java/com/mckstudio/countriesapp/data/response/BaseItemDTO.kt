@@ -42,7 +42,7 @@ data class BaseItemDTO(
 )
 
 fun BaseItemDTO.toCountryItem(): CountryItem {
-    return CountryItem(flag = flags, name = name?.common, countryDetailItem = toCountryDetailItem())
+    return CountryItem(flag = flags, name = name?.common, capital = capital?.first() ,countryDetailItem = toCountryDetailItem())
 }
 
 fun BaseItemDTO.toCountryDetailItem(): CountryDetailItem {

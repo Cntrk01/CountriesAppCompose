@@ -13,9 +13,11 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.lang.Exception
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-class FavoriteCountryRepositoryImpl(private val countryDao: CountryDao) :
-    FavoriteCountryRepository {
+class FavoriteCountryRepositoryImpl @Inject constructor(
+    private val countryDao: CountryDao,
+) : FavoriteCountryRepository {
 
     override fun getAllCountry(): Flow<Response<List<CountryDetailItem>>> =
         Response.safeOperation {

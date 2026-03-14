@@ -18,13 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mckstudio.countriesapp.common.Constants.Country_Title
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mckstudio.countriesapp.common.Constants.Country_Subtitle
+import com.mckstudio.countriesapp.common.Constants.Country_Title
 import com.mckstudio.countriesapp.common.Constants.Currency_Subtitle
 import com.mckstudio.countriesapp.common.Constants.Currency_Title
 import com.mckstudio.countriesapp.common.Constants.Favorite_Subtitle
@@ -37,8 +40,12 @@ import com.mckstudio.countriesapp.common.Constants.Sub_Region_Subtitle
 import com.mckstudio.countriesapp.common.Constants.Sub_Region_Title
 import com.mckstudio.countriesapp.common.Dimens
 import com.mckstudio.countriesapp.components.CABaseScreen
+import com.mckstudio.countriesapp.components.CACountryList
 import com.mckstudio.countriesapp.components.CARecommendedCard
 import com.mckstudio.countriesapp.components.RecommendedCardModel
+import com.mckstudio.countriesapp.domain.model.CountryDetailItem
+import com.mckstudio.countriesapp.domain.model.CountryItem
+import com.mckstudio.countriesapp.domain.model.toCountryDetailItem
 import com.mckstudio.countriesapp.ui.components.CACategoryCard
 import com.mckstudio.countriesapp.ui.components.CASearchBar
 import com.mckstudio.countriesapp.ui.components.CategoryCardModel
@@ -53,9 +60,12 @@ import com.mckstuido.countriesapp.R
 
 @Composable
 fun HomeScreen(
-    clickHomeItem: (String) -> Unit
+    clickHomeItem: (String) -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    selectedCountry : (CountryDetailItem) -> Unit = {},
 ) {
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+    val searchState by homeViewModel.searchState.collectAsStateWithLifecycle()
 
     val recommendedDummyList = listOf(
         RecommendedCardModel("Switzerland", "Bern", "Europe", "https://example.com/1.jpg", {}),
@@ -72,40 +82,63 @@ fun HomeScreen(
                     .fillMaxSize()
                     .padding(Dimens.dp12),
                 contentPadding = PaddingValues(bottom = Dimens.dp12),
-                verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
+                verticalArrangement = Arrangement.spacedBy(Dimens.dp16),
             ) {
                 item {
                     CASearchBar(
                         searchText = searchQuery,
-                        onSearchTextChange = { searchQuery = it }
+                        onSearchTextChange = {
+                            searchQuery = it
+                            homeViewModel.onSearchQueryChanged(newQuery = searchQuery)
+                        }
                     )
                 }
 
-                item {
-                    Text(
-                        text = "Explore World",
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                }
+                if (searchQuery.isNotEmpty()) {
+                    if (searchState.loading) {
 
-                item {
-                    CategoryGrid(
-                        onSelectedCategory = { clickHomeItem(it) }
-                    )
-                }
+                    }
+                    if (searchState.error.isNotEmpty()) {
 
-                item {
-                    Text(
-                        text = "Recommended For You",
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                }
+                    }
+                    if (searchState.searchCountry.isNotEmpty()) {
+                        item {
+                            CACountryList(
+                                countryList = searchState.searchCountry.toCountryDetailItem(),
+                                onSelectedCountry = {
+                                    selectedCountry(it)
+                                }
+                            )
+                        }
+                    }
 
-                item {
-                    RecommendedGrid(
-                        recommendedList = recommendedDummyList,
-                        onSelectedRecommended = { clickHomeItem(it) }
-                    )
+                } else {
+                    item {
+                        Text(
+                            text = "Explore World",
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                    }
+
+                    item {
+                        CategoryGrid(
+                            onSelectedCategory = { clickHomeItem(it) }
+                        )
+                    }
+
+                    item {
+                        Text(
+                            text = "Recommended For You",
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                    }
+
+                    item {
+                        RecommendedGrid(
+                            recommendedList = recommendedDummyList,
+                            onSelectedRecommended = { clickHomeItem(it) }
+                        )
+                    }
                 }
             }
         }

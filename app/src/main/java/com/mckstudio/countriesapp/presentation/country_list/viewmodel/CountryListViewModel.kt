@@ -7,6 +7,7 @@ import com.mckstudio.countriesapp.domain.model.CountryItem
 import com.mckstudio.countriesapp.domain.repository.CountryRepository
 import com.mckstudio.countriesapp.presentation.country_list.state.CountryListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -25,7 +26,7 @@ class CountryListViewModel @Inject constructor(
         getCountryList()
     }
 
-    fun getCountryList() = viewModelScope.launch {
+    fun getCountryList() = viewModelScope.launch(Dispatchers.IO) {
         countryRepository.getAllCountry().collect { response ->
             when (response) {
                 is Response.Loading -> {
@@ -41,7 +42,7 @@ class CountryListViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             loading = false,
-                            error = response.message.toString(),
+                            error = response.message,
                             countryData = emptyList()
                         )
                     }
@@ -52,6 +53,7 @@ class CountryListViewModel @Inject constructor(
                         CountryItem(
                             flag = countryItem.flag,
                             name = countryItem.name,
+                            capital = countryItem.capital,
                             countryDetailItem = countryItem.countryDetailItem
                         )
                     }

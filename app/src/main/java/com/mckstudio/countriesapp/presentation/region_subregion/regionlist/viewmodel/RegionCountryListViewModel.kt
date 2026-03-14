@@ -55,7 +55,7 @@ class RegionCountryListViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             loading = false,
-                            error = response.message.toString()
+                            error = response.message
                         )
                     }
                 }
@@ -65,6 +65,7 @@ class RegionCountryListViewModel @Inject constructor(
                         CountryItem(
                             flag = countryItem.flag,
                             name = countryItem.name,
+                            capital = countryItem.capital,
                             countryDetailItem = countryItem.countryDetailItem
                         )
                     }

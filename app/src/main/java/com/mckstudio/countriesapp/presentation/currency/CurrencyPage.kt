@@ -1,7 +1,6 @@
 package com.mckstudio.countriesapp.presentation.currency
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,9 +14,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mckstudio.countriesapp.common.Dimens
 import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.components.CACountryListItem
-import com.mckstudio.countriesapp.layouts.ErrorText
-import com.mckstudio.countriesapp.layouts.LoadingCardView
+import com.mckstudio.countriesapp.components.CALoading
 import com.mckstudio.countriesapp.presentation.country_list.viewmodel.CountryListViewModel
+import com.mckstudio.countriesapp.components.CAError
 import com.mckstudio.countriesapp.ui.components.CASearchBar
 
 @Composable
@@ -73,67 +72,67 @@ fun CurrencyPage(
                 CASearchBar(
                     searchText = searchQuery,
                     onSearchTextChange = { searchQuery = it },
-                    placeholder = "Search country or currency..."
+                    placeholder = "Search currency"
                 )
 
                 Spacer(modifier = Modifier.height(Dimens.dp8))
 
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    if (state.loading) {
-                        LoadingCardView(modifier = Modifier.align(Alignment.Center))
+                if (state.loading) {
+                    CALoading(
+                        statusText = "Currencies are being loaded."
+                    )
+                }
+
+                if (state.error.isNotBlank()) {
+                    CAError (
+                        title = state.error,
+                        description = "Something went wrong",
+                        retryButtonText = "Try Again"
+                    ){
+                        currencyViewModel.getCountryList()
                     }
+                }
 
-                    if (state.error.isNotBlank()) {
-                        ErrorText(
-                            modifier = Modifier.align(Alignment.Center),
-                            errorMessage = state.error,
-                            clickRetryButton = { currencyViewModel.getCountryList() }
-                        )
-                    }
+                if (!state.loading && state.error.isBlank()) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(Dimens.dp8),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp2)
+                    ) {
+                        if (filteredCountries.isEmpty() && searchQuery.isNotEmpty()) {
+                            Text(
+                                text = "No results found for '$searchQuery'",
+                                modifier = Modifier
+                                    .padding(Dimens.dp16)
+                                    .align(Alignment.CenterHorizontally),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray
+                            )
+                        } else {
+                            LazyColumn (
+                                state = activeListState,
+                            ){
+                                items(
+                                    count = filteredCountries.size,
+                                ) { index ->
+                                    val country = filteredCountries[index]
+                                    val currencyInfo = country.countryDetailItem.currencies?.values?.firstOrNull()
+                                    val subtitleText = currencyInfo?.let { "${it.name} ${it.symbol}" } ?: "N/A"
 
-                    if (!state.loading && state.error.isBlank()) {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(Dimens.dp8),
-                            colors = CardDefaults.cardColors(containerColor = Color.White),
-                            elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp2)
-                        ) {
-                            if (filteredCountries.isEmpty() && searchQuery.isNotEmpty()) {
-                                Text(
-                                    text = "No results found for '$searchQuery'",
-                                    modifier = Modifier
-                                        .padding(Dimens.dp16)
-                                        .align(Alignment.CenterHorizontally),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray
-                                )
-                            } else {
-                                LazyColumn (
-                                    state = activeListState,
-                                ){
-                                    items(
-                                        count = filteredCountries.size,
-                                    ) { index ->
-                                        val country = filteredCountries[index]
-                                        val currencyInfo = country.countryDetailItem.currencies?.values?.firstOrNull()
-                                        val subtitleText = currencyInfo?.let { "${it.name} ${it.symbol}" } ?: "N/A"
+                                    CACountryListItem(
+                                        title = country.name ?: "",
+                                        subtitle = subtitleText,
+                                        imageUrl = country.flag?.png,
+                                    )
 
-                                        CACountryListItem(
-                                            title = country.name ?: "",
-                                            subtitle = subtitleText,
-                                            imageUrl = country.flag?.png,
+                                    if (index < filteredCountries.size - 1) {
+                                        HorizontalDivider(
+                                            modifier = Modifier.padding(horizontal = Dimens.dp16),
+                                            thickness = 0.5.dp,
+                                            color = MaterialTheme.colorScheme.outlineVariant
                                         )
-
-                                        if (index < filteredCountries.size - 1) {
-                                            HorizontalDivider(
-                                                modifier = Modifier.padding(horizontal = Dimens.dp16),
-                                                thickness = 0.5.dp,
-                                                color = MaterialTheme.colorScheme.outlineVariant
-                                            )
-                                        }
                                     }
                                 }
                             }

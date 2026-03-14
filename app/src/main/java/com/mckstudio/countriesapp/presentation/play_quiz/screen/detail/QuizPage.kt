@@ -52,6 +52,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.mckstudio.countriesapp.common.Constants
 import com.mckstudio.countriesapp.common.Constants.DIFFICULT
+import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.QuizItem
 import com.mckstudio.countriesapp.layouts.AlertDialogForBack
 import com.mckstudio.countriesapp.layouts.AppBar
@@ -99,172 +100,176 @@ fun QuizPage(
         )
     }
 
-    Column {
-        AppBar(
-            imageId = R.drawable.icon_app_bar,
-            backClick = {
-                checkBackClick = true
-            })
-
-        if (checkBackClick) {
-            AlertDialogForBack(
-                confirmButton = {
-                    checkBackClick = false
-                }, dismissButton = {
-                    backClick.invoke(difficultLevel)
-                })
-        }
-
-        if (checkLoading) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                LoadingCardView(modifier = Modifier.align(Center))
-            }
-        }
-
-        if (checkErrorMessage.isNotEmpty()) {
-            Text(text = checkErrorMessage)
-        }
-
-        if (quizListData?.isNotEmpty() == true) {
-            quizListData?.let { newList1 ->
-                var sliderState by remember { mutableFloatStateOf(0f) }
-                var isFinished by remember { mutableStateOf(true) }
-
-                var correctAnswerIndex by remember { mutableIntStateOf(0) }
-                var correctAnswerLastIndex by remember { mutableIntStateOf(-1) }
-
-                var currentQuizQuestion by remember { mutableStateOf<QuizItem?>(null) }
-                var checkAnswerString by remember { mutableStateOf<String?>(null) }
-                var currentQuizQuestionFlag by remember { mutableStateOf("") }
-                var userCheckWrongAnswer by remember { mutableIntStateOf(2) }
-
-                var answerOptions: List<String?> by remember { mutableStateOf(emptyList()) }
-                val otherOptions = newList1.shuffled().take(3).map { it.name }.toMutableList()
-
-                if (isFinished) {
-                    coroutineScope.launch {
-                        if (correctAnswerIndex != 0) {
-                            delay(1000)
-                        }
-                        if (correctAnswerLastIndex != correctAnswerIndex) {
-                            for (i in otherOptions.indices) {
-                                var newItem: String
-
-                                do {
-                                    newItem = newList1.shuffled().take(1).map { it.name }.first().toString()
-                                } while (correctAnswerIndex < newList1.size && newItem ==
-                                    newList1[correctAnswerIndex].name || otherOptions.contains(newItem)
-                                )
-                                otherOptions[i] = newItem
-                            }
-                            correctAnswerLastIndex = correctAnswerIndex
-                            answerOptions =
-                                (listOf(newList1[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
-
-                            currentQuizQuestion = newList1[correctAnswerIndex]
-                            checkAnswerString = currentQuizQuestion?.name
-                            currentQuizQuestionFlag = currentQuizQuestion?.flag!!
-                        }
-                    }
-                }
-
-                SeekBar(sliderSize = newList1.size.toFloat(), sliderSituation = sliderState)
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 10.dp,
-                            top = 10.dp
-                        ),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = CenterVertically
-                ) {
-                    Text(
-                        text = "$correctAnswerIndex /",
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Spacer(modifier = Modifier.width(3.dp))
-                    Text(
-                        text = "${newList1.size}",
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                CheckUserWrongQuestionBar(userCheckWrongAnswer = userCheckWrongAnswer)
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Box(modifier = Modifier.fillMaxSize()) {
-                    LazyColumn(contentPadding = PaddingValues(10.dp)) {
-                        item {
-                            Card(
-                                modifier = Modifier
-                                    .height(250.dp)
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                shape = RoundedCornerShape(10.dp),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                            ) {
-                                AsyncImage(
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    model = currentQuizQuestionFlag, contentDescription = "",
-                                    contentScale = ContentScale.FillBounds,
-                                    alignment = Center
-                                )
-                            }
-                        }
-
-                        answerOptions.forEach { answerText ->
-                            item {
-                                if (answerText != null) {
-                                    AnswerButton(text = answerText, onClick = {
-                                        if (userCheckWrongAnswer != -1) {
-                                            if (correctAnswerIndex != newList1.size) {
-                                                if (checkAnswerString == answerText) {
-                                                    correctAnswerIndex++
-                                                    sliderState += 1f
-
-                                                    if (correctAnswerIndex < newList1.size) {
-                                                        currentQuizQuestion = newList1[correctAnswerIndex]
-                                                        checkAnswerString = currentQuizQuestion?.name
-                                                    } else if (correctAnswerIndex == newList1.size) {
-                                                        //son indexe geldiğinde tekrar döngüye girmemesini engelliyorum .
-                                                        backClick.invoke(difficultLevel)
-                                                        Toast.makeText(context, R.string.examCompleted,Toast.LENGTH_LONG).show()
-                                                        isFinished = false
-                                                    }
-                                                } else {
-                                                    userCheckWrongAnswer--
-                                                }
-                                            }
-                                        } else {
-                                            isFinishedCheck = true
-                                        }
-                                    }, correctAnswer = checkAnswerString.toString())
-                                }
-                            }
-                        }
-                    }
-                }
-                if (userCheckWrongAnswer == -1) {
-                    AlertDialogWithCountdown(
+    CABaseScreen(
+        title = "Quiz Time",
+        backClick = {
+            checkBackClick = true
+        },
+        content = { modifier ->
+            Column(
+                modifier = modifier
+            ) {
+                if (checkBackClick) {
+                    AlertDialogForBack(
                         confirmButton = {
-                            userCheckWrongAnswer += 3
+                            checkBackClick = false
                         }, dismissButton = {
                             backClick.invoke(difficultLevel)
                         })
                 }
+
+                if (checkLoading) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        LoadingCardView(modifier = Modifier.align(Center))
+                    }
+                }
+
+                if (checkErrorMessage.isNotEmpty()) {
+                    Text(text = checkErrorMessage)
+                }
+
+                if (quizListData?.isNotEmpty() == true) {
+                    quizListData?.let { newList1 ->
+                        var sliderState by remember { mutableFloatStateOf(0f) }
+                        var isFinished by remember { mutableStateOf(true) }
+
+                        var correctAnswerIndex by remember { mutableIntStateOf(0) }
+                        var correctAnswerLastIndex by remember { mutableIntStateOf(-1) }
+
+                        var currentQuizQuestion by remember { mutableStateOf<QuizItem?>(null) }
+                        var checkAnswerString by remember { mutableStateOf<String?>(null) }
+                        var currentQuizQuestionFlag by remember { mutableStateOf("") }
+                        var userCheckWrongAnswer by remember { mutableIntStateOf(2) }
+
+                        var answerOptions: List<String?> by remember { mutableStateOf(emptyList()) }
+                        val otherOptions = newList1.shuffled().take(3).map { it.name }.toMutableList()
+
+                        if (isFinished) {
+                            coroutineScope.launch {
+                                if (correctAnswerIndex != 0) {
+                                    delay(1000)
+                                }
+                                if (correctAnswerLastIndex != correctAnswerIndex) {
+                                    for (i in otherOptions.indices) {
+                                        var newItem: String
+
+                                        do {
+                                            newItem = newList1.shuffled().take(1).map { it.name }.first().toString()
+                                        } while (correctAnswerIndex < newList1.size && newItem ==
+                                            newList1[correctAnswerIndex].name || otherOptions.contains(newItem)
+                                        )
+                                        otherOptions[i] = newItem
+                                    }
+                                    correctAnswerLastIndex = correctAnswerIndex
+                                    answerOptions =
+                                        (listOf(newList1[correctAnswerIndex].name) + otherOptions.shuffled()).shuffled()
+
+                                    currentQuizQuestion = newList1[correctAnswerIndex]
+                                    checkAnswerString = currentQuizQuestion?.name
+                                    currentQuizQuestionFlag = currentQuizQuestion?.flag!!
+                                }
+                            }
+                        }
+
+                        SeekBar(sliderSize = newList1.size.toFloat(), sliderSituation = sliderState)
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    start = 10.dp,
+                                    top = 10.dp
+                                ),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = CenterVertically
+                        ) {
+                            Text(
+                                text = "$correctAnswerIndex /",
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.Serif,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Spacer(modifier = Modifier.width(3.dp))
+                            Text(
+                                text = "${newList1.size}",
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.Serif,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        CheckUserWrongQuestionBar(userCheckWrongAnswer = userCheckWrongAnswer)
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            LazyColumn(contentPadding = PaddingValues(10.dp)) {
+                                item {
+                                    Card(
+                                        modifier = Modifier
+                                            .height(250.dp)
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        shape = RoundedCornerShape(10.dp),
+                                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                    ) {
+                                        AsyncImage(
+                                            modifier = Modifier
+                                                .fillMaxSize(),
+                                            model = currentQuizQuestionFlag, contentDescription = "",
+                                            contentScale = ContentScale.FillBounds,
+                                            alignment = Center
+                                        )
+                                    }
+                                }
+
+                                answerOptions.forEach { answerText ->
+                                    item {
+                                        if (answerText != null) {
+                                            AnswerButton(text = answerText, onClick = {
+                                                if (userCheckWrongAnswer != -1) {
+                                                    if (correctAnswerIndex != newList1.size) {
+                                                        if (checkAnswerString == answerText) {
+                                                            correctAnswerIndex++
+                                                            sliderState += 1f
+
+                                                            if (correctAnswerIndex < newList1.size) {
+                                                                currentQuizQuestion = newList1[correctAnswerIndex]
+                                                                checkAnswerString = currentQuizQuestion?.name
+                                                            } else if (correctAnswerIndex == newList1.size) {
+                                                                //son indexe geldiğinde tekrar döngüye girmemesini engelliyorum .
+                                                                backClick.invoke(difficultLevel)
+                                                                Toast.makeText(context, R.string.examCompleted,Toast.LENGTH_LONG).show()
+                                                                isFinished = false
+                                                            }
+                                                        } else {
+                                                            userCheckWrongAnswer--
+                                                        }
+                                                    }
+                                                } else {
+                                                    isFinishedCheck = true
+                                                }
+                                            }, correctAnswer = checkAnswerString.toString())
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (userCheckWrongAnswer == -1) {
+                            AlertDialogWithCountdown(
+                                confirmButton = {
+                                    userCheckWrongAnswer += 3
+                                }, dismissButton = {
+                                    backClick.invoke(difficultLevel)
+                                })
+                        }
+                    }
+                }
             }
         }
-    }
+    )
 }
 
 private fun stateCollect(

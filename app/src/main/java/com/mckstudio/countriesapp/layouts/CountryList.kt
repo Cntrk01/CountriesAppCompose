@@ -5,9 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,9 +36,10 @@ import com.mckstuido.countriesapp.R
 fun CountryDataList(
     countryList: List<CountryItem>,
     countryStateListSize: Int,
-    clickCountry: ((CountryDetailItem) -> Unit)? = null
+    clickCountry: ((String) -> Unit)? = null
 ) {
     LazyVerticalStaggeredGrid(
+        modifier = Modifier.fillMaxSize(),
         columns = StaggeredGridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp)
     ) {
@@ -55,7 +58,7 @@ fun CountryDataList(
                             indication = null,
                             interactionSource = null,
                         ) {
-                            clickCountry?.invoke(countryList[countryList1].countryDetailItem)
+                            clickCountry?.invoke(countryList[countryList1].name.toString())
                         },
                     shape = RoundedCornerShape(10.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -66,7 +69,7 @@ fun CountryDataList(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .fillMaxHeight(),
-                            model = countryList[countryList1].flag?.png,
+                            model = countryList[countryList1].flag,
                             contentDescription = stringResource(R.string.image),
                             contentScale = ContentScale.FillHeight
                         )

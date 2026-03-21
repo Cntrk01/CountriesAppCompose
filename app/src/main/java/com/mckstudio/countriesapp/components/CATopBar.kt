@@ -1,5 +1,6 @@
-package com.mckstudio.countriesapp.ui.components
+package com.mckstudio.countriesapp.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,30 +29,34 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mckstudio.countriesapp.common.Dimens
 import com.mckstudio.countriesapp.ui.theme.CABlue
 import com.mckstuido.countriesapp.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CATopBar(
     modifier: Modifier = Modifier,
     title: String = "Country App",
     onBackClick: (() -> Unit)? = null,
+    isFavorite: Boolean = false,
+    onFavoriteClick: (() -> Unit)? = null,
 ) {
-    Column() {
+    Column {
         Row(
             modifier = modifier
                 .height(Dimens.dp60)
                 .fillMaxWidth()
-                .padding(horizontal = Dimens.dp12, vertical = Dimens.dp12),
+                .padding(horizontal = Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (onBackClick != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                onBackClick?.let {
                     IconButton(
                         modifier = Modifier.size(Dimens.dp30),
                         onClick = onBackClick,
@@ -66,7 +70,10 @@ fun CATopBar(
                                 .rotate(-90f)
                         )
                     }
-                } else {
+                    Spacer(modifier = Modifier.width(Dimens.dp8))
+                }
+
+                if (onBackClick == null) {
                     Box(
                         modifier = Modifier
                             .size(Dimens.dp40)
@@ -81,9 +88,8 @@ fun CATopBar(
                             modifier = Modifier.size(Dimens.dp30)
                         )
                     }
+                    Spacer(modifier = Modifier.width(Dimens.dp12))
                 }
-
-                Spacer(modifier = Modifier.width(Dimens.dp12))
 
                 Text(
                     text = title,
@@ -91,14 +97,33 @@ fun CATopBar(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     ),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
+            }
+
+            onFavoriteClick?.let {
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .size(Dimens.dp30),
+                    onClick = onFavoriteClick,
+                ) {
+                    Image(
+                        painter = painterResource(
+                            id = if (isFavorite) R.drawable.icons_star else R.drawable.icons_un_star
+                        ),
+                        contentDescription = "Favorite",
+                        modifier = Modifier.size(Dimens.dp24)
+                    )
+                }
             }
         }
 
         HorizontalDivider(
-            thickness = 0.2.dp,
-            color = MaterialTheme.colorScheme.outline
+            thickness = 0.5.dp,
+            color = MaterialTheme.colorScheme.outlineVariant
         )
     }
 }

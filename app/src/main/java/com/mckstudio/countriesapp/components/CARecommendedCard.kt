@@ -1,111 +1,116 @@
 package com.mckstudio.countriesapp.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mckstudio.countriesapp.common.Dimens
 import com.mckstudio.countriesapp.ui.theme.CountriesAppTheme
-import com.mckstudio.countriesapp.ui.theme.SoftBlue
 
 data class RecommendedCardModel(
-    val title: String,
-    val capital: String,
-    val region: String,
-    val imageUrl: String,
-    val onClick: () -> Unit
+    val countryName: String,
+    val countryCapital: String,
+    val countryRegion: String,
+    val countryImageUrl: String,
 )
 
 @Composable
 fun CARecommendedCard(
     modifier: Modifier = Modifier,
-    data: RecommendedCardModel
+    data: RecommendedCardModel,
+    onClick: (String) -> Unit = {},
 ) {
+    // 1. Card kullanmak gölge ve şekil yönetimi için Box + Shadow'dan daha stabildir.
     Card(
         modifier = modifier
-            .width(280.dp) // Görseldeki yatay genişlik
-            .clip(RoundedCornerShape(Dimens.dp24))
-            .clickable { data.onClick() },
-        shape = RoundedCornerShape(Dimens.dp24),
+            .padding(Dimens.dp4) // Diğer itemlarla çakışmaması için küçük bir pay
+            .fillMaxWidth()
+            .clickable { onClick(data.countryName) },
+        shape = RoundedCornerShape(Dimens.dp12), // Köşeleri burada belirle
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Box(
+        Column(modifier = Modifier.fillMaxWidth()) {
+            // 2. Resim Alanı
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(data.countryImageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = data.countryName,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp)
-                    .clip(RoundedCornerShape(Dimens.dp20))
-            ) {
-                AsyncImage(
-                    model = data.imageUrl,
-                    contentDescription = data.title,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
+                    // Alt köşeleri yuvarlama, sadece üstler yuvarlak kalsın
+                    .clip(RoundedCornerShape(topStart = Dimens.dp12, topEnd = Dimens.dp12)),
+                contentScale = ContentScale.Crop,
+                // Resim yüklenene kadar veya hata verirse gri arka plan
+                placeholder = null,
+            )
 
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(Dimens.dp8)
-                        .background(
-                            color = SoftBlue.copy(alpha = 0.9f), // Temadaki soft mavi
-                            shape = RoundedCornerShape(Dimens.dp12)
-                        )
-                        .padding(horizontal = Dimens.dp12, vertical = Dimens.dp4)
+            // 3. İçerik Alanı
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Dimens.dp12)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                 ) {
                     Text(
-                        text = data.region,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary, // CABlue
-                        fontWeight = FontWeight.Medium
+                        modifier = Modifier.weight(1f), // Uzun isimlerin taşmasını engeller
+                        text = data.countryName,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1
                     )
+
+                    Surface(
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                        shape = RoundedCornerShape(Dimens.dp12)
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(horizontal = Dimens.dp8, vertical = Dimens.dp2),
+                            text = data.countryRegion,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
-            }
-            Column(modifier = Modifier.padding(Dimens.dp12)) {
+
+                Spacer(modifier = Modifier.height(Dimens.dp4))
 
                 Text(
-                    text = data.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
-
-                Text(
-                    text = "Capital: ${data.capital}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = "Capital: ${data.countryCapital}",
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.secondary
                 )
             }
         }
-
     }
 }
 
@@ -116,11 +121,10 @@ fun CARecommendedCardPreview() {
         Box(modifier = Modifier.padding(16.dp)) {
             CARecommendedCard(
                 data = RecommendedCardModel(
-                    title = "Switzerland",
-                    capital = "Bern",
-                    region = "Europe",
-                    imageUrl = "https://example.com/swiss.jpg",
-                    onClick = {}
+                    countryName = "Switzerland",
+                    countryCapital = "Bern",
+                    countryRegion = "Europe",
+                    countryImageUrl = "https://example.com/swiss.jpg",
                 )
             )
         }

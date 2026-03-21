@@ -18,9 +18,9 @@ junit = "4.13.2"
 androidJunit = "1.1.5"
 espresso = "3.5.1"
 
-hiltAndroid = "2.48"
+hiltAndroid = "2.49"
 hiltNavigationCompose = "1.2.0"
-hilt = "2.48"
+hilt = "2.49"
 
 navigation = "2.7.6"
 
@@ -37,6 +37,7 @@ ads = "22.6.0"
 kspVersion = "2.0.21-1.0.25"
 coreKtxVersion = "1.17.0"
 lifecycleRuntimeCompose = "2.10.0"
+animation = "1.10.5"
 
 [libraries]
 
@@ -112,6 +113,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 android-junit = { module = "androidx.test.ext:junit", version.ref = "androidJunit" }
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "animation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

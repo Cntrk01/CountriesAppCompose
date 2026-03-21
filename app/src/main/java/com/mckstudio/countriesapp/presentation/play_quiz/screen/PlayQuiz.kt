@@ -1,26 +1,26 @@
 package com.mckstudio.countriesapp.presentation.play_quiz.screen
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants
 import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.ScreenItem
-import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.HomeCard
 import com.mckstuido.countriesapp.R
 
 @Composable
 fun PlayQuiz(
     backClick: () -> Unit,
-    clickHomeItem: ((String) -> Unit)
+    clickHomeItem: ((String) -> Unit),
+    modifier: Modifier = Modifier
 ) {
     val quizItems = listOf(
         ScreenItem(imageId = R.drawable.icons_planet_earth, cardText = stringResource(id = R.string.easy), clickHomeItem = { clickHomeItem.invoke(
@@ -46,7 +46,7 @@ fun PlayQuiz(
     CABaseScreen(
         title = "Quiz",
         backClick = backClick,
-        content = { modifier ->
+        content = {
             LazyVerticalStaggeredGrid(
                 modifier = modifier,
                 columns = StaggeredGridCells.Fixed(2),

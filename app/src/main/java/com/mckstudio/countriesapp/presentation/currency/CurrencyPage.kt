@@ -3,7 +3,9 @@ package com.mckstudio.countriesapp.presentation.currency
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,14 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mckstudio.countriesapp.common.Dimens
 import com.mckstudio.countriesapp.components.CABaseScreen
-import com.mckstudio.countriesapp.components.CACountryListItem
-import com.mckstudio.countriesapp.components.CALoading
-import com.mckstudio.countriesapp.presentation.country_list.viewmodel.CountryListViewModel
 import com.mckstudio.countriesapp.components.CAError
-import com.mckstudio.countriesapp.ui.components.CASearchBar
+import com.mckstudio.countriesapp.components.CALoading
+import com.mckstudio.countriesapp.components.CASearchBar
+import com.mckstudio.countriesapp.components.CASearchItem
+import com.mckstudio.countriesapp.presentation.country_list.viewmodel.CountryListViewModel
 
 @Composable
 fun CurrencyPage(
+    modifier: Modifier = Modifier,
     backClick: (() -> Unit)? = null,
     currencyViewModel: CountryListViewModel = hiltViewModel()
 ) {
@@ -39,9 +42,7 @@ fun CurrencyPage(
             } else {
                 state.countryData.filter { country ->
                     val countryNameMatch = country.name?.contains(searchQuery, ignoreCase = true) == true
-                    val currencyMatch = country.countryDetailItem.currencies?.values?.any {
-                        it.name.contains(searchQuery, ignoreCase = true)
-                    } == true
+                    val currencyMatch = country.currency?.contains(searchQuery, ignoreCase = true) == true
                     countryNameMatch || currencyMatch
                 }
             }
@@ -63,22 +64,25 @@ fun CurrencyPage(
     CABaseScreen(
         title = "Currency",
         backClick = { backClick?.invoke() },
-        content = { modifier ->
+        content = {
             Column(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(Dimens.dp12),
             ) {
-                CASearchBar(
-                    searchText = searchQuery,
-                    onSearchTextChange = { searchQuery = it },
-                    placeholder = "Search currency"
-                )
+                if (!state.loading){
+                    CASearchBar(
+                        searchText = searchQuery,
+                        onSearchTextChange = { searchQuery = it },
+                        placeholder = "Search currency"
+                    )
 
-                Spacer(modifier = Modifier.height(Dimens.dp8))
+                    Spacer(modifier = Modifier.height(Dimens.dp8))
+                }
 
                 if (state.loading) {
                     CALoading(
+                        modifier = Modifier.fillMaxSize(),
                         statusText = "Currencies are being loaded."
                     )
                 }
@@ -118,13 +122,11 @@ fun CurrencyPage(
                                     count = filteredCountries.size,
                                 ) { index ->
                                     val country = filteredCountries[index]
-                                    val currencyInfo = country.countryDetailItem.currencies?.values?.firstOrNull()
-                                    val subtitleText = currencyInfo?.let { "${it.name} ${it.symbol}" } ?: "N/A"
 
-                                    CACountryListItem(
+                                    CASearchItem(
                                         title = country.name ?: "",
-                                        subtitle = subtitleText,
-                                        imageUrl = country.flag?.png,
+                                        subtitle = country.currency.toString(),
+                                        imageUrl = country.flag,
                                     )
 
                                     if (index < filteredCountries.size - 1) {

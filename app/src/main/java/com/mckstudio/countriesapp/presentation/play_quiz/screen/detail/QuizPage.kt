@@ -55,7 +55,6 @@ import com.mckstudio.countriesapp.common.Constants.DIFFICULT
 import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.QuizItem
 import com.mckstudio.countriesapp.layouts.AlertDialogForBack
-import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.LoadingCardView
 import com.mckstudio.countriesapp.navigation.Screen
 import com.mckstudio.countriesapp.presentation.play_quiz.state.QuizState
@@ -71,6 +70,7 @@ import kotlinx.coroutines.launch
 fun QuizPage(
     backClick: (String?) -> Unit,
     navController: NavHostController,
+    modifier: Modifier = Modifier,
     quizViewModel: QuizViewModel = hiltViewModel(),
 ) {
     val countryItem =
@@ -105,7 +105,7 @@ fun QuizPage(
         backClick = {
             checkBackClick = true
         },
-        content = { modifier ->
+        content = {
             Column(
                 modifier = modifier
             ) {

@@ -2,9 +2,9 @@ package com.mckstudio.countriesapp.data.repositoryimpl
 
 import com.mckstudio.countriesapp.Response
 import com.mckstudio.countriesapp.data.remote.CountryApi
-import com.mckstudio.countriesapp.data.response.toQuizItem
-import com.mckstudio.countriesapp.data.response.toQuizItemCapital
-import com.mckstudio.countriesapp.data.response.toQuizItemEmblems
+import com.mckstudio.countriesapp.data.model.toQuizItem
+import com.mckstudio.countriesapp.data.model.toQuizItemCapital
+import com.mckstudio.countriesapp.data.model.toQuizItemEmblems
 import com.mckstudio.countriesapp.domain.repository.QuizRepository
 import javax.inject.Inject
 

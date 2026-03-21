@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface CountryRepository {
     suspend fun getAllCountry() : Flow<Response<List<CountryItem>>>
 
-    suspend fun getCountryWithName (name:String) : Flow<Response<List<CountryDetailItem>>>
+    //suspend fun getCountryWithName (name:String) : Flow<Response<List<CountryDetailItem>>>
 
     suspend fun getCountryWithRegion(regionName:String) : Flow<Response<List<CountryItem>>>
 

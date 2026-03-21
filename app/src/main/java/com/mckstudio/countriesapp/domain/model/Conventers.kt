@@ -1,30 +1,43 @@
 package com.mckstudio.countriesapp.domain.model
 
 import androidx.room.TypeConverter
-import com.mckstudio.countriesapp.data.response.CapitalInfo
-import com.mckstudio.countriesapp.data.response.CoatOfArms
-import com.mckstudio.countriesapp.data.response.Currency
-import com.mckstudio.countriesapp.data.response.Flags
-import com.mckstudio.countriesapp.data.response.Maps
-import com.mckstudio.countriesapp.data.response.Name
-import com.mckstudio.countriesapp.data.response.PostalCode
-import com.mckstudio.countriesapp.data.response.Translations
+import com.mckstudio.countriesapp.data.model.CapitalInfo
+import com.mckstudio.countriesapp.data.model.CoatOfArms
+import com.mckstudio.countriesapp.data.model.Currency
+import com.mckstudio.countriesapp.data.model.Flags
+import com.mckstudio.countriesapp.data.model.Maps
+import com.mckstudio.countriesapp.data.model.Name
+import com.mckstudio.countriesapp.data.model.PostalCode
+import com.mckstudio.countriesapp.data.model.Translations
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class Conventers {
+    private val gson = Gson()
+
+    @TypeConverter
+    fun fromTranslationList(value: List<BaseTranslation>?): String {
+        return gson.toJson(value ?: emptyList<BaseTranslation>())
+    }
+
+    @TypeConverter
+    fun toTranslationList(value: String): List<BaseTranslation> {
+        val listType = object : TypeToken<List<BaseTranslation>>() {}.type
+        return gson.fromJson(value, listType) ?: emptyList()
+    }
+
     @TypeConverter
     fun fromStringList(value: String?): List<String>? {
         if (value == null) {
             return null
         }
         val listType = object : TypeToken<List<String>>() {}.type
-        return Gson().fromJson(value, listType)
+        return gson.fromJson(value, listType)
     }
 
     @TypeConverter
     fun stringListToString(value: List<String>?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -33,12 +46,12 @@ class Conventers {
             return null
         }
         val mapType = object : TypeToken<Map<String, Currency>>() {}.type
-        return Gson().fromJson(value, mapType)
+        return gson.fromJson(value, mapType)
     }
 
     @TypeConverter
     fun stringMapToString(value: Map<String, Currency>?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
 
@@ -48,12 +61,12 @@ class Conventers {
             return null
         }
         val listType = object : TypeToken<List<Double>>() {}.type
-        return Gson().fromJson(value, listType)
+        return gson.fromJson(value, listType)
     }
 
     @TypeConverter
     fun listToString(value: List<Double>?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -61,12 +74,12 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, CapitalInfo::class.java)
+        return gson.fromJson(value, CapitalInfo::class.java)
     }
 
     @TypeConverter
     fun capitalInfoToString(value: CapitalInfo?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -74,12 +87,12 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, Flags::class.java)
+        return gson.fromJson(value, Flags::class.java)
     }
 
     @TypeConverter
     fun flagsToString(value: Flags?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -87,12 +100,12 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, Maps::class.java)
+        return gson.fromJson(value, Maps::class.java)
     }
 
     @TypeConverter
     fun mapsToString(value: Maps?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -100,12 +113,12 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, Name::class.java)
+        return gson.fromJson(value, Name::class.java)
     }
 
     @TypeConverter
     fun nameToString(value: Name?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -113,12 +126,12 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, PostalCode::class.java)
+        return gson.fromJson(value, PostalCode::class.java)
     }
 
     @TypeConverter
     fun postalCodeToString(value: PostalCode?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -126,12 +139,12 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, Translations::class.java)
+        return gson.fromJson(value, Translations::class.java)
     }
 
     @TypeConverter
     fun translationsToString(value: Translations?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 
     @TypeConverter
@@ -139,11 +152,11 @@ class Conventers {
         if (value == null) {
             return null
         }
-        return Gson().fromJson(value, CoatOfArms::class.java)
+        return gson.fromJson(value, CoatOfArms::class.java)
     }
 
     @TypeConverter
     fun coatOfArmsToString(value: CoatOfArms?): String? {
-        return Gson().toJson(value)
+        return gson.toJson(value)
     }
 }

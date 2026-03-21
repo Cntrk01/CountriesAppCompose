@@ -1,7 +1,6 @@
 package com.mckstudio.countriesapp.presentation.region_subregion.regionlist.screen
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -11,17 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mckstudio.countriesapp.components.CABaseScreen
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
-import com.mckstudio.countriesapp.layouts.AppBar
 import com.mckstudio.countriesapp.layouts.CountryDataList
 import com.mckstudio.countriesapp.layouts.ErrorText
 import com.mckstudio.countriesapp.layouts.LoadingCardView
 import com.mckstudio.countriesapp.presentation.region_subregion.regionlist.viewmodel.RegionCountryListViewModel
-import com.mckstuido.countriesapp.R
 
 @Composable
 fun RegionCountryList(
-    clickCountry : (CountryDetailItem)->Unit,
+    clickCountry : (String)->Unit,
     backClick : ()->Unit,
+    modifier: Modifier = Modifier,
     regionCountryListViewModel: RegionCountryListViewModel = hiltViewModel()
 ){
     val state by regionCountryListViewModel.countryListState.collectAsState()
@@ -30,7 +28,7 @@ fun RegionCountryList(
         backClick = {
             backClick.invoke()
         },
-        content = { modifier ->
+        content = { 
             Box(modifier = modifier.fillMaxSize()) {
                 if (state.loading) {
                     LoadingCardView(modifier = Modifier.align(Alignment.Center))
@@ -53,8 +51,8 @@ fun RegionCountryList(
                     CountryDataList(
                         countryList = state.countryData,
                         countryStateListSize = state.countryData.size,
-                        clickCountry = { countryDetail ->
-                            clickCountry.invoke(countryDetail)
+                        clickCountry = { countryName ->
+                            clickCountry.invoke(countryName)
                         })
                 }
             }

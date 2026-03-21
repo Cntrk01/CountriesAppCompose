@@ -3,14 +3,14 @@ package com.mckstudio.countriesapp.domain.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mckstudio.countriesapp.data.response.CapitalInfo
-import com.mckstudio.countriesapp.data.response.CoatOfArms
-import com.mckstudio.countriesapp.data.response.Currency
-import com.mckstudio.countriesapp.data.response.Flags
-import com.mckstudio.countriesapp.data.response.Maps
-import com.mckstudio.countriesapp.data.response.Name
-import com.mckstudio.countriesapp.data.response.PostalCode
-import com.mckstudio.countriesapp.data.response.Translations
+import com.mckstudio.countriesapp.data.model.CapitalInfo
+import com.mckstudio.countriesapp.data.model.CoatOfArms
+import com.mckstudio.countriesapp.data.model.Currency
+import com.mckstudio.countriesapp.data.model.Flags
+import com.mckstudio.countriesapp.data.model.Maps
+import com.mckstudio.countriesapp.data.model.Name
+import com.mckstudio.countriesapp.data.model.PostalCode
+import com.mckstudio.countriesapp.data.model.Translations
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 

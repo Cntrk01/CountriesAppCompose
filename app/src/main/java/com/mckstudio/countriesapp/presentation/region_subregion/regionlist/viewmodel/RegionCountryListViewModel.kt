@@ -66,7 +66,7 @@ class RegionCountryListViewModel @Inject constructor(
                             flag = countryItem.flag,
                             name = countryItem.name,
                             capital = countryItem.capital,
-                            countryDetailItem = countryItem.countryDetailItem
+                            currency = countryItem.currency,
                         )
                     }
 

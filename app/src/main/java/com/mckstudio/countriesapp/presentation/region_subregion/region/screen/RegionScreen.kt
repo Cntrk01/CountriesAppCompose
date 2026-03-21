@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mckstudio.countriesapp.common.Constants.AFRICA
@@ -21,8 +22,9 @@ import com.mckstuido.countriesapp.R
 
 @Composable
 fun RegionScreen(
+    modifier: Modifier = Modifier,
     backClick: (() -> Unit)? = null,
-    clickRegionItem: ((String) -> Unit)? = null
+    clickRegionItem: ((String) -> Unit)? = null,
 ) {
     val regionItems = listOf(
         ScreenItem(
@@ -68,7 +70,7 @@ fun RegionScreen(
         backClick = {
             backClick?.invoke()
         },
-        content = { modifier ->
+        content = {
             LazyVerticalStaggeredGrid(
                 modifier = modifier,
                 columns = StaggeredGridCells.Fixed(2),

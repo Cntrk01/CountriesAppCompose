@@ -3,7 +3,10 @@ package com.mckstudio.countriesapp.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mckstudio.countriesapp.Response
+import com.mckstudio.countriesapp.components.RecommendedCardModel
 import com.mckstudio.countriesapp.domain.model.CountryItem
+import com.mckstudio.countriesapp.domain.model.RecommendedItem
+import com.mckstudio.countriesapp.domain.model.toRecommendedCardModelList
 import com.mckstudio.countriesapp.domain.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +31,7 @@ data class SearchState(
 data class RecommendedState(
     val error: String = "",
     val loading: Boolean = false,
-    val recommendedCountry: List<CountryItem> = emptyList(),
+    val recommendedCountry: List<RecommendedCardModel> = emptyList(),
 )
 
 @OptIn(FlowPreview::class)
@@ -52,15 +55,52 @@ class HomeViewModel @Inject constructor(
                .filter {
                    it.isNotEmpty()
                }
-               .distinctUntilChanged() //Aynı kelimeyi tekrar aramasın diye.
+               .distinctUntilChanged()
                .collectLatest { query ->
                    searchCountry(query)
                }
        }
+        getRandomCountry()
     }
 
     fun onSearchQueryChanged(newQuery: String) {
         _searchQuery.value = newQuery
+    }
+
+    private fun getRandomCountry() = viewModelScope.launch(Dispatchers.IO) {
+        homeRepository
+            .getRandomCountry()
+            .collectLatest { response ->
+            when (response) {
+                is Response.Loading -> {
+                    _recommendedState.update {
+                        it.copy(
+                            error = "",
+                            loading = true,
+                        )
+                    }
+                }
+                is Response.Error -> {
+                    _recommendedState.update {
+                        it.copy(
+                            error = response.message,
+                            loading = false,
+                        )
+                    }
+                }
+                is Response.Success -> {
+                    val list = response.data.toRecommendedCardModelList()
+
+                    _recommendedState.update {
+                        it.copy(
+                            error = "",
+                            loading = false,
+                            recommendedCountry = list,
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun searchCountry(query: String) = viewModelScope.launch(Dispatchers.IO){

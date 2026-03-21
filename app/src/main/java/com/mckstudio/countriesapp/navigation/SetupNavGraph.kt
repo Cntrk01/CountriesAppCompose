@@ -1,6 +1,7 @@
 package com.mckstudio.countriesapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -15,7 +16,8 @@ import com.mckstudio.countriesapp.common.Constants.FAVORITE
 import com.mckstudio.countriesapp.common.Constants.Region_Name
 import com.mckstudio.countriesapp.common.Constants.Region_Title
 import com.mckstudio.countriesapp.common.Constants.Sub_Region_Title
-import com.mckstudio.countriesapp.presentation.country_detail.screen.CountryDetailPage
+import com.mckstudio.countriesapp.presentation.country_detail.screen.CountryDetailScreen
+import com.mckstudio.countriesapp.presentation.country_detail.vm.CountryDetailViewModel
 import com.mckstudio.countriesapp.presentation.country_list.screen.CountryListScreen
 import com.mckstudio.countriesapp.presentation.currency.CurrencyPage
 import com.mckstudio.countriesapp.presentation.favorite.screen.FavoriteScreen
@@ -57,35 +59,35 @@ fun SetupNavGraph(
                     navController.navigate(route = Screen.FavoritePage.route + "/$FAVORITE")
                 }
             },
-                selectedCountry = {
-                    navController.currentBackStackEntry?.savedStateHandle?.set(
-                        Screen.CountryDetailPage.route,
-                        it
-                    )
-                    navController.navigate(route = Screen.CountryDetailPage.route)
+                onSelectedCountry = { selectedCountry ->
+                    navController.navigate(route = Screen.CountryDetailPage.route+"/${selectedCountry}")
                 }
             )
         }
         composable(route = Screen.CountryPage.route) {
             CountryListScreen(
-                clickCountry = { countryItem ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set(
-                        Screen.CountryDetailPage.route,
-                        countryItem
-                    )
-                    navController.navigate(route = Screen.CountryDetailPage.route)
+                clickCountry = { countryName ->
+                    navController.navigate(route = Screen.CountryDetailPage.route+"/$countryName")
+
                 },
                 backClick = {
                     navController.popBackStack()
                 }
             )
         }
-        composable(route = Screen.CountryDetailPage.route) {
-            CountryDetailPage(
-                navController = navController,
+        composable(route = Screen.CountryDetailPage.route+"/{countryName}") { backStackEntry ->
+
+            val countryName = backStackEntry.arguments?.getString("countryName") ?: ""
+            val countryDetailViewModel = hiltViewModel<CountryDetailViewModel, CountryDetailViewModel.CountryDetailFactory> { factory ->
+                factory.create(name = countryName)
+            }
+
+            CountryDetailScreen(
+                countryDetailViewModel = countryDetailViewModel,
                 backClick = {
                     navController.popBackStack()
-                })
+                }
+            )
         }
         composable(route = Screen.RegionPage.route) {
             RegionScreen(backClick = {
@@ -120,15 +122,18 @@ fun SetupNavGraph(
                 Screen.FavoritePage.route,
                 FAVORITE
             )
-            FavoriteScreen(backClick = {
-                navController.popBackStack()
-            }, clickFavoriteItem = { countryDetailItem ->
-                navController.currentBackStackEntry?.savedStateHandle?.set(
-                    Screen.CountryDetailPage.route,
-                    countryDetailItem
-                )
-                navController.navigate(route = Screen.CountryDetailPage.route)
-            })
+            FavoriteScreen(
+                backClick = {
+                    navController.popBackStack()
+                },
+                onClickFavorite = { countryName ->
+                    //navController.currentBackStackEntry?.savedStateHandle?.set(
+                    //    Screen.CountryDetailPage.route,
+                    //    countryDetailItem
+                    //)
+                    navController.navigate(route = Screen.CountryDetailPage.route + "/$countryName")
+                }
+            )
         }
 
         composable(
@@ -141,12 +146,8 @@ fun SetupNavGraph(
             RegionCountryList(backClick = {
                 navController.popBackStack()
                 navController.currentBackStackEntry?.savedStateHandle?.remove<String>(Region_Name)
-            }, clickCountry = { countryItem ->
-                navController.currentBackStackEntry?.savedStateHandle?.set(
-                    Screen.CountryDetailPage.route,
-                    countryItem
-                )
-                navController.navigate(route = Screen.CountryDetailPage.route)
+            }, clickCountry = { countryName ->
+                navController.navigate(route = Screen.CountryDetailPage.route+"/$countryName")
             })
         }
 

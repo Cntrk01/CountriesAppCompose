@@ -1,6 +1,6 @@
 package com.mckstudio.countriesapp.presentation.home
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,8 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,14 +39,13 @@ import com.mckstudio.countriesapp.common.Constants.Sub_Region_Subtitle
 import com.mckstudio.countriesapp.common.Constants.Sub_Region_Title
 import com.mckstudio.countriesapp.common.Dimens
 import com.mckstudio.countriesapp.components.CABaseScreen
-import com.mckstudio.countriesapp.components.CACountryList
+import com.mckstudio.countriesapp.components.CASearchList
 import com.mckstudio.countriesapp.components.CARecommendedCard
 import com.mckstudio.countriesapp.components.RecommendedCardModel
 import com.mckstudio.countriesapp.domain.model.CountryDetailItem
-import com.mckstudio.countriesapp.domain.model.CountryItem
 import com.mckstudio.countriesapp.domain.model.toCountryDetailItem
 import com.mckstudio.countriesapp.ui.components.CACategoryCard
-import com.mckstudio.countriesapp.ui.components.CASearchBar
+import com.mckstudio.countriesapp.components.CASearchBar
 import com.mckstudio.countriesapp.ui.components.CategoryCardModel
 import com.mckstudio.countriesapp.ui.theme.CABlue
 import com.mckstudio.countriesapp.ui.theme.CountriesAppTheme
@@ -61,22 +59,18 @@ import com.mckstuido.countriesapp.R
 @Composable
 fun HomeScreen(
     clickHomeItem: (String) -> Unit,
+    modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    selectedCountry : (CountryDetailItem) -> Unit = {},
+    onSelectedCountry : (String) -> Unit = {},
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     val searchState by homeViewModel.searchState.collectAsStateWithLifecycle()
-
-    val recommendedDummyList = listOf(
-        RecommendedCardModel("Switzerland", "Bern", "Europe", "https://example.com/1.jpg", {}),
-        RecommendedCardModel("Maldives", "Male", "Asia", "https://example.com/2.jpg", {}),
-        RecommendedCardModel("France", "Paris", "Europe", "https://example.com/3.jpg", {})
-    )
+    val recommendedState by homeViewModel.recommendedState.collectAsStateWithLifecycle()
 
     CABaseScreen(
         title = "Country App",
         backClick = null,
-        content = { modifier ->
+        content = {
             LazyColumn(
                 modifier = modifier
                     .fillMaxSize()
@@ -84,9 +78,10 @@ fun HomeScreen(
                 contentPadding = PaddingValues(bottom = Dimens.dp12),
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp16),
             ) {
-                item {
+                item (key = "search_section"){
                     CASearchBar(
                         searchText = searchQuery,
+                        placeholder = "Search Countries",
                         onSearchTextChange = {
                             searchQuery = it
                             homeViewModel.onSearchQueryChanged(newQuery = searchQuery)
@@ -95,22 +90,22 @@ fun HomeScreen(
                 }
 
                 if (searchQuery.isNotEmpty()) {
-                    if (searchState.loading) {
+                    item {
+                        if (searchState.loading) {
 
-                    }
-                    if (searchState.error.isNotEmpty()) {
-
-                    }
-                    if (searchState.searchCountry.isNotEmpty()) {
-                        item {
-                            CACountryList(
-                                countryList = searchState.searchCountry.toCountryDetailItem(),
-                                onSelectedCountry = {
-                                    selectedCountry(it)
-                                }
-                            )
                         }
-                    }
+                        if (searchState.error.isNotEmpty()) {
+
+                        }
+                        if (searchState.searchCountry.isNotEmpty()) {
+                                CASearchList(
+                                    countryList = searchState.searchCountry.toCountryDetailItem(),
+                                    onSelectedCountry = {
+                                        onSelectedCountry(it)
+                                    }
+                                )
+                            }
+                        }
 
                 } else {
                     item {
@@ -133,17 +128,29 @@ fun HomeScreen(
                         )
                     }
 
-                    item {
-                        RecommendedGrid(
-                            recommendedList = recommendedDummyList,
-                            onSelectedRecommended = { clickHomeItem(it) }
-                        )
+                    item(key = "recommended_section") {
+                        if (recommendedState.loading){
+                            println("Loading")
+                        }
+
+                        if (recommendedState.error.isNotEmpty()){
+                            println("Error")
+                        }
+
+                        if (recommendedState.recommendedCountry.isNotEmpty()){
+                            RecommendedGrid(
+                                recommendedList = recommendedState.recommendedCountry,
+                                onSelectedRecommended = {
+                                    clickHomeItem(it)
+                                    onSelectedCountry(it)
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
     )
-
 }
 
 @Composable
@@ -213,7 +220,6 @@ fun CategoryGrid(
     }
 }
 
-@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun RecommendedGrid(
     modifier: Modifier = Modifier,
@@ -221,18 +227,23 @@ fun RecommendedGrid(
     onSelectedRecommended: (String) -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val cardWidth = (screenWidth * 0.85f) / 2
+    val itemWidth = remember(configuration) {
+        configuration.screenWidthDp.dp * 0.45f
+    }
 
-    LazyRow(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
-        contentPadding = PaddingValues(bottom = Dimens.dp8)
+    Row (
+        modifier = modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
     ) {
-        items(recommendedList) { recommended ->
+        recommendedList.forEach { recommended ->
             CARecommendedCard(
-                modifier = Modifier.width(cardWidth),
-                data = recommended.copy(onClick = { onSelectedRecommended(recommended.title) })
+                modifier = Modifier
+                    .width(itemWidth),
+                data = recommended,
+                onClick = {
+                    onSelectedRecommended(recommended.countryName)
+                }
             )
         }
     }

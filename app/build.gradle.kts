@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
-
 android {
     namespace = "com.mckstuido.countriesapp"
     compileSdk = 36
@@ -20,8 +19,8 @@ android {
         applicationId = "com.mckstuido.countriesapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -90,6 +89,7 @@ dependencies {
     implementation (libs.androidx.hilt.navigation.compose)
     implementation(libs.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.animation)
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.retrofit)

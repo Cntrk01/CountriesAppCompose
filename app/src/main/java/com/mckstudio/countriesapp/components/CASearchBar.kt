@@ -1,4 +1,4 @@
-package com.mckstudio.countriesapp.ui.components
+package com.mckstudio.countriesapp.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

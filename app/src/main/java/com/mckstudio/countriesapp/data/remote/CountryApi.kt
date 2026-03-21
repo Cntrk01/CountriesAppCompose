@@ -1,6 +1,7 @@
 package com.mckstudio.countriesapp.data.remote
 
-import com.mckstudio.countriesapp.data.response.BaseList
+import com.mckstudio.countriesapp.data.model.BaseList
+import com.mckstudio.countriesapp.data.model.countrydetail.DetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -17,4 +18,9 @@ interface CountryApi {
     suspend fun getCountryWithRegion(
         @Path("region") region:String
     ) : BaseList
+
+    @GET("name/{name}")
+    suspend fun getCountryDetailWithName(
+        @Path("name") name:String
+    ) : DetailResponse
 }
